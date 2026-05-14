@@ -8,6 +8,10 @@ import Sobre from './paginas/Sobre'
 import Contato from './paginas/Contato'
 import './App.css'
 
+/*git add .*/
+/*git commit -m "Explique o que você fez aqui"*/
+/*git push*/
+
 function App() {
   return (
     <BrowserRouter>
