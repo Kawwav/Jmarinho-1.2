@@ -1,0 +1,157 @@
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Jost:wght@300;400;500&display=swap');
+
+/* ── Base ── */
+.nav {
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  width: 100%;
+  box-sizing: border-box;
+  transition: background 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Na home: flutua sobre o hero */
+.nav--hero {
+  position: absolute;
+  background: transparent;
+  box-shadow: none;
+  border-bottom: none;
+}
+
+/* Nas demais páginas: fixo no topo, fundo branco */
+.nav--solid {
+  position: fixed;
+  background: #ffffff;
+  box-shadow: 0 1px 0 rgba(0, 65, 105, 0.08);
+  border-bottom: none;
+}
+
+.nav__inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 40px;
+  height: 72px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+}
+
+/* ── Logo ── */
+.nav__logo {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  flex-shrink: 0;
+}
+
+.nav__logo img {
+  height: 44px;
+  width: auto;
+  display: block;
+  object-fit: contain;
+}
+
+/* ── Links centralizados ── */
+.nav__links {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 36px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+/* Cor dos links varia conforme o tema */
+.nav--hero .nav__links li a {
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.nav--hero .nav__links li a::after {
+  background: #ffffff;
+}
+
+.nav--hero .nav__links li a:hover,
+.nav--hero .nav__links li a.active {
+  color: #ffffff;
+}
+
+.nav--solid .nav__links li a {
+  color: rgba(0, 65, 105, 0.7);
+}
+
+.nav--solid .nav__links li a::after {
+  background: #008BD2;
+}
+
+.nav--solid .nav__links li a:hover,
+.nav--solid .nav__links li a.active {
+  color: #004169;
+}
+
+/* Estilos base dos links (independente do tema) */
+.nav__links li a {
+  font-family: 'Jost', sans-serif;
+  font-weight: 400;
+  font-size: 15px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  text-decoration: none;
+  position: relative;
+  padding-bottom: 4px;
+  transition: color 0.25s ease;
+}
+
+.nav__links li a::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 1px;
+  transition: width 0.3s ease;
+}
+
+.nav__links li a:hover::after,
+.nav__links li a.active::after {
+  width: 100%;
+}
+
+/* ── Espaço direito ── */
+.nav__right {
+  width: 120px;
+  flex-shrink: 0;
+}
+
+/* ── Mobile ── */
+@media (max-width: 768px) {
+  .nav__inner {
+    padding: 0 24px;
+    flex-direction: column;
+    height: auto;
+    padding-top: 16px;
+    padding-bottom: 12px;
+    gap: 12px;
+  }
+
+  .nav__links {
+    position: static;
+    transform: none;
+    gap: 20px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .nav__right {
+    display: none;
+  }
+
+  .nav__links li a {
+    font-size: 11px;
+    letter-spacing: 0.1em;
+  }
+}
