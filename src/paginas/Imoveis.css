@@ -214,12 +214,12 @@
 
 /* ── Grid de imóveis ── */
 .imoveis-grid {
-  max-width: 1100px;
+  max-width: 1400px;
   margin: 0 auto;
-  padding: 0 24px 80px;
+  padding: 0 48px 80px;
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 28px;
+  gap: 32px;
 }
 
 .sem-resultados {
@@ -252,7 +252,7 @@
 .card-img {
   position: relative;
   width: 100%;
-  aspect-ratio: 4 / 4;
+  height: 320px;
   overflow: hidden;
 }
 
@@ -301,16 +301,16 @@
 }
 
 .card-body {
-  padding: 20px 20px 22px;
+  padding: 28px 28px 30px;
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 8px;
   flex: 1;
 }
 
 .card-localizacao {
   font-family: 'Jost', sans-serif;
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 400;
   letter-spacing: 0.1em;
   text-transform: uppercase;
@@ -321,7 +321,7 @@
 .card-titulo {
   font-family: 'Cormorant Garamond', serif;
   font-weight: 500;
-  font-size: 20px;
+  font-size: 28px;
   color: var(--azul-escuro);
   margin: 0;
   line-height: 1.2;
@@ -329,29 +329,29 @@
 
 .card-preco {
   font-family: 'Jost', sans-serif;
-  font-size: 18px;
+  font-size: 24px;
   font-weight: 500;
   color: var(--azul-escuro);
-  margin: 4px 0 8px;
+  margin: 6px 0 10px;
   letter-spacing: 0.01em;
 }
 
 .card-specs {
   display: flex;
-  gap: 14px;
+  gap: 20px;
   flex-wrap: wrap;
-  padding: 10px 0;
+  padding: 14px 0;
   border-top: 1px solid #e8f1f8;
   border-bottom: 1px solid #e8f1f8;
-  margin-bottom: 14px;
+  margin-bottom: 18px;
 }
 
 .card-specs span {
   display: flex;
   align-items: center;
-  gap: 5px;
+  gap: 6px;
   font-family: 'Jost', sans-serif;
-  font-size: 12px;
+  font-size: 14px;
   font-weight: 400;
   color: #5a7a90;
   letter-spacing: 0.02em;
@@ -364,12 +364,12 @@
 
 .card-btn {
   width: 100%;
-  height: 44px;
+  height: 52px;
   border-radius: 6px;
   border: 1.5px solid var(--azul);
   background: transparent;
   font-family: 'Jost', sans-serif;
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 500;
   letter-spacing: 0.14em;
   text-transform: uppercase;
@@ -797,6 +797,7 @@
 @media (max-width: 700px) {
   .imoveis-grid {
     grid-template-columns: 1fr;
+    padding: 0 24px 80px;
   }
 
   .filtros-row {

@@ -5,7 +5,7 @@ function Footer() {
     <footer className="footer">
       <div className="footer__inner">
         <div className="footer__logo">
-          <img src="/logo.png" alt="JMarinho" />
+          <img src="./logo.png" alt="JMarinho" />
         </div>
         <p className="footer__copy">
           © {new Date().getFullYear()} JMarinho. Todos os direitos reservados.

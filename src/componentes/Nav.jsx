@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react'
 import { NavLink, useLocation } from 'react-router-dom'
 import './Nav.css'
 
@@ -11,18 +12,31 @@ const navItems = [
 
 function Nav() {
   const { pathname } = useLocation()
-  // Rotas com header imersivo: nav transparente com letras brancas
+  const [menuOpen, setMenuOpen] = useState(false)
+
   const heroRoutes = ['/', '/sobre']
   const isHero = heroRoutes.includes(pathname)
 
+  // Fecha o menu ao trocar de rota
+  useEffect(() => {
+    setMenuOpen(false)
+  }, [pathname])
+
+  // Trava o scroll quando o menu está aberto
+  useEffect(() => {
+    document.body.style.overflow = menuOpen ? 'hidden' : ''
+    return () => { document.body.style.overflow = '' }
+  }, [menuOpen])
+
   return (
-    <header className={`nav ${isHero ? 'nav--hero' : 'nav--solid'}`}>
+    <header className={`nav ${isHero ? 'nav--hero' : 'nav--solid'} ${menuOpen ? 'nav--open' : ''}`}>
       <div className="nav__inner">
         <NavLink to="/" className="nav__logo" aria-label="JMarinho - Início">
-          <img src="/logo.png" alt="JMarinho" />
+          <img src="./logo.png" alt="JMarinho" />
         </NavLink>
 
-        <nav aria-label="Menu principal">
+        {/* Links — desktop */}
+        <nav aria-label="Menu principal" className="nav__desktop">
           <ul className="nav__links">
             {navItems.map((item) => (
               <li key={item.to}>
@@ -39,7 +53,44 @@ function Nav() {
         </nav>
 
         <div className="nav__right" aria-hidden="true" />
+
+        {/* Botão hambúrguer — mobile */}
+        <button
+          className={`nav__burger ${menuOpen ? 'nav__burger--open' : ''}`}
+          onClick={() => setMenuOpen((v) => !v)}
+          aria-label={menuOpen ? 'Fechar menu' : 'Abrir menu'}
+          aria-expanded={menuOpen}
+        >
+          <span />
+          <span />
+          <span />
+        </button>
       </div>
+
+      {/* Drawer — mobile */}
+      <div className={`nav__drawer ${menuOpen ? 'nav__drawer--open' : ''}`} aria-hidden={!menuOpen}>
+        <nav aria-label="Menu mobile">
+          <ul className="nav__drawer-links">
+            {navItems.map((item, i) => (
+              <li key={item.to} style={{ '--i': i }}>
+                <NavLink
+                  to={item.to}
+                  className={({ isActive }) => isActive ? 'active' : ''}
+                  end={item.to === '/'}
+                  tabIndex={menuOpen ? 0 : -1}
+                >
+                  {item.label}
+                </NavLink>
+              </li>
+            ))}
+          </ul>
+        </nav>
+      </div>
+
+      {/* Overlay */}
+      {menuOpen && (
+        <div className="nav__overlay" onClick={() => setMenuOpen(false)} aria-hidden="true" />
+      )}
     </header>
   )
 }

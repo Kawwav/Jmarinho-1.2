@@ -9,12 +9,14 @@ import Contato from './paginas/Contato'
 import './App.css'
 
 /*git add .*/
-/*git commit -m "Explique o que você fez aqui"*/
+/*git commit -m "....."*/
 /*git push*/
+
+/*npm run deploy*/
 
 function App() {
   return (
-    <BrowserRouter>
+    <BrowserRouter basename="/Jmarinho-1.2">
       <Nav />
       <main>
         <Routes>
