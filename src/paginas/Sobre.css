@@ -21,7 +21,7 @@
 .sobre-hero__bg {
   position: absolute;
   inset: 0;
-  background-image: url('/cidade.jpg');
+  background-image: url('/cidade.webp');
   background-size: cover;
   background-position: center 40%;
   background-repeat: no-repeat;
