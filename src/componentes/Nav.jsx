@@ -8,6 +8,7 @@ const navItems = [
   { label: 'Comercial', to: '/comercial' },
   { label: 'Sobre a JMarinho', to: '/sobre' },
   { label: 'Contato', to: '/contato' },
+  { label: 'Adm', to: '/adm' },
 ]
 
 function Nav() {
@@ -16,6 +17,9 @@ function Nav() {
 
   const heroRoutes = ['/', '/sobre', '/contato']
   const isHero = heroRoutes.includes(pathname)
+
+  // Esconde o Nav completamente na página Adm (ela tem sua própria topbar)
+  if (pathname === '/adm') return null
 
   // Fecha o menu ao trocar de rota
   useEffect(() => {
@@ -34,8 +38,6 @@ function Nav() {
         <NavLink to="/" className="nav__logo" aria-label="JMarinho - Início">
           <img src="./logo.png" alt="JMarinho" />
         </NavLink>
-
-        {/* Links — desktop */}
         <nav aria-label="Menu principal" className="nav__desktop">
           <ul className="nav__links">
             {navItems.map((item) => (
@@ -54,7 +56,6 @@ function Nav() {
 
         <div className="nav__right" aria-hidden="true" />
 
-        {/* Botão mobile */}
         <button
           className={`nav__burger ${menuOpen ? 'nav__burger--open' : ''}`}
           onClick={() => setMenuOpen((v) => !v)}

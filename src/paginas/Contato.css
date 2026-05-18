@@ -6,13 +6,11 @@
   --azul-claro: #A1D9F8;
 }
 
-/* ── Página ── */
 .contato-page {
   min-height: 100vh;
   background: #f5f8fb;
 }
 
-/* ── Hero ── */
 .contato-hero {
   position: relative;
   width: 100%;
@@ -95,12 +93,10 @@
   to   { opacity: 1; transform: translateY(0); }
 }
 
-/* ── Main ── */
 .contato-main {
   background: #f5f8fb;
 }
 
-/* ── Grid principal ── */
 .contato-grid {
   max-width: 1100px;
   margin: 0 auto;
@@ -111,7 +107,6 @@
   align-items: start;
 }
 
-/* ── Coluna esquerda: informações ── */
 .contato-info {
   display: flex;
   flex-direction: column;
@@ -153,7 +148,6 @@
   margin: 0;
 }
 
-/* Lista de contatos */
 .contato-info__lista {
   display: flex;
   flex-direction: column;
@@ -226,7 +220,6 @@
   transition: color 0.25s ease;
 }
 
-/* Slogan */
 .contato-info__slogan {
   display: flex;
   align-items: center;
@@ -254,7 +247,6 @@
   margin: 0;
 }
 
-/* ── Coluna direita: formulário ── */
 .contato-form-wrap {
   background: #ffffff;
   border: 1px solid #ddeaf3;
@@ -399,7 +391,6 @@
   transform: scale(0.98);
 }
 
-/* ── Responsivo ── */
 @media (max-width: 900px) {
   .contato-grid {
     grid-template-columns: 1fr;

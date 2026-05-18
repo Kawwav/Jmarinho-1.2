@@ -12,7 +12,6 @@
   padding-top: 72px;
 }
 
-/* ── Cabeçalho ── */
 .imoveis-header {
   text-align: center;
   padding: 64px 24px 40px;
@@ -36,7 +35,6 @@
   margin-top: 50px;
 }
 
-/* ── Filtros ── */
 .imoveis-filtros {
   display: flex;
   flex-direction: column;
@@ -212,7 +210,6 @@
   color: #ffffff;
 }
 
-/* ── Grid de imóveis ── */
 .imoveis-grid {
   max-width: 1400px;
   margin: 0 auto;
@@ -231,7 +228,6 @@
   padding: 48px 0;
 }
 
-/* ── Card ── */
 .imovel-card {
   background: #ffffff;
   border-radius: 12px;
@@ -384,9 +380,6 @@
   color: #ffffff;
 }
 
-/* ══════════════════════════════════════
-   MODAL
-══════════════════════════════════════ */
 .modal-overlay {
   position: fixed;
   inset: 0;
@@ -427,7 +420,6 @@
   to   { opacity: 1; transform: translateY(0) scale(1); }
 }
 
-/* ── Carrossel ── */
 .modal-carousel {
   position: relative;
   width: 100%;
@@ -497,7 +489,6 @@
   backdrop-filter: blur(4px);
 }
 
-/* Setas */
 .carousel-btn {
   position: absolute;
   top: 50%;
@@ -551,7 +542,6 @@
   transform: scale(1.25);
 }
 
-/* Botão fechar */
 .modal-close {
   position: absolute;
   top: 12px;
@@ -575,7 +565,6 @@
   background: rgba(0, 0, 0, 0.72);
 }
 
-/* ── Corpo do modal ── */
 .modal-body {
   padding: 20px 22px 0;
   flex: 1;
@@ -632,7 +621,6 @@
   border-radius: 0 6px 6px 0;
 }
 
-/* Specs */
 .modal-specs {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -676,7 +664,6 @@
   text-align: center;
 }
 
-/* Infos adicionais */
 .modal-info-list {
   border-top: 1px solid #e8f1f8;
   margin-bottom: 18px;
@@ -706,7 +693,6 @@
   color: var(--azul-escuro);
 }
 
-/* Diferenciais */
 .modal-diferenciais {
   padding-bottom: 20px;
 }
@@ -741,7 +727,6 @@
   flex-shrink: 0;
 }
 
-/* ── Footer do modal ── */
 .modal-footer {
   display: flex;
   gap: 10px;
@@ -793,7 +778,6 @@
   color: var(--azul-escuro);
 }
 
-/* ── Mobile ── */
 @media (max-width: 700px) {
   .imoveis-grid {
     grid-template-columns: 1fr;

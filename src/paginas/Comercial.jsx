@@ -131,7 +131,6 @@ const imoveis = [
   },
 ]
 
-/* ── Ícone por categoria ── */
 function IconeCategoria({ categoria }) {
   switch (categoria) {
     case 'Loja':
@@ -169,7 +168,6 @@ function IconeCategoria({ categoria }) {
   }
 }
 
-/* ── Modal ── */
 function ComercialModal({ imovel, onClose }) {
   const [fotoAtual, setFotoAtual] = useState(0)
   const totalFotos = imovel.fotos?.length || 4
@@ -195,7 +193,6 @@ function ComercialModal({ imovel, onClose }) {
     <div className="modal-overlay" onClick={onClose}>
       <div className="modal-container" onClick={e => e.stopPropagation()}>
 
-        {/* Carrossel */}
         <div className="modal-carousel">
           <div className="carousel-top-fade" />
           <div
@@ -360,7 +357,6 @@ function ComercialCard({ imovel, onAbrir }) {
   )
 }
 
-/* ── Página principal ── */
 function Comercial() {
   const [cidadeOpen, setCidadeOpen]       = useState(false)
   const [bairroOpen, setBairroOpen]       = useState(false)
@@ -465,7 +461,6 @@ function Comercial() {
               )}
             </div>
 
-            {/* Tipo de imóvel */}
             <div className="filtro-wrapper">
               <button
                 className={`filtro-input ${categoriaOpen ? 'open' : ''}`}
@@ -500,10 +495,8 @@ function Comercial() {
                 </ul>
               )}
             </div>
-
           </div>
 
-          {/* Venda / Alugar */}
           <div className="filtro-tipo">
             {tipos.map((t) => (
               <button
@@ -517,7 +510,6 @@ function Comercial() {
           </div>
         </div>
 
-        {/* Grid */}
         <div className="imoveis-grid">
           {imoveisFiltrados.length > 0
             ? imoveisFiltrados.map((im) => (

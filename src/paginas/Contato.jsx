@@ -9,13 +9,11 @@ function Contato() {
 
   function handleSubmit(e) {
     e.preventDefault()
-    // integrar com backend / serviço de email
+    // integrar com backend serviço de email so q dps ne skskkssk 
   }
-
   return (
     <div className="contato-page">
 
-      {/* Hero */}
       <header className="contato-hero">
         <div className="contato-hero__bg" />
         <div className="contato-hero__gradient" />
@@ -30,10 +28,7 @@ function Contato() {
 
       <main className="contato-main">
         <div className="contato-grid">
-
-          {/* Coluna esquerda — informações */}
           <div className="contato-info">
-
             <div className="contato-info__header">
               <p className="contato-info__eyebrow">Onde nos encontrar</p>
               <h2 className="contato-info__title">Estamos prontos<br />para atender você</h2>
@@ -45,7 +40,6 @@ function Contato() {
 
             <div className="contato-info__lista">
 
-              {/* Telefone fixo */}
               <a className="contato-info__item contato-info__item--link" href="tel:0000.0000">
                 <div className="contato-info__item-icon">
                   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
@@ -58,7 +52,6 @@ function Contato() {
                 </div>
               </a>
 
-              {/* Celular */}
               <a className="contato-info__item contato-info__item--link" href="tel:55410000.0000">
                 <div className="contato-info__item-icon">
                   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
@@ -71,8 +64,6 @@ function Contato() {
                   <span className="contato-info__item-label">0000.0000</span>
                 </div>
               </a>
-
-              {/* WhatsApp */}
               <a
                 className="contato-info__item contato-info__item--link"
                 href="https://wa.me/5541988968486"
@@ -90,8 +81,6 @@ function Contato() {
                   <span className="contato-info__item-label">0000.0000</span>
                 </div>
               </a>
-
-              {/* Endereço */}
               <div className="contato-info__item">
                 <div className="contato-info__item-icon">
                   <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
@@ -103,20 +92,16 @@ function Contato() {
                   <span className="contato-info__item-label">Av. Cândido Hartmann, 1326 – Mercês</span>
                 </div>
               </div>
-
             </div>
 
-            {/* Slogan */}
             <div className="contato-info__slogan">
               <div className="contato-info__slogan-linha" />
               <p className="contato-info__slogan-texto">
                 JMarinho Imóveis — O Imóvel Ideal Para Você.
               </p>
             </div>
-
           </div>
 
-          {/* Coluna direita — formulário */}
           <div className="contato-form-wrap">
             <div className="contato-form__header">
               <p className="contato-form__eyebrow">Formulário de contato</p>
