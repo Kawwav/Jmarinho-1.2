@@ -1,6 +1,4 @@
 @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Jost:wght@300;400;500&display=swap');
-
-/* ── Base ── */
 .nav {
   top: 0;
   left: 0;
@@ -11,7 +9,6 @@
   transition: background 0.3s ease, box-shadow 0.3s ease;
 }
 
-/* Na home: flutua sobre o hero */
 .nav--hero {
   position: absolute;
   background: transparent;
@@ -19,7 +16,6 @@
   border-bottom: none;
 }
 
-/* Nas demais páginas: fixo no topo, fundo branco */
 .nav--solid {
   position: fixed;
   background: #ffffff;
@@ -27,7 +23,7 @@
   border-bottom: none;
 }
 
-/* Quando menu mobile está aberto: fixo e fundo branco para todas as variantes */
+
 .nav--open {
   position: fixed;
   background: #ffffff;
@@ -45,7 +41,7 @@
   position: relative;
 }
 
-/* ── Logo ── */
+
 .nav__logo {
   display: flex;
   align-items: center;
@@ -60,7 +56,7 @@
   object-fit: contain;
 }
 
-/* ── Links centralizados (desktop) ── */
+
 .nav__desktop {
   position: absolute;
   left: 50%;
@@ -76,7 +72,6 @@
   padding: 0;
 }
 
-/* Cor dos links varia conforme o tema */
 .nav--hero .nav__links li a {
   color: rgba(255, 255, 255, 0.85);
 }
@@ -103,7 +98,6 @@
   color: #004169;
 }
 
-/* Estilos base dos links */
 .nav__links li a {
   font-family: 'Jost', sans-serif;
   font-weight: 400;
@@ -131,13 +125,11 @@
   width: 100%;
 }
 
-/* ── Espaço direito ── */
 .nav__right {
   width: 120px;
   flex-shrink: 0;
 }
 
-/* ── Hambúrguer ── */
 .nav__burger {
   display: none;
   flex-direction: column;
@@ -165,7 +157,6 @@
   transform-origin: center;
 }
 
-/* Cor das barras conforme tema (hero = branco, solid = azul) */
 .nav--hero:not(.nav--open) .nav__burger span {
   background: rgba(255, 255, 255, 0.9);
 }
@@ -174,8 +165,6 @@
 .nav--open .nav__burger span {
   background: #004169;
 }
-
-/* Animação → X */
 .nav__burger--open span:nth-child(1) {
   transform: translateY(6.5px) rotate(45deg);
 }
@@ -187,7 +176,6 @@
   transform: translateY(-6.5px) rotate(-45deg);
 }
 
-/* ── Drawer mobile ── */
 .nav__drawer {
   display: none;
   position: fixed;
@@ -251,7 +239,6 @@
   font-weight: 500;
 }
 
-/* ── Overlay ── */
 .nav__overlay {
   position: fixed;
   inset: 0;
@@ -267,7 +254,6 @@
   to   { opacity: 1; }
 }
 
-/* ── Mobile ── */
 @media (max-width: 768px) {
   .nav__desktop {
     display: none;

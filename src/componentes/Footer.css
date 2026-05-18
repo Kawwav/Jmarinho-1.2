@@ -1,38 +1,198 @@
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Jost:wght@300;400;500&display=swap');
+
+:root {
+  --azul: #008BD2;
+  --azul-escuro: #004169;
+  --azul-claro: #A1D9F8;
+}
+
 .footer {
   width: 100%;
-  background: #1a1614;
-  border-top: 1px solid #2e2a27;
+  background: #021f35;
+  border-top: 1px solid rgba(161, 217, 248, 0.1);
   box-sizing: border-box;
 }
 
 .footer__inner {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 40px 40px 24px;
+  padding: 56px 40px 32px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 24px;
+  gap: 28px;
 }
 
+/* ── Logo ── */
 .footer__logo img {
-  height: 36px;
+  height: 56px;
   width: auto;
   object-fit: contain;
-  opacity: 0.85;
   filter: brightness(0) invert(1);
+  opacity: 0.92;
 }
 
+/* ── Navegação ── */
+.footer__nav-links {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 8px 32px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.footer__nav-links li a {
+  font-family: 'Jost', sans-serif;
+  font-weight: 400;
+  font-size: 13px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: rgba(161, 217, 248, 0.55);
+  position: relative;
+  padding-bottom: 3px;
+  transition: color 0.25s ease;
+}
+
+.footer__nav-links li a::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 1px;
+  background: var(--azul-claro);
+  transition: width 0.3s ease;
+}
+
+.footer__nav-links li a:hover,
+.footer__nav-links li a.active {
+  color: var(--azul-claro);
+}
+
+.footer__nav-links li a:hover::after,
+.footer__nav-links li a.active::after {
+  width: 100%;
+}
+
+/* ── Divisor ── */
+.footer__divider {
+  width: 40px;
+  height: 1px;
+  background: rgba(161, 217, 248, 0.18);
+}
+
+/* ── Botão Política de Privacidade ── */
+.footer__privacy-btn {
+  font-family: 'Jost', sans-serif;
+  font-weight: 400;
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(161, 217, 248, 0.4);
+  background: transparent;
+  border: 1px solid rgba(161, 217, 248, 0.15);
+  padding: 9px 22px;
+  border-radius: 100px;
+  cursor: pointer;
+  transition: color 0.25s ease, border-color 0.25s ease, background 0.25s ease;
+}
+
+.footer__privacy-btn:hover {
+  color: var(--azul-claro);
+  border-color: rgba(161, 217, 248, 0.4);
+  background: rgba(0, 139, 210, 0.08);
+}
+
+/* ── Redes Sociais ── */
+.footer__socials {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.footer__social-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: rgba(0, 139, 210, 0.08);
+  border: 1px solid rgba(161, 217, 248, 0.15);
+  color: rgba(161, 217, 248, 0.5);
+  text-decoration: none;
+  transition: background 0.25s ease,
+              border-color 0.25s ease,
+              color 0.25s ease,
+              transform 0.25s ease;
+}
+
+.footer__social-btn:hover {
+  background: rgba(0, 139, 210, 0.2);
+  border-color: rgba(161, 217, 248, 0.45);
+  color: var(--azul-claro);
+  transform: translateY(-2px);
+}
+
+.footer__social-btn--whatsapp:hover {
+  background: rgba(37, 211, 102, 0.12);
+  border-color: rgba(37, 211, 102, 0.35);
+  color: #25d366;
+}
+
+/* ── Copyright ── */
 .footer__copy {
   font-family: 'Jost', sans-serif;
-  font-size: 12px;
+  font-size: 11px;
   letter-spacing: 0.08em;
-  color: #7a7470;
+  color: rgba(161, 217, 248, 0.25);
   text-align: center;
+  margin: 0;
 }
 
+/* ── Crédito desenvolvedor ── */
+.footer__credit {
+  font-family: 'Jost', sans-serif;
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  color: rgba(161, 217, 248, 0.18);
+  text-align: center;
+  margin: -16px 0 0;
+}
+
+.footer__credit-link {
+  color: rgba(161, 217, 248, 0.28);
+  text-decoration: none;
+  border-bottom: 1px solid rgba(161, 217, 248, 0.15);
+  padding-bottom: 1px;
+  transition: color 0.25s ease, border-color 0.25s ease;
+}
+
+.footer__credit-link:hover {
+  color: rgba(161, 217, 248, 0.65);
+  border-color: rgba(161, 217, 248, 0.35);
+}
+
+/* ── Mobile ── */
 @media (max-width: 768px) {
   .footer__inner {
-    padding: 32px 24px 20px;
+    padding: 44px 24px 28px;
+    gap: 24px;
+  }
+
+  .footer__logo img {
+    height: 48px;
+  }
+
+  .footer__nav-links {
+    gap: 6px 24px;
+  }
+
+  .footer__nav-links li a {
+    font-size: 12px;
   }
 }

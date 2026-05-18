@@ -1,14 +1,6 @@
 import { useEffect, useRef, useState, useCallback } from 'react'
 import './Sobre.css'
 
-/* ────────────────────────────────────────
-   Hook: progresso 0→1 controlado em tempo
-   real pelo scroll da página.
-
-   - 0  quando o elemento entra pela base da tela
-   - 1  quando o topo do elemento chega a 30% da tela
-   - Funciona para cima e para baixo
-──────────────────────────────────────── */
 function useScrollProgress() {
   const ref = useRef(null)
   const [progress, setProgress] = useState(0)
@@ -130,7 +122,7 @@ function SecaoLocalizacao() {
   const MAPS_EMBED_URL =
     'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3601.7!2d-49.3037!3d-25.4167!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x94dce4b7c08b5b3d%3A0x0!2sAv.%20C%C3%A2ndido%20Hartmann%2C%201326%20-%20Merc%C3%AAs%2C%20Curitiba%20-%20PR!5e0!3m2!1spt-BR!2sbr!4v1700000000000!5m2!1spt-BR!2sbr&style=feature:all|element:geometry|color:0x1a2535&style=feature:all|element:labels.text.stroke|color:0x1a2535&style=feature:all|element:labels.text.fill|color:0x8ea4b5&style=feature:administrative|element:geometry|color:0x1a2535&style=feature:poi|element:geometry|color:0x0d1b2a&style=feature:road|element:geometry|color:0x253a4e&style=feature:road|element:labels.text.fill|color:0x8ea4b5&style=feature:transit|element:geometry|color:0x0d1b2a&style=feature:water|element:geometry|color:0x0d1b2a'
 
-  // URL com estilo escuro via Maps Embed API v1 (query simplificada para compatibilidade)
+
   const EMBED_URL = `https://maps.google.com/maps?q=${encodeURIComponent('Av. Cândido Hartmann, 1326, Mercês, Curitiba, PR')}&t=&z=16&ie=UTF8&iwloc=&output=embed`
 
   return (
@@ -138,7 +130,6 @@ function SecaoLocalizacao() {
       <div className="sobre-localizacao__inner">
 
         <div className="sobre-localizacao__header">
-          <p className="sobre-localizacao__eyebrow">Venha nos visitar</p>
           <h2 className="sobre-localizacao__titulo">Nossa Localização</h2>
           <p className="sobre-localizacao__endereco">
             <svg width="14" height="18" viewBox="0 0 14 18" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">

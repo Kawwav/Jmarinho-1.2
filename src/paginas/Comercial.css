@@ -37,7 +37,6 @@
   margin-top: 50px;
 }
 
-/* ── Filtros ── */
 .imoveis-filtros {
   display: flex;
   flex-direction: column;
@@ -213,7 +212,6 @@
   color: #ffffff;
 }
 
-/* ── Grid ── */
 .imoveis-grid {
   max-width: 1100px;
   margin: 0 auto;
@@ -232,7 +230,6 @@
   padding: 48px 0;
 }
 
-/* ── Card ── */
 .imovel-card {
   background: #ffffff;
   border-radius: 12px;
@@ -264,7 +261,6 @@
   opacity: 0.55;
 }
 
-/* Tom ligeiramente diferente para comercial */
 .card-img-placeholder.comercial {
   background: linear-gradient(135deg, #b8d8f0 0%, #006ba8 55%, #002f4e 100%);
   opacity: 0.6;
@@ -384,9 +380,6 @@
   color: #ffffff;
 }
 
-/* ══════════════════════════════════════
-   MODAL
-══════════════════════════════════════ */
 .modal-overlay {
   position: fixed;
   inset: 0;
@@ -753,7 +746,6 @@
   color: var(--azul-escuro);
 }
 
-/* ── Mobile ── */
 @media (max-width: 860px) {
   .filtros-row {
     flex-wrap: wrap;

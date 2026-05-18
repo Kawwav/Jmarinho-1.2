@@ -14,7 +14,7 @@ function Nav() {
   const { pathname } = useLocation()
   const [menuOpen, setMenuOpen] = useState(false)
 
-  const heroRoutes = ['/', '/sobre']
+  const heroRoutes = ['/', '/sobre', '/contato']
   const isHero = heroRoutes.includes(pathname)
 
   // Fecha o menu ao trocar de rota
@@ -54,7 +54,7 @@ function Nav() {
 
         <div className="nav__right" aria-hidden="true" />
 
-        {/* Botão hambúrguer — mobile */}
+        {/* Botão mobile */}
         <button
           className={`nav__burger ${menuOpen ? 'nav__burger--open' : ''}`}
           onClick={() => setMenuOpen((v) => !v)}
@@ -66,8 +66,6 @@ function Nav() {
           <span />
         </button>
       </div>
-
-      {/* Drawer — mobile */}
       <div className={`nav__drawer ${menuOpen ? 'nav__drawer--open' : ''}`} aria-hidden={!menuOpen}>
         <nav aria-label="Menu mobile">
           <ul className="nav__drawer-links">
@@ -87,7 +85,6 @@ function Nav() {
         </nav>
       </div>
 
-      {/* Overlay */}
       {menuOpen && (
         <div className="nav__overlay" onClick={() => setMenuOpen(false)} aria-hidden="true" />
       )}

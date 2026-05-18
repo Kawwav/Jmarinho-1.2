@@ -6,17 +6,11 @@
   --azul-claro: #A1D9F8;
 }
 
-/* ═══════════════════════════════════════
-   BASE
-═══════════════════════════════════════ */
 .sobre-page {
   min-height: 100vh;
   background: #f5f8fb;
 }
 
-/* ═══════════════════════════════════════
-   HERO
-═══════════════════════════════════════ */
 .sobre-hero {
   position: relative;
   width: 100%;
@@ -74,7 +68,6 @@
 .sobre-hero__title {
   font-family: 'Cormorant Garamond', serif;
   font-weight: 500;
-  /* de 110px vai até ~56px em telas pequenas */
   font-size: clamp(56px, 11vw, 110px);
   line-height: 1.0;
   letter-spacing: -0.01em;
@@ -100,16 +93,10 @@
   to   { opacity: 1; transform: translateY(0); }
 }
 
-/* ═══════════════════════════════════════
-   MAIN
-═══════════════════════════════════════ */
 .sobre-main {
   background: #f5f8fb;
 }
 
-/* ═══════════════════════════════════════
-   INTRO
-═══════════════════════════════════════ */
 .sobre-intro {
   padding: 72px 40px 64px;
 }
@@ -155,7 +142,6 @@
   margin-bottom: 48px;
 }
 
-/* ── Números ── */
 .sobre-intro__numeros {
   display: flex;
   flex-direction: column;
@@ -236,9 +222,6 @@
   text-align: right;
 }
 
-/* ═══════════════════════════════════════
-   VALORES
-═══════════════════════════════════════ */
 .sobre-valores {
   padding: 64px 40px 80px;
   background: #ffffff;
@@ -289,9 +272,6 @@
   margin: 0;
 }
 
-/* ═══════════════════════════════════════
-   PARCEIROS
-═══════════════════════════════════════ */
 .sobre-parceiros {
   padding: 48px 40px;
   background: #0d1b2a;
@@ -444,9 +424,6 @@
   color: #f2ece2;
 }
 
-/* ═══════════════════════════════════════
-   LOCALIZAÇÃO
-═══════════════════════════════════════ */
 .sobre-localizacao {
   background: #0d1b2a;
   margin: 0 40px 40px;
@@ -472,15 +449,6 @@
   gap: 10px;
 }
 
-.sobre-localizacao__eyebrow {
-  font-family: 'Jost', sans-serif;
-  font-weight: 400;
-  font-size: 11px;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-  color: var(--azul-claro);
-  margin: 0;
-}
 
 .sobre-localizacao__titulo {
   font-family: 'Cormorant Garamond', serif;
@@ -531,7 +499,6 @@
   filter: invert(90%) hue-rotate(180deg) saturate(1.2) brightness(0.85);
 }
 
-/* Horários */
 .sobre-localizacao__horarios {
   width: 100%;
   max-width: 680px;
@@ -655,9 +622,6 @@
   border-color: var(--azul);
 }
 
-/* ═══════════════════════════════════════
-   RESPONSIVIDADE — tablet (≤ 900px)
-═══════════════════════════════════════ */
 @media (max-width: 900px) {
   .sobre-intro__inner {
     grid-template-columns: 1fr;
@@ -681,9 +645,7 @@
   }
 }
 
-/* ═══════════════════════════════════════
-   RESPONSIVIDADE — mobile (≤ 768px)
-═══════════════════════════════════════ */
+
 @media (max-width: 768px) {
   /* Hero */
   .sobre-hero {
@@ -790,7 +752,6 @@
     height: 180px;
   }
 
-  /* Localização sem margem lateral e sem border-radius */
   .sobre-localizacao {
     margin: 0 0 0;
     border-radius: 0;

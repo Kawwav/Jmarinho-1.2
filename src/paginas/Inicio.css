@@ -18,7 +18,6 @@
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  /* Escurece a imagem */
   filter: brightness(0.45);
   transform: scale(1.03);
   animation: zoomSlow 18s ease-in-out infinite alternate;
