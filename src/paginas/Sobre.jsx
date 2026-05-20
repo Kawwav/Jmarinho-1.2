@@ -252,7 +252,7 @@ function Sobre() {
                 label="Imóveis negociados"
               />
               <NumeroAnimado
-                valorFinal={10}
+                valorFinal={30}
                 prefixo="+"
                 label="Anos de mercado"
               />
