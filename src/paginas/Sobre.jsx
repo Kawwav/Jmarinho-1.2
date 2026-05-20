@@ -90,26 +90,26 @@ function ImagemParceiro({ src, alt }) {
 /* ────────────────────────────────────────
    Card de parceiro
 ──────────────────────────────────────── */
-function ParceiroCaard({ titulo, descricao, imagemSrc, href = '#' }) {
+function ParceiroCaard({ numero, tag, titulo, descricao, href = '#' }) {
   return (
     <div className="parceiro-card">
-      <h3 className="parceiro-card__titulo">{titulo}</h3>
-      <p  className="parceiro-card__descricao">{descricao}</p>
-      <ImagemParceiro src={imagemSrc} alt={titulo} />
-      <a
-        className="parceiro-card__botao"
-        href={href}
-        onMouseMove={e => {
-          const r = e.currentTarget.getBoundingClientRect()
-          e.currentTarget.style.setProperty('--bx', `${e.clientX - r.left}px`)
-          e.currentTarget.style.setProperty('--by', `${e.clientY - r.top}px`)
-        }}
-      >
-        Saiba mais
-        <svg width="14" height="10" viewBox="0 0 14 10" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-          <path d="M1 5H13M9 1L13 5L9 9" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/>
-        </svg>
-      </a>
+      <div className="parceiro-card__top">
+        <span className="parceiro-card__num">{numero}</span>
+        {tag && <span className="parceiro-card__tag">{tag}</span>}
+      </div>
+      <div className="parceiro-card__body">
+        <h3 className="parceiro-card__titulo">{titulo}</h3>
+        <p className="parceiro-card__descricao">{descricao}</p>
+      </div>
+      <div className="parceiro-card__divider" />
+      <div className="parceiro-card__footer">
+        <a className="parceiro-card__botao" href={href}>
+          Saiba mais
+          <svg width="12" height="9" viewBox="0 0 14 10" fill="none" aria-hidden="true">
+            <path d="M1 5H13M9 1L13 5L9 9" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/>
+          </svg>
+        </a>
+      </div>
     </div>
   )
 }
@@ -270,18 +270,21 @@ function Sobre() {
         <section className="sobre-parceiros">
           <div className="sobre-parceiros__inner">
             <h2 className="sobre-parceiros__titulo">Nossos Parceiros</h2>
+            <p className="sobre-parceiros__sub">Empresas que escolhemos para garantir a melhor experiência</p>
 
             <div className="parceiros-grid">
               <ParceiroCaard
+                numero="01"
+                tag="Incorporadora"
                 titulo="Parceiro 1"
                 descricao="Especialistas em empreendimentos residenciais de alto padrão em Curitiba e região metropolitana."
-                imagemSrc=""
                 href="#"
               />
               <ParceiroCaard
+                numero="02"
+                tag="Financiamento"
                 titulo="Parceiro 2"
                 descricao="Soluções de financiamento com as melhores taxas do mercado para aquisição de imóveis."
-                imagemSrc=""
                 href="#"
               />
             </div>

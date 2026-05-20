@@ -273,7 +273,7 @@
 }
 
 .sobre-parceiros {
-  padding: 48px 40px;
+  padding: 56px 40px;
   background: #0d1b2a;
   margin: 40px 40px;
   border-radius: 18px;
@@ -290,138 +290,139 @@
   font-size: clamp(1.8rem, 4vw, 3rem);
   color: #f5f8fb;
   text-align: center;
-  margin: 0 0 48px;
+  margin: 0 0 10px;
   letter-spacing: 0.01em;
+}
+
+.sobre-parceiros__sub {
+  font-family: 'Jost', sans-serif;
+  font-weight: 300;
+  font-size: 13px;
+  letter-spacing: 0.08em;
+  color: rgba(161, 217, 248, 0.6);
+  text-align: center;
+  margin: 0 0 48px;
 }
 
 .parceiros-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 24px;
+  gap: 20px;
 }
 
 .parceiro-card {
-  background: #f5f8fb;
-  border-radius: 18px;
-  padding: 36px 32px 32px;
-  display: grid;
-  grid-template-columns: 1fr auto;
-  grid-template-rows: auto 1fr auto;
-  grid-template-areas:
-    "titulo  imagem"
-    "desc    imagem"
-    "botao   imagem";
-  gap: 12px 24px;
-  align-items: start;
-  position: relative;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(161, 217, 248, 0.1);
+  border-radius: 16px;
   overflow: hidden;
-  transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1),
-              box-shadow 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+  display: flex;
+  flex-direction: column;
+  transition: border-color 0.3s ease, transform 0.3s ease;
 }
 
 .parceiro-card:hover {
+  border-color: rgba(161, 217, 248, 0.28);
   transform: translateY(-3px);
-  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.35);
 }
 
-.parceiro-card__titulo {
-  grid-area: titulo;
-  font-family: 'Jost', sans-serif;
-  font-weight: 500;
-  font-size: clamp(0.9rem, 1.4vw, 1.1rem);
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: #1a1a1a;
-  margin: 0;
-  line-height: 1.25;
-  align-self: start;
-}
-
-.parceiro-card__descricao {
-  grid-area: desc;
-  font-family: 'Jost', sans-serif;
-  font-weight: 300;
-  font-size: 13.5px;
-  line-height: 1.7;
-  color: #4a4a4a;
-  margin: 0;
-  align-self: start;
-}
-
-.parceiro-card__imagem {
-  grid-area: imagem;
-  width: 150px;
-  height: 180px;
-  object-fit: cover;
-  border-radius: 3px;
-  display: block;
-  align-self: stretch;
-}
-
-.parceiro-card__imagem-placeholder {
-  grid-area: imagem;
-  width: 150px;
-  height: 180px;
-  border-radius: 12px;
-  background: linear-gradient(160deg, #2d3a4a 0%, #1a2530 100%);
+.parceiro-card__top {
+  padding: 32px 32px 0;
   display: flex;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.parceiro-card__num {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 3.5rem;
+  font-weight: 500;
+  color: rgba(161, 217, 248, 0.1);
+  line-height: 1;
   flex-shrink: 0;
 }
 
-.parceiro-card__imagem-placeholder svg {
-  opacity: 0.18;
+.parceiro-card__tag {
+  font-family: 'Jost', sans-serif;
+  font-size: 10px;
+  font-weight: 400;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: #A1D9F8;
+  background: rgba(0, 139, 210, 0.15);
+  border: 1px solid rgba(0, 139, 210, 0.25);
+  border-radius: 20px;
+  padding: 4px 12px;
+  white-space: nowrap;
+  align-self: flex-start;
+  margin-top: 8px;
+}
+
+.parceiro-card__body {
+  padding: 20px 32px 24px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.parceiro-card__titulo {
+  font-family: 'Jost', sans-serif;
+  font-size: 15px;
+  font-weight: 500;
+  color: #f5f8fb;
+  margin: 0;
+  letter-spacing: 0.05em;
+}
+
+.parceiro-card__descricao {
+  font-family: 'Jost', sans-serif;
+  font-size: 13px;
+  font-weight: 300;
+  color: rgba(245, 248, 251, 0.55);
+  line-height: 1.75;
+  margin: 0;
+}
+
+.parceiro-card__divider {
+  height: 1px;
+  background: rgba(161, 217, 248, 0.08);
+  margin: 0 32px;
+}
+
+.parceiro-card__footer {
+  padding: 20px 32px 28px;
 }
 
 .parceiro-card__botao {
-  grid-area: botao;
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  margin-top: 12px;
-  padding: 10px 20px;
-  border: 1.5px solid #1a1a1a;
-  background: transparent;
-  color: #1a1a1a;
   font-family: 'Jost', sans-serif;
+  font-size: 10px;
   font-weight: 400;
-  font-size: 11px;
-  letter-spacing: 0.15em;
+  letter-spacing: 0.18em;
   text-transform: uppercase;
-  cursor: pointer;
+  color: #A1D9F8;
   text-decoration: none;
-  align-self: end;
-  border-radius: 18px;
-  position: relative;
-  overflow: hidden;
-  transition: color 0.4s ease;
-  z-index: 0;
-}
-
-.parceiro-card__botao::before {
-  content: '';
-  position: absolute;
-  width: 0;
-  height: 0;
-  border-radius: 50%;
-  background: #1a1a1a;
-  transform: translate(-50%, -50%);
-  left: var(--bx, 50%);
-  top: var(--by, 50%);
-  transition: width 0.55s cubic-bezier(0.22, 1, 0.36, 1),
-              height 0.55s cubic-bezier(0.22, 1, 0.36, 1);
-  z-index: -1;
-}
-
-.parceiro-card__botao:hover::before {
-  width: 300px;
-  height: 300px;
+  border: 1px solid rgba(161, 217, 248, 0.25);
+  border-radius: 20px;
+  padding: 8px 18px;
+  transition: background 0.25s ease, color 0.25s ease, border-color 0.25s ease;
 }
 
 .parceiro-card__botao:hover {
-  color: #f2ece2;
+  background: rgba(0, 139, 210, 0.2);
+  color: #ffffff;
+  border-color: rgba(0, 139, 210, 0.5);
+}
+
+.parceiro-card__botao svg {
+  transition: transform 0.25s ease;
+}
+
+.parceiro-card__botao:hover svg {
+  transform: translateX(3px);
 }
 
 .sobre-localizacao {
@@ -682,14 +683,20 @@
     margin: 24px 16px;
   }
 
-  .parceiro-card {
-    padding: 24px 20px;
+  .parceiro-card__top {
+    padding: 24px 24px 0;
   }
 
-  .parceiro-card__imagem,
-  .parceiro-card__imagem-placeholder {
-    width: 120px;
-    height: 150px;
+  .parceiro-card__body {
+    padding: 16px 24px 20px;
+  }
+
+  .parceiro-card__divider {
+    margin: 0 24px;
+  }
+
+  .parceiro-card__footer {
+    padding: 16px 24px 24px;
   }
 
   /* Localização */
@@ -737,19 +744,8 @@
   }
 
   /* Card parceiro em coluna única */
-  .parceiro-card {
+  .parceiros-grid {
     grid-template-columns: 1fr;
-    grid-template-areas:
-      "titulo"
-      "imagem"
-      "desc"
-      "botao";
-  }
-
-  .parceiro-card__imagem,
-  .parceiro-card__imagem-placeholder {
-    width: 100%;
-    height: 180px;
   }
 
   .sobre-localizacao {

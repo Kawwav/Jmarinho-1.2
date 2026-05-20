@@ -15,7 +15,7 @@ function Inicio() {
           A JMarinho tem o imóvel ideal para você
         </h1>
         <p className="hero__subtitle">
-          Encontre seu próximo lar com quem entende do assunto
+          Encontre seu próximo imóvel com quem entende do assunto
         </p>
         <button className="hero__btn" onClick={() => navigate('/imoveis')}>
           Ver Imóveis
