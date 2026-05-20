@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react'
+import { useState, useRef, useEffect, useCallback } from 'react'
 import './Adm.css'
 const IMOVEIS_INICIAIS = [
   {
@@ -82,13 +82,145 @@ function Toast({ msg, tipo }) {
   )
 }
 
+/* Preview do imóvel (somente leitura, sem botão de contato) */
+function ModalPreview({ imovel, onFechar, onEditar }) {
+  const [fotoAtual, setFotoAtual] = useState(0)
+  const totalFotos = imovel.imagens?.length || 1
+
+  const prev = useCallback(() => setFotoAtual(f => (f - 1 + totalFotos) % totalFotos), [totalFotos])
+  const next = useCallback(() => setFotoAtual(f => (f + 1) % totalFotos), [totalFotos])
+
+  useEffect(() => {
+    const handleKey = (e) => {
+      if (e.key === 'Escape') onFechar()
+      if (e.key === 'ArrowLeft') prev()
+      if (e.key === 'ArrowRight') next()
+    }
+    document.addEventListener('keydown', handleKey)
+    document.body.style.overflow = 'hidden'
+    return () => {
+      document.removeEventListener('keydown', handleKey)
+      document.body.style.overflow = ''
+    }
+  }, [onFechar, prev, next])
+
+  const temImagem = imovel.imagens && imovel.imagens.length > 0
+
+  return (
+    <div className="modal-overlay" onClick={onFechar}>
+      <div className="modal-container" onClick={e => e.stopPropagation()}>
+
+        {/* Carrossel */}
+        <div className="modal-carousel">
+          <div className="carousel-top-fade" />
+
+          {temImagem ? (
+            <img
+              src={imovel.imagens[fotoAtual]?.url}
+              alt={imovel.titulo}
+              className="carousel-img"
+              style={{ objectFit: 'cover', width: '100%', height: '100%' }}
+            />
+          ) : (
+            <div className="carousel-img" style={{
+              background: 'linear-gradient(135deg, #0a2540 0%, #1a4a6e 50%, #0d3255 100%)',
+              display: 'flex', alignItems: 'center', justifyContent: 'center'
+            }}>
+              <IcoImg />
+            </div>
+          )}
+
+          <div className="carousel-counter">
+            {fotoAtual + 1} / {totalFotos}
+            <span className="carousel-tipo">{imovel.modalidade?.toUpperCase()}</span>
+          </div>
+
+          <span className="carousel-categoria">{imovel.tipo?.toUpperCase()}</span>
+
+          {totalFotos > 1 && <>
+            <button className="carousel-btn carousel-prev" onClick={prev}>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+            </button>
+            <button className="carousel-btn carousel-next" onClick={next}>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+            <div className="carousel-dots">
+              {imovel.imagens.map((_, i) => (
+                <button key={i} className={`carousel-dot ${i === fotoAtual ? 'active' : ''}`} onClick={() => setFotoAtual(i)} />
+              ))}
+            </div>
+          </>}
+
+          <button className="modal-close" onClick={onFechar}>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+          </button>
+        </div>
+
+        {/* Conteúdo */}
+        <div className="modal-body">
+          <div className="modal-header-row">
+            <p className="modal-endereco">
+              {imovel.categoria ? `${imovel.categoria} · ` : ''}{imovel.modalidade === 'aluguel' ? 'Aluguel' : 'Venda'}
+            </p>
+            <p className="modal-preco">{formatarValor(imovel.valor, imovel.modalidade)}</p>
+          </div>
+
+          <h2 className="modal-titulo">{imovel.titulo}</h2>
+
+          {imovel.descricao && <p className="modal-descricao">{imovel.descricao}</p>}
+
+          <div className="modal-specs">
+            {imovel.quartos && (
+              <div className="modal-spec-item">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"><path d="M3 9v6m0-6a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v6M3 15v2a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-2M8 9v2M16 9v2"/></svg>
+                <span className="spec-valor">{imovel.quartos}</span>
+                <span className="spec-label">QUARTOS</span>
+              </div>
+            )}
+            {imovel.banheiros && (
+              <div className="modal-spec-item">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"><path d="M4 12h16v4a4 4 0 0 1-4 4H8a4 4 0 0 1-4-4v-4z"/><path d="M6 12V5a2 2 0 0 1 2-2h1v2"/></svg>
+                <span className="spec-valor">{imovel.banheiros}</span>
+                <span className="spec-label">BANHEIROS</span>
+              </div>
+            )}
+            {imovel.vagas && (
+              <div className="modal-spec-item">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 3l-4 4-4-4"/></svg>
+                <span className="spec-valor">{imovel.vagas}</span>
+                <span className="spec-label">VAGAS</span>
+              </div>
+            )}
+            {imovel.area && (
+              <div className="modal-spec-item">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="3" width="18" height="18" rx="1"/><path d="M3 9h18M9 21V9"/></svg>
+                <span className="spec-valor">{imovel.area} m²</span>
+                <span className="spec-label">ÁREA</span>
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* Footer — só Editar e Fechar */}
+        <div className="modal-footer">
+          <button className="modal-btn-voltar" onClick={onFechar}>FECHAR</button>
+          <button className="modal-btn-contato" style={{ background: 'var(--azul-escuro)' }} onClick={() => { onFechar(); onEditar(imovel) }}>
+            EDITAR IMÓVEL
+          </button>
+        </div>
+
+      </div>
+    </div>
+  )
+}
+
 /* Card de imóvel */
-function CardImovel({ imovel, onEditar, onRemover }) {
+function CardImovel({ imovel, onEditar, onRemover, onPreview }) {
   const { titulo, tipo, modalidade, valor, area, quartos, banheiros, vagas, imagens } = imovel
   const temImagem = imagens && imagens.length > 0
 
   return (
-    <div className="adm-card">
+    <div className="adm-card adm-card--clicavel" onClick={() => onPreview(imovel)}>
       <div className="adm-card__imagem">
         {temImagem
           ? <img src={imagens[0].url} alt={titulo} />
@@ -133,10 +265,10 @@ function CardImovel({ imovel, onEditar, onRemover }) {
       </div>
 
       <div className="adm-card__footer">
-        <button className="adm-card__btn adm-card__btn--editar" onClick={() => onEditar(imovel)}>
+        <button className="adm-card__btn adm-card__btn--editar" onClick={e => { e.stopPropagation(); onEditar(imovel) }}>
           <IcoEdit /> Editar
         </button>
-        <button className="adm-card__btn adm-card__btn--remover" onClick={() => onRemover(imovel)}>
+        <button className="adm-card__btn adm-card__btn--remover" onClick={e => { e.stopPropagation(); onRemover(imovel) }}>
           <IcoTrash /> Remover
         </button>
       </div>
@@ -373,10 +505,12 @@ function Adm() {
   const [modalAberto, setModalAberto]   = useState(false)
   const [imovelEditando, setImovelEdit] = useState(null)
   const [imovelRemover, setImovelRemov] = useState(null)
+  const [imovelPreview, setImovelPreview] = useState(null)
   const [toast, setToast]               = useState(null)
   const [busca, setBusca]               = useState('')
-  const [filtroTipo, setFiltroTipo]     = useState('')
-  const [filtroMod, setFiltroMod]       = useState('')
+  const [filtroTipo, setFiltroTipo]           = useState('')
+  const [filtroCategoria, setFiltroCategoria] = useState('')
+  const [filtroMod, setFiltroMod]             = useState('')
 
   function showToast(msg, tipo = 'success') {
     setToast({ msg, tipo })
@@ -407,49 +541,145 @@ function Adm() {
     setImovelRemov(null)
   }
 
-  const imoveisFiltrados = imoveis.filter(im => {
-    const matchBusca = im.titulo.toLowerCase().includes(busca.toLowerCase())
-    const matchTipo  = !filtroTipo || im.tipo === filtroTipo
-    const matchMod   = !filtroMod  || im.modalidade === filtroMod
-    return matchBusca && matchTipo && matchMod
-  })
-
   const totalVenda   = imoveis.filter(i => i.modalidade === 'venda').length
   const totalAluguel = imoveis.filter(i => i.modalidade === 'aluguel').length
 
+  const imoveisFiltrados = imoveis.filter(im => {
+    const matchBusca     = im.titulo.toLowerCase().includes(busca.toLowerCase())
+    const matchTipo      = !filtroTipo || im.tipo === filtroTipo
+    const matchMod       = !filtroMod  || im.modalidade === filtroMod
+    const matchCategoria = !filtroCategoria || im.categoria === filtroCategoria
+    return matchBusca && matchTipo && matchMod && matchCategoria
+  })
+
+  // Imoveis da modalidade selecionada para mini-lista na sidebar
+  const imoveisVenda   = imoveis.filter(i => i.modalidade === 'venda')
+  const imoveisAluguel = imoveis.filter(i => i.modalidade === 'aluguel')
+
+  const tituloTopbar =
+    filtroMod === 'venda'   ? 'Imóveis à Venda' :
+    filtroMod === 'aluguel' ? 'Imóveis para Aluguel' :
+    'Gestão de Imóveis'
+
   return (
     <div className="adm-page">
+
+      {/* ── Sidebar ── */}
       <aside className="adm-sidebar">
         <div className="adm-sidebar__top">
           <span className="adm-sidebar__logo-nome">JMarinho</span>
           <span className="adm-sidebar__logo-tag">Painel Administrativo</span>
         </div>
 
-        <div className="adm-sidebar__stats">
-          <div className="adm-sidebar__stat-label">Portfólio atual</div>
+        {/* ── Navegação por modalidade ── */}
+        <nav className="adm-sidebar__nav">
+          <p className="adm-sidebar__nav-label">Visualizar</p>
 
-          <div className="adm-sidebar__stat-row">
-            <span className="adm-sidebar__stat-name">Total de imóveis</span>
-            <span className="adm-sidebar__stat-value">{imoveis.length}</span>
+          <button
+            className={`adm-sidebar__nav-item ${filtroMod === '' ? 'active' : ''}`}
+            onClick={() => { setFiltroMod(''); setFiltroTipo('') }}
+          >
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+              <rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/>
+              <rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/>
+            </svg>
+            <span>Todos</span>
+            <span className="adm-sidebar__nav-count">{imoveis.length}</span>
+          </button>
+
+          <button
+            className={`adm-sidebar__nav-item ${filtroMod === 'venda' ? 'active' : ''}`}
+            onClick={() => { setFiltroMod('venda'); setFiltroTipo('') }}
+          >
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+              <polyline points="9 22 9 12 15 12 15 22"/>
+            </svg>
+            <span>Venda</span>
+            <span className="adm-sidebar__nav-count adm-sidebar__nav-count--venda">{totalVenda}</span>
+          </button>
+
+          <button
+            className={`adm-sidebar__nav-item ${filtroMod === 'aluguel' ? 'active' : ''}`}
+            onClick={() => { setFiltroMod('aluguel'); setFiltroTipo('') }}
+          >
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+              <rect x="2" y="7" width="20" height="14" rx="2"/>
+              <path d="M16 3l-4 4-4-4"/>
+            </svg>
+            <span>Aluguel</span>
+            <span className="adm-sidebar__nav-count adm-sidebar__nav-count--aluguel">{totalAluguel}</span>
+          </button>
+        </nav>
+
+        {/* ── Mini-lista da modalidade selecionada ── */}
+        {filtroMod !== '' && (
+          <div className="adm-sidebar__lista">
+            <p className="adm-sidebar__lista-label">
+              {filtroMod === 'venda' ? 'À Venda' : 'Aluguel'} · {filtroMod === 'venda' ? imoveisVenda.length : imoveisAluguel.length} imóvel{(filtroMod === 'venda' ? imoveisVenda : imoveisAluguel).length !== 1 ? 'is' : ''}
+            </p>
+            <div className="adm-sidebar__lista-itens">
+              {(filtroMod === 'venda' ? imoveisVenda : imoveisAluguel).map(im => (
+                <div key={im.id} className="adm-sidebar__lista-item">
+                  <div className="adm-sidebar__lista-thumb">
+                    {im.imagens && im.imagens.length > 0
+                      ? <img src={im.imagens[0].url} alt={im.titulo} />
+                      : <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+                    }
+                  </div>
+                  <div className="adm-sidebar__lista-info">
+                    <span className="adm-sidebar__lista-titulo">{im.titulo}</span>
+                    <span className="adm-sidebar__lista-valor">{formatarValor(im.valor, im.modalidade)}</span>
+                  </div>
+                </div>
+              ))}
+              {(filtroMod === 'venda' ? imoveisVenda : imoveisAluguel).length === 0 && (
+                <p className="adm-sidebar__lista-vazia">Nenhum imóvel cadastrado</p>
+              )}
+            </div>
           </div>
-          <div className="adm-sidebar__stat-row">
-            <span className="adm-sidebar__stat-name">À venda</span>
-            <span className="adm-sidebar__stat-value adm-sidebar__stat-value--azul">{totalVenda}</span>
+        )}
+
+        {/* ── Stats gerais (só quando "Todos") ── */}
+        {filtroMod === '' && (
+          <div className="adm-sidebar__stats">
+            <div className="adm-sidebar__stat-label">Portfólio atual</div>
+            <div className="adm-sidebar__stat-row">
+              <span className="adm-sidebar__stat-name">Total de imóveis</span>
+              <span className="adm-sidebar__stat-value">{imoveis.length}</span>
+            </div>
+            <div className="adm-sidebar__stat-row">
+              <span className="adm-sidebar__stat-name">À venda</span>
+              <span className="adm-sidebar__stat-value adm-sidebar__stat-value--azul">{totalVenda}</span>
+            </div>
+            <div className="adm-sidebar__stat-row">
+              <span className="adm-sidebar__stat-name">Aluguel</span>
+              <span className="adm-sidebar__stat-value adm-sidebar__stat-value--azul">{totalAluguel}</span>
+            </div>
+            <div className="adm-sidebar__stat-row">
+              <span className="adm-sidebar__stat-name">Exibindo</span>
+              <span className="adm-sidebar__stat-value">{imoveisFiltrados.length}</span>
+            </div>
           </div>
-          <div className="adm-sidebar__stat-row">
-            <span className="adm-sidebar__stat-name">Aluguel</span>
-            <span className="adm-sidebar__stat-value adm-sidebar__stat-value--azul">{totalAluguel}</span>
-          </div>
-          <div className="adm-sidebar__stat-row">
-            <span className="adm-sidebar__stat-name">Exibindo</span>
-            <span className="adm-sidebar__stat-value">{imoveisFiltrados.length}</span>
-          </div>
+        )}
+
+        <div className="adm-sidebar__footer">
+          <span className="adm-sidebar__footer-text">JMarinho Imóveis © 2025</span>
         </div>
       </aside>
+
+      {/* ── Corpo ── */}
       <div className="adm-body">
         <div className="adm-topbar">
           <div className="adm-topbar__inner">
-            <span className="adm-topbar__titulo">Gestão de Imóveis</span>
+            <div className="adm-topbar__titulo-wrap">
+              <span className="adm-topbar__titulo">{tituloTopbar}</span>
+              {filtroMod && (
+                <span className={`adm-topbar__mod-badge adm-topbar__mod-badge--${filtroMod}`}>
+                  {filtroMod === 'venda' ? 'Venda' : 'Aluguel'}
+                </span>
+              )}
+            </div>
             <div className="adm-topbar__right">
               <button className="adm-btn-primary" onClick={abrirNovo}>
                 <IcoPlus />
@@ -469,12 +699,19 @@ function Adm() {
                 onChange={e => setBusca(e.target.value)}
               />
             </div>
-            <select className="adm-filter-select" value={filtroMod} onChange={e => setFiltroMod(e.target.value)}>
-              <option value="">Todas as modalidades</option>
-              <option value="venda">Venda</option>
-              <option value="aluguel">Aluguel</option>
-            </select>
-            <select className="adm-filter-select" value={filtroTipo} onChange={e => setFiltroTipo(e.target.value)}>
+            {/* Filtro de modalidade na toolbar aparece só se estiver em "Todos" */}
+            {filtroMod === '' && (
+              <select className="adm-filter-select" value={filtroMod} onChange={e => setFiltroMod(e.target.value)}>
+                <option value="">Todas as modalidades</option>
+                <option value="venda">Venda</option>
+                <option value="aluguel">Aluguel</option>
+              </select>
+            )}
+            <select
+              className="adm-filter-select"
+              value={filtroTipo}
+              onChange={e => { setFiltroTipo(e.target.value); setFiltroCategoria('') }}
+            >
               <option value="">Todos os tipos</option>
               <option value="apartamento">Apartamento</option>
               <option value="casa">Casa</option>
@@ -483,6 +720,24 @@ function Adm() {
               <option value="terreno">Terreno</option>
             </select>
           </div>
+
+          {filtroTipo === 'comercial' && (
+            <div className="adm-toolbar adm-toolbar--sub">
+              <span className="adm-filter-label">Categoria comercial:</span>
+              <select
+                className="adm-filter-select adm-filter-select--sub"
+                value={filtroCategoria}
+                onChange={e => setFiltroCategoria(e.target.value)}
+              >
+                <option value="">Todas as categorias</option>
+                <option value="Loja">Loja</option>
+                <option value="Barracão">Barracão</option>
+                <option value="Escritório">Escritório</option>
+                <option value="Prédio Comercial">Prédio Comercial</option>
+                <option value="Galpão">Galpão</option>
+              </select>
+            </div>
+          )}
 
           <div className="adm-grid">
             {imoveisFiltrados.length === 0 ? (
@@ -498,6 +753,7 @@ function Adm() {
                   imovel={im}
                   onEditar={abrirEditar}
                   onRemover={pedirRemocao}
+                  onPreview={setImovelPreview}
                 />
               ))
             )}
@@ -519,6 +775,14 @@ function Adm() {
           imovel={imovelRemover}
           onConfirmar={confirmarRemocao}
           onCancelar={() => setImovelRemov(null)}
+        />
+      )}
+
+      {imovelPreview && (
+        <ModalPreview
+          imovel={imovelPreview}
+          onFechar={() => setImovelPreview(null)}
+          onEditar={abrirEditar}
         />
       )}
 
