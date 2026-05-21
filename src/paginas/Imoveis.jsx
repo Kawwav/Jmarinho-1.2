@@ -181,6 +181,9 @@ function ImovelModal({ imovel, onClose }) {
           </button>
         </div>
 
+        {/* ── Coluna direita ── */}
+        <div className="modal-right">
+
         {/* ── Conteúdo ── */}
         <div className="modal-body">
 
@@ -268,6 +271,7 @@ function ImovelModal({ imovel, onClose }) {
           <button className="modal-btn-voltar" onClick={onClose}>VOLTAR</button>
         </div>
 
+        </div>{/* fim modal-right */}
       </div>
     </div>
   )
@@ -325,6 +329,38 @@ function ImovelCard({ imovel, onAbrir }) {
   )
 }
 
+/* ── Componente de filtro dropdown reutilizável ── */
+function FiltroDropdown({ icone, rotulo, valor, aberto, onToggle, onLimpar, children }) {
+  return (
+    <div className="filtro-wrapper">
+      <button
+        className={`filtro-input ${aberto ? 'open' : ''} ${valor ? 'ativo' : ''}`}
+        onClick={onToggle}
+      >
+        <span className="filtro-icon">{icone}</span>
+        <span className="filtro-input__texto">
+          <span className="filtro-input__rotulo">{rotulo}</span>
+          {valor && <span className="filtro-input__valor">{valor}</span>}
+        </span>
+        {valor ? (
+          <span className="filtro-clear" onClick={e => { e.stopPropagation(); onLimpar() }}>
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
+              <path d="M18 6L6 18M6 6l12 12"/>
+            </svg>
+          </span>
+        ) : (
+          <span className={`filtro-arrow ${aberto ? 'open' : ''}`}>
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
+              <path d="M6 9l6 6 6-6"/>
+            </svg>
+          </span>
+        )}
+      </button>
+      {aberto && <ul className="filtro-dropdown">{children}</ul>}
+    </div>
+  )
+}
+
 /* ── Página principal ── */
 function Imoveis() {
   const [cidadeOpen, setCidadeOpen] = useState(false)
@@ -333,6 +369,12 @@ function Imoveis() {
   const [bairroSelecionado, setBairroSelecionado] = useState('')
   const [tipoSelecionado, setTipoSelecionado] = useState('Todos')
   const [imovelAberto, setImovelAberto] = useState(null)
+  const [quartosMin, setQuartosMin] = useState('')
+  const [valorMax, setValorMax] = useState('')
+  const [areaMin, setAreaMin] = useState('')
+  const [quartosOpen, setQuartosOpen] = useState(false)
+  const [valorOpen, setValorOpen] = useState(false)
+  const [areaOpen, setAreaOpen] = useState(false)
 
   function selecionarCidade(cidade) {
     setCidadeSelecionada(cidade)
@@ -344,12 +386,21 @@ function Imoveis() {
     setBairroOpen(false)
   }
 
+  function parsePreco(str) {
+    return parseInt(str.replace(/[^0-9]/g, '')) || 0
+  }
+
   const imoveisFiltrados = imoveis.filter((im) => {
     const filtraTipo = tipoSelecionado === 'Todos' || im.tipo === tipoSelecionado
     const filtraCidade = !cidadeSelecionada || im.cidade === cidadeSelecionada
     const filtraBairro = !bairroSelecionado || im.bairro === bairroSelecionado
-    return filtraTipo && filtraCidade && filtraBairro
+    const filtroQuartos = !quartosMin || im.quartos >= parseInt(quartosMin)
+    const filtroValor = !valorMax || parsePreco(im.preco) <= parseInt(valorMax)
+    const filtroArea = !areaMin || im.area >= parseInt(areaMin)
+    return filtraTipo && filtraCidade && filtraBairro && filtroQuartos && filtroValor && filtroArea
   })
+
+  const totalAtivos = [cidadeSelecionada, bairroSelecionado, quartosMin, valorMax, areaMin].filter(Boolean).length
 
   return (
     <>
@@ -364,96 +415,8 @@ function Imoveis() {
         </div>
 
         <div className="imoveis-filtros">
-          <div className="filtros-row">
 
-            {/* Cidade */}
-            <div className="filtro-wrapper">
-              <button
-                className={`filtro-input ${cidadeOpen ? 'open' : ''}`}
-                onClick={() => { setCidadeOpen(!cidadeOpen); setBairroOpen(false) }}
-              >
-                <span className="filtro-icon">
-                  <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M3 21h18M3 7l9-4 9 4M4 21V7M20 21V7M9 21v-4h6v4"/>
-                    <rect x="9" y="10" width="2" height="3" rx="0.4"/>
-                    <rect x="13" y="10" width="2" height="3" rx="0.4"/>
-                  </svg>
-                </span>
-                <span className={`filtro-label ${cidadeSelecionada ? 'selected' : ''}`}>
-                  {cidadeSelecionada || 'Cidade'}
-                </span>
-                {cidadeSelecionada ? (
-                  <span
-                    className="filtro-clear"
-                    onClick={(e) => { e.stopPropagation(); setCidadeSelecionada(''); setCidadeOpen(false) }}
-                  >
-                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
-                      <path d="M18 6L6 18M6 6l12 12"/>
-                    </svg>
-                  </span>
-                ) : (
-                  <span className={`filtro-arrow ${cidadeOpen ? 'open' : ''}`}>
-                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
-                      <path d="M6 9l6 6 6-6"/>
-                    </svg>
-                  </span>
-                )}
-              </button>
-              {cidadeOpen && (
-                <ul className="filtro-dropdown">
-                  {cidades.map((c) => (
-                    <li key={c} onClick={() => selecionarCidade(c)} className={cidadeSelecionada === c ? 'active' : ''}>
-                      {c}
-                    </li>
-                  ))}
-                </ul>
-              )}
-            </div>
-
-            {/* Bairro */}
-            <div className="filtro-wrapper">
-              <button
-                className={`filtro-input ${bairroOpen ? 'open' : ''}`}
-                onClick={() => { setBairroOpen(!bairroOpen); setCidadeOpen(false) }}
-              >
-                <span className="filtro-icon">
-                  <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/>
-                    <circle cx="12" cy="9" r="2.5"/>
-                  </svg>
-                </span>
-                <span className={`filtro-label ${bairroSelecionado ? 'selected' : ''}`}>
-                  {bairroSelecionado || 'Bairros'}
-                </span>
-                {bairroSelecionado ? (
-                  <span
-                    className="filtro-clear"
-                    onClick={(e) => { e.stopPropagation(); setBairroSelecionado(''); setBairroOpen(false) }}
-                  >
-                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
-                      <path d="M18 6L6 18M6 6l12 12"/>
-                    </svg>
-                  </span>
-                ) : (
-                  <span className={`filtro-arrow ${bairroOpen ? 'open' : ''}`}>
-                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
-                      <path d="M6 9l6 6 6-6"/>
-                    </svg>
-                  </span>
-                )}
-              </button>
-              {bairroOpen && (
-                <ul className="filtro-dropdown">
-                  {bairros.map((b) => (
-                    <li key={b} onClick={() => selecionarBairro(b)} className={bairroSelecionado === b ? 'active' : ''}>
-                      {b}
-                    </li>
-                  ))}
-                </ul>
-              )}
-            </div>
-          </div>
-
+          {/* ── Tipo: Todos / Venda / Alugar ── */}
           <div className="filtro-tipo">
             {tipos.map((t) => (
               <button
@@ -465,6 +428,156 @@ function Imoveis() {
               </button>
             ))}
           </div>
+
+          {/* ── Separador ── */}
+          <div className="filtros-separador" />
+
+          {/* ── Grade de filtros ── */}
+          <div className="filtros-grade">
+
+            {/* Cidade */}
+            <FiltroDropdown
+              icone={
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M3 21h18M3 7l9-4 9 4M4 21V7M20 21V7M9 21v-4h6v4"/>
+                  <rect x="9" y="10" width="2" height="3" rx="0.4"/>
+                  <rect x="13" y="10" width="2" height="3" rx="0.4"/>
+                </svg>
+              }
+              rotulo="Cidade"
+              valor={cidadeSelecionada}
+              aberto={cidadeOpen}
+              onToggle={() => { setCidadeOpen(v => !v); setBairroOpen(false); setQuartosOpen(false); setValorOpen(false); setAreaOpen(false) }}
+              onLimpar={() => { setCidadeSelecionada(''); setCidadeOpen(false) }}
+            >
+              {cidades.map(c => (
+                <li key={c} onClick={() => { setCidadeSelecionada(c); setCidadeOpen(false) }} className={cidadeSelecionada === c ? 'active' : ''}>
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M3 21h18M3 7l9-4 9 4M4 21V7M20 21V7M9 21v-4h6v4"/>
+                  </svg>
+                  {c}
+                  {cidadeSelecionada === c && <svg className="check" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><polyline points="20 6 9 17 4 12"/></svg>}
+                </li>
+              ))}
+            </FiltroDropdown>
+
+            {/* Bairro */}
+            <FiltroDropdown
+              icone={
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/>
+                  <circle cx="12" cy="9" r="2.5"/>
+                </svg>
+              }
+              rotulo="Bairro"
+              valor={bairroSelecionado}
+              aberto={bairroOpen}
+              onToggle={() => { setBairroOpen(v => !v); setCidadeOpen(false); setQuartosOpen(false); setValorOpen(false); setAreaOpen(false) }}
+              onLimpar={() => { setBairroSelecionado(''); setBairroOpen(false) }}
+            >
+              {bairros.map(b => (
+                <li key={b} onClick={() => { setBairroSelecionado(b); setBairroOpen(false) }} className={bairroSelecionado === b ? 'active' : ''}>
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/>
+                    <circle cx="12" cy="9" r="2"/>
+                  </svg>
+                  {b}
+                  {bairroSelecionado === b && <svg className="check" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><polyline points="20 6 9 17 4 12"/></svg>}
+                </li>
+              ))}
+            </FiltroDropdown>
+
+            {/* Quartos */}
+            <FiltroDropdown
+              icone={
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M3 9v6m0-6a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v6M3 15v2a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-2M8 9v2M16 9v2"/>
+                </svg>
+              }
+              rotulo="Quartos"
+              valor={quartosMin ? `${quartosMin}+ quartos` : ''}
+              aberto={quartosOpen}
+              onToggle={() => { setQuartosOpen(v => !v); setCidadeOpen(false); setBairroOpen(false); setValorOpen(false); setAreaOpen(false) }}
+              onLimpar={() => { setQuartosMin(''); setQuartosOpen(false) }}
+            >
+              {[['1','1+ quarto'],['2','2+ quartos'],['3','3+ quartos'],['4','4+ quartos']].map(([val, label]) => (
+                <li key={val} onClick={() => { setQuartosMin(val); setQuartosOpen(false) }} className={quartosMin === val ? 'active' : ''}>
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M3 9v6m0-6a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v6M3 15v2a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-2M8 9v2M16 9v2"/>
+                  </svg>
+                  {label}
+                  {quartosMin === val && <svg className="check" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><polyline points="20 6 9 17 4 12"/></svg>}
+                </li>
+              ))}
+            </FiltroDropdown>
+
+            {/* Valor */}
+            <FiltroDropdown
+              icone={
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+                  <line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+                </svg>
+              }
+              rotulo="Valor máx."
+              valor={valorMax ? {300000:'até R$ 300k',500000:'até R$ 500k',800000:'até R$ 800k',1200000:'até R$ 1,2mi',2000000:'até R$ 2mi'}[valorMax] : ''}
+              aberto={valorOpen}
+              onToggle={() => { setValorOpen(v => !v); setCidadeOpen(false); setBairroOpen(false); setQuartosOpen(false); setAreaOpen(false) }}
+              onLimpar={() => { setValorMax(''); setValorOpen(false) }}
+            >
+              {[['300000','até R$ 300 mil'],['500000','até R$ 500 mil'],['800000','até R$ 800 mil'],['1200000','até R$ 1,2 milhão'],['2000000','até R$ 2 milhões']].map(([val, label]) => (
+                <li key={val} onClick={() => { setValorMax(val); setValorOpen(false) }} className={valorMax === val ? 'active' : ''}>
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                    <line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+                  </svg>
+                  {label}
+                  {valorMax === val && <svg className="check" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><polyline points="20 6 9 17 4 12"/></svg>}
+                </li>
+              ))}
+            </FiltroDropdown>
+
+            {/* Área */}
+            <FiltroDropdown
+              icone={
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+                  <rect x="3" y="3" width="18" height="18" rx="1"/><path d="M3 9h18M9 21V9"/>
+                </svg>
+              }
+              rotulo="Área mín."
+              valor={areaMin ? `${areaMin}+ m²` : ''}
+              aberto={areaOpen}
+              onToggle={() => { setAreaOpen(v => !v); setCidadeOpen(false); setBairroOpen(false); setQuartosOpen(false); setValorOpen(false) }}
+              onLimpar={() => { setAreaMin(''); setAreaOpen(false) }}
+            >
+              {[['50','50+ m²'],['80','80+ m²'],['120','120+ m²'],['200','200+ m²']].map(([val, label]) => (
+                <li key={val} onClick={() => { setAreaMin(val); setAreaOpen(false) }} className={areaMin === val ? 'active' : ''}>
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                    <rect x="3" y="3" width="18" height="18" rx="1"/><path d="M3 9h18M9 21V9"/>
+                  </svg>
+                  {label}
+                  {areaMin === val && <svg className="check" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><polyline points="20 6 9 17 4 12"/></svg>}
+                </li>
+              ))}
+            </FiltroDropdown>
+
+          </div>
+
+          {/* Limpar filtros */}
+          {(cidadeSelecionada || bairroSelecionado || quartosMin || valorMax || areaMin) && (
+            <button
+              className="filtros-limpar"
+              onClick={() => {
+                setCidadeSelecionada(''); setBairroSelecionado('')
+                setQuartosMin(''); setValorMax(''); setAreaMin('')
+                setCidadeOpen(false); setBairroOpen(false)
+                setQuartosOpen(false); setValorOpen(false); setAreaOpen(false)
+              }}
+            >
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+              Limpar filtros
+              {totalAtivos > 0 && <span className="filtros-limpar__badge">{totalAtivos}</span>}
+            </button>
+          )}
+
         </div>
 
         <div className="imoveis-grid">
