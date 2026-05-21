@@ -53,6 +53,9 @@ const FORM_VAZIO = {
   vagas: '',
   descricao: '',
   imagens: [],
+  categoria: '',
+  bairro: '',
+  cidade: '',
 }
 
 const IcoPlus   = () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
@@ -160,7 +163,7 @@ function ModalPreview({ imovel, onFechar, onEditar }) {
         <div className="modal-body">
           <div className="modal-header-row">
             <p className="modal-endereco">
-              {imovel.categoria ? `${imovel.categoria} · ` : ''}{imovel.modalidade === 'aluguel' ? 'Aluguel' : 'Venda'}
+              {(imovel.bairro || imovel.cidade) && <><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" style={{marginRight:4,opacity:0.7}}><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>{[imovel.bairro, imovel.cidade].filter(Boolean).join(', ')} · </>}{imovel.categoria ? `${imovel.categoria} · ` : ''}{imovel.modalidade === 'aluguel' ? 'Aluguel' : 'Venda'}
             </p>
             <p className="modal-preco">{formatarValor(imovel.valor, imovel.modalidade)}</p>
           </div>
@@ -238,6 +241,7 @@ function CardImovel({ imovel, onEditar, onRemover, onPreview }) {
 
       <div className="adm-card__body">
         <h3 className="adm-card__titulo">{titulo || 'Sem título'}</h3>
+        {(imovel.bairro || imovel.cidade) && <p className="adm-card__bairro"><svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor" style={{marginRight:3,opacity:0.6}}><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>{[imovel.bairro, imovel.cidade].filter(Boolean).join(' · ')}</p>}
         <p className="adm-card__valor">
           {formatarValor(valor, modalidade)}
           {area && <span>{area} m²</span>}
@@ -335,6 +339,26 @@ function ModalFormulario({ imovelEditando, onFechar, onSalvar }) {
             </div>
             <div className="adm-form__row">
               <div className="adm-form__group">
+                <label className="adm-form__label">Cidade</label>
+                <input
+                  className="adm-form__input"
+                  placeholder="Ex: Curitiba"
+                  value={form.cidade}
+                  onChange={e => set('cidade', e.target.value)}
+                />
+              </div>
+              <div className="adm-form__group">
+                <label className="adm-form__label">Bairro</label>
+                <input
+                  className="adm-form__input"
+                  placeholder="Ex: Mercês"
+                  value={form.bairro}
+                  onChange={e => set('bairro', e.target.value)}
+                />
+              </div>
+            </div>
+            <div className="adm-form__row">
+              <div className="adm-form__group">
                 <label className="adm-form__label">Modalidade</label>
                 <select className="adm-form__select" value={form.modalidade} onChange={e => set('modalidade', e.target.value)}>
                   <option value="venda">Venda</option>
@@ -343,7 +367,7 @@ function ModalFormulario({ imovelEditando, onFechar, onSalvar }) {
               </div>
               <div className="adm-form__group">
                 <label className="adm-form__label">Tipo</label>
-                <select className="adm-form__select" value={form.tipo} onChange={e => set('tipo', e.target.value)}>
+                <select className="adm-form__select" value={form.tipo} onChange={e => { set('tipo', e.target.value); set('categoria', '') }}>
                   <option value="apartamento">Apartamento</option>
                   <option value="casa">Casa</option>
                   <option value="sobrado">Sobrado</option>
@@ -352,6 +376,24 @@ function ModalFormulario({ imovelEditando, onFechar, onSalvar }) {
                 </select>
               </div>
             </div>
+
+            {form.tipo === 'comercial' && (
+              <div className="adm-form__group adm-form__grupo-comercial">
+                <label className="adm-form__label">Categoria comercial</label>
+                <div className="adm-form__categoria-grid">
+                  {['Loja', 'Barracão', 'Escritório', 'Prédio Comercial', 'Galpão'].map(cat => (
+                    <button
+                      key={cat}
+                      type="button"
+                      className={`adm-form__categoria-btn${form.categoria === cat ? ' adm-form__categoria-btn--ativo' : ''}`}
+                      onClick={() => set('categoria', form.categoria === cat ? '' : cat)}
+                    >
+                      {cat}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
           </div>
           <div className="adm-form__secao">
             <p className="adm-form__secao-titulo">Valores & Área</p>
@@ -636,29 +678,6 @@ function Adm() {
               {(filtroMod === 'venda' ? imoveisVenda : imoveisAluguel).length === 0 && (
                 <p className="adm-sidebar__lista-vazia">Nenhum imóvel cadastrado</p>
               )}
-            </div>
-          </div>
-        )}
-
-        {/* ── Stats gerais (só quando "Todos") ── */}
-        {filtroMod === '' && (
-          <div className="adm-sidebar__stats">
-            <div className="adm-sidebar__stat-label">Portfólio atual</div>
-            <div className="adm-sidebar__stat-row">
-              <span className="adm-sidebar__stat-name">Total de imóveis</span>
-              <span className="adm-sidebar__stat-value">{imoveis.length}</span>
-            </div>
-            <div className="adm-sidebar__stat-row">
-              <span className="adm-sidebar__stat-name">À venda</span>
-              <span className="adm-sidebar__stat-value adm-sidebar__stat-value--azul">{totalVenda}</span>
-            </div>
-            <div className="adm-sidebar__stat-row">
-              <span className="adm-sidebar__stat-name">Aluguel</span>
-              <span className="adm-sidebar__stat-value adm-sidebar__stat-value--azul">{totalAluguel}</span>
-            </div>
-            <div className="adm-sidebar__stat-row">
-              <span className="adm-sidebar__stat-name">Exibindo</span>
-              <span className="adm-sidebar__stat-value">{imoveisFiltrados.length}</span>
             </div>
           </div>
         )}
