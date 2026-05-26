@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect, useCallback } from 'react'
+import { supabase } from "../supabaseClient";
 import './Adm.css'
 const IMOVEIS_INICIAIS = [
   {
@@ -70,10 +71,17 @@ const IcoImg    = () => <svg width="40" height="40" viewBox="0 0 24 24" fill="no
 
 
 function formatarValor(valor, modalidade) {
-  if (!valor) return '—'
-  const num = parseFloat(valor.replace(/\D/g, '')) || 0
-  const fmt = num.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL', minimumFractionDigits: 0 })
-  return modalidade === 'aluguel' ? `${fmt}/mês` : fmt
+  if (valor === undefined || valor === null || valor === '') return '—';
+
+  const num = Number(valor) || 0;
+  
+  const fmt = num.toLocaleString('pt-BR', { 
+    style: 'currency', 
+    currency: 'BRL', 
+    minimumFractionDigits: 0 
+  });
+  
+  return modalidade === 'aluguel' ? `${fmt}/mês` : fmt;
 }
 
 function Toast({ msg, tipo }) {
@@ -304,7 +312,7 @@ function ModalFormulario({ imovelEditando, onFechar, onSalvar }) {
   function handleSubmit() {
     if (!form.titulo.trim()) { alert('Informe o título do imóvel.'); return }
     if (!form.valor.trim())  { alert('Informe o valor.'); return }
-    onSalvar({ ...form, id: imovelEditando?.id ?? Date.now() })
+    onSalvar(form)
   }
 
   return (
@@ -543,7 +551,8 @@ function ModalConfirmacao({ imovel, onConfirmar, onCancelar }) {
 
 /* pagina principal */
 function Adm() {
-  const [imoveis, setImoveis]           = useState(IMOVEIS_INICIAIS)
+  const [imoveis, setImoveis]           = useState([]) // Começa vazio
+  const [carregando, setCarregando]     = useState(true) // Novo estado de carregamento
   const [modalAberto, setModalAberto]   = useState(false)
   const [imovelEditando, setImovelEdit] = useState(null)
   const [imovelRemover, setImovelRemov] = useState(null)
@@ -554,6 +563,30 @@ function Adm() {
   const [filtroCategoria, setFiltroCategoria] = useState('')
   const [filtroMod, setFiltroMod]             = useState('')
 
+  // FUNÇÃO NOVA: Busca os imóveis direto do Supabase
+  const buscarImoveis = async () => {
+    try {
+      setCarregando(true)
+      const { data, error } = await supabase
+        .from('imoveis')
+        .select('*')
+        .order('id', { ascending: false })
+
+      if (error) throw error
+      setImoveis(data || [])
+    } catch (error) {
+      console.error('Erro ao buscar imóveis:', error.message)
+      alert('Erro ao carregar os imóveis do banco de dados.')
+    } finally {
+      setCarregando(false)
+    }
+  }
+
+  // EFEITO NOVO: Faz a busca rodar assim que a tela abre
+  useEffect(() => {
+    buscarImoveis()
+  }, [])
+
   function showToast(msg, tipo = 'success') {
     setToast({ msg, tipo })
     setTimeout(() => setToast(null), 3000)
@@ -563,24 +596,76 @@ function Adm() {
   function abrirEditar(imovel) { setImovelEdit(imovel); setModalAberto(true) }
   function fecharModal() { setModalAberto(false); setImovelEdit(null) }
 
-  function salvar(dados) {
-    const edicao = imoveis.some(i => i.id === dados.id)
-    if (edicao) {
-      setImoveis(list => list.map(i => i.id === dados.id ? dados : i))
-      showToast('Imóvel atualizado com sucesso!')
-    } else {
-      setImoveis(list => [dados, ...list])
-      showToast('Imóvel publicado com sucesso!')
+ async function salvar(dadosForm) {
+    try {
+      const dadosImovel = {
+        titulo: dadosForm.titulo,
+        tipo: dadosForm.tipo,
+        modalidade: dadosForm.modalidade,
+        categoria: dadosForm.tipo === 'comercial' ? dadosForm.categoria : null,
+        valor: parseFloat(dadosForm.valor) || 0,
+        area: parseFloat(dadosForm.area) || 0,
+        quartos: dadosForm.tipo !== 'comercial' ? dadosForm.quartos : null,
+        banheiros: dadosForm.banheiros || null,
+        vagas: dadosForm.vagas || null,
+        descricao: dadosForm.descricao,
+        bairro: dadosForm.bairro || '',
+        cidade: dadosForm.cidade || '',
+        imagens: dadosForm.imagens && dadosForm.imagens.length > 0 ? dadosForm.imagens : null
+      }
+
+      if (imovelEditando) {
+        // ── MODO EDIÇÃO ──
+        const { error } = await supabase
+          .from('imoveis')
+          .update(dadosImovel)
+          .eq('id', imovelEditando.id)
+
+        if (error) throw error
+        showToast('Imóvel atualizado com sucesso!')
+      } else {
+        // ── MODO CRIAÇÃO ──
+        const { error } = await supabase
+          .from('imoveis')
+          .insert([dadosImovel])
+
+        if (error) throw error
+        showToast('Imóvel publicado com sucesso!')
+      }
+
+      buscarImoveis() // Atualiza a tela puxando os dados novos do banco
+      fecharModal()
+    } catch (error) {
+      console.error('Erro ao salvar imóvel:', error.message)
+      showToast('Erro ao salvar no banco de dados.', 'error')
     }
-    fecharModal()
   }
 
   function pedirRemocao(imovel) { setImovelRemov(imovel) }
 
-  function confirmarRemocao() {
-    setImoveis(list => list.filter(i => i.id !== imovelRemover.id))
-    showToast('Imóvel removido.', 'error')
-    setImovelRemov(null)
+  async function confirmarRemocao() {
+    if (!imovelRemover) return;
+
+    try {
+      // 1. Apaga no Supabase usando o ID correto (imovelRemover.id)
+      const { error } = await supabase
+        .from('imoveis')
+        .delete()
+        .eq('id', imovelRemover.id);
+
+      if (error) throw error;
+
+      // 2. Só tira da ecrã se o Supabase confirmou que apagou
+      setImoveis(prev => prev.filter(im => im.id !== imovelRemover.id));
+      
+      // 3. Fecha o modal de confirmação
+      setImovelRemov(null);
+
+      showToast('Imóvel removido com sucesso!', 'success');
+    } catch (error) {
+      console.error('Erro real ao remover imóvel:', error.message);
+      alert('Erro ao apagar no Supabase: ' + error.message);
+    }
   }
 
   const totalVenda   = imoveis.filter(i => i.modalidade === 'venda').length
@@ -602,6 +687,14 @@ function Adm() {
     filtroMod === 'venda'   ? 'Imóveis à Venda' :
     filtroMod === 'aluguel' ? 'Imóveis para Aluguel' :
     'Gestão de Imóveis'
+
+ if (carregando) {
+    return (
+      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh', fontFamily: 'Jost', color: '#004169' }}>
+        <h2>Conectando ao banco de dados...</h2>
+      </div>
+    )
+  }
 
   return (
     <div className="adm-page">
