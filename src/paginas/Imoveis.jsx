@@ -1,112 +1,27 @@
 import { useState, useEffect, useCallback } from 'react'
 import Nav from '../componentes/Nav'
 import Footer from '../componentes/Footer'
+import { supabase } from '../supabaseClient'
 import './Imoveis.css'
 
-const cidades = ['Curitiba', 'Pinhais', 'Uberaba', 'Santa Cândida', 'Colombo']
-const bairros = ['Santa Felicidade', 'Água Verde', 'Mercês', 'CIC', 'Centro']
-const tipos = ['Todos', 'Venda', 'Alugar']
+const tipos = ['Todos', 'Venda', 'Aluguel']
 
-const imoveis = [
-  {
-    id: 1,
-    tipo: 'Venda',
-    categoria: 'Apartamento',
-    titulo: 'Apartamento Alto Padrão',
-    endereco: 'Rua Comendador Araújo, 512',
-    bairro: 'Batel',
-    cidade: 'Curitiba',
-    estado: 'PR',
-    preco: 'R$ 980.000',
-    quartos: 3,
-    banheiros: 2,
-    vagas: 2,
-    area: 142,
-    andar: '14º andar',
-    iptu: 'R$ 520 / mês',
-    condominio: 'R$ 1.100 / mês',
-    descricao: 'Apartamento de alto padrão localizado no coração do Batel, com acabamentos premium, varanda gourmet e vista privilegiada para a cidade. Projeto moderno com iluminação planejada e amplos espaços integrados.',
-    diferenciais: ['Varanda gourmet', 'Piscina', 'Portaria 24h', 'Academia', 'Salão de festas', 'Gerador'],
-    fotos: [null, null, null, null],
-    imagem: null,
-  },
-  {
-    id: 2,
-    tipo: 'Alugar',
-    categoria: 'Casa',
-    titulo: 'Casa em Condomínio Fechado',
-    endereco: 'Rua das Araucárias, 88',
-    bairro: 'Santa Felicidade',
-    cidade: 'Curitiba',
-    estado: 'PR',
-    preco: 'R$ 4.500/mês',
-    quartos: 4,
-    banheiros: 3,
-    vagas: 2,
-    area: 210,
-    andar: 'Térrea',
-    iptu: 'R$ 380 / mês',
-    condominio: 'R$ 850 / mês',
-    descricao: 'Casa espaçosa em condomínio fechado com segurança 24h, amplo jardim e área de lazer completa. Acabamentos de qualidade e localização privilegiada próxima a escolas e comércio.',
-    diferenciais: ['Jardim privativo', 'Churrasqueira', 'Segurança 24h', 'Playground', 'Quadra esportiva', 'Portão automático'],
-    fotos: [null, null, null, null],
-    imagem: null,
-  },
-  {
-    id: 3,
-    tipo: 'Venda',
-    categoria: 'Apartamento',
-    titulo: 'Apartamento Moderno',
-    endereco: 'Av. Água Verde, 1.240',
-    bairro: 'Água Verde',
-    cidade: 'Curitiba',
-    estado: 'PR',
-    preco: 'R$ 650.000',
-    quartos: 2,
-    banheiros: 2,
-    vagas: 1,
-    area: 88,
-    andar: '7º andar',
-    iptu: 'R$ 310 / mês',
-    condominio: 'R$ 780 / mês',
-    descricao: 'Apartamento moderno com planta inteligente, cozinha americana integrada e sacada com vista para a cidade. Localização excelente, próximo ao metrô e principais vias.',
-    diferenciais: ['Sacada integrada', 'Cozinha americana', 'Fitness', 'Salão de festas', 'Portaria 24h'],
-    fotos: [null, null, null, null],
-    imagem: null,
-  },
-  {
-    id: 4,
-    tipo: 'Alugar',
-    categoria: 'Casa',
-    titulo: 'Casa Térrea com Quintal',
-    endereco: 'Rua Professora Maria José, 45',
-    bairro: 'Mercês',
-    cidade: 'Curitiba',
-    estado: 'PR',
-    preco: 'R$ 3.200/mês',
-    quartos: 3,
-    banheiros: 2,
-    vagas: 1,
-    area: 175,
-    andar: 'Térrea',
-    iptu: 'R$ 290 / mês',
-    condominio: '—',
-    descricao: 'Casa térrea charmosa com quintal arborizado, área de serviço ampla e garagem coberta. Bairro tranquilo, residencial, com fácil acesso ao centro e excelente infraestrutura.',
-    diferenciais: ['Quintal arborizado', 'Churrasqueira', 'Garagem coberta', 'Área de serviço', 'Próx. ao centro'],
-    fotos: [null, null, null, null],
-    imagem: null,
-  },
-]
+function formatarValor(valor, modalidade) {
+  if (valor === undefined || valor === null || valor === '') return '—'
+  const num = Number(valor) || 0
+  const fmt = num.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL', minimumFractionDigits: 0 })
+  return modalidade === 'aluguel' ? `${fmt}/mês` : fmt
+}
 
 /* ── Modal ── */
 function ImovelModal({ imovel, onClose }) {
+  const temImagens = imovel.imagens && imovel.imagens.length > 0
+  const totalFotos = temImagens ? imovel.imagens.length : 1
   const [fotoAtual, setFotoAtual] = useState(0)
-  const totalFotos = imovel.fotos?.length || 4
 
   const prev = useCallback(() => setFotoAtual(f => (f - 1 + totalFotos) % totalFotos), [totalFotos])
   const next = useCallback(() => setFotoAtual(f => (f + 1) % totalFotos), [totalFotos])
 
-  // Fechar com ESC e bloquear scroll
   useEffect(() => {
     const handleKey = (e) => {
       if (e.key === 'Escape') onClose()
@@ -121,59 +36,63 @@ function ImovelModal({ imovel, onClose }) {
     }
   }, [onClose, prev, next])
 
+  const tipoLabel = imovel.modalidade === 'aluguel' ? 'ALUGUEL' : 'VENDA'
+  const categoriaLabel = imovel.tipo ? imovel.tipo.toUpperCase() : ''
+
   return (
     <div className="modal-overlay" onClick={onClose}>
       <div className="modal-container" onClick={e => e.stopPropagation()}>
 
         {/* ── Carrossel ── */}
         <div className="modal-carousel">
-          {/* Gradiente escuro no topo para o X */}
           <div className="carousel-top-fade" />
 
-          {/* Placeholder de foto */}
-          <div
-            className="carousel-img"
-            style={{
-              background: `linear-gradient(135deg,
-                hsl(${200 + fotoAtual * 20}, 60%, 25%) 0%,
-                hsl(${210 + fotoAtual * 15}, 70%, 35%) 50%,
-                hsl(${220 + fotoAtual * 10}, 50%, 20%) 100%)`
-            }}
-          />
+          {temImagens ? (
+            <img
+              src={imovel.imagens[fotoAtual]?.url}
+              alt={imovel.titulo}
+              className="carousel-img"
+              style={{ objectFit: 'cover', width: '100%', height: '100%' }}
+            />
+          ) : (
+            <div
+              className="carousel-img"
+              style={{
+                background: `linear-gradient(135deg,
+                  hsl(${200 + fotoAtual * 20}, 60%, 25%) 0%,
+                  hsl(${210 + fotoAtual * 15}, 70%, 35%) 50%,
+                  hsl(${220 + fotoAtual * 10}, 50%, 20%) 100%)`
+              }}
+            />
+          )}
 
-          {/* Contador */}
           <div className="carousel-counter">
             {fotoAtual + 1} / {totalFotos}
-            <span className="carousel-tipo">{imovel.tipo.toUpperCase()}</span>
+            <span className="carousel-tipo">{tipoLabel}</span>
           </div>
 
-          {/* Categoria */}
-          <span className="carousel-categoria">{imovel.categoria.toUpperCase()}</span>
+          <span className="carousel-categoria">{categoriaLabel}</span>
 
-          {/* Setas */}
-          <button className="carousel-btn carousel-prev" onClick={prev}>
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M15 18l-6-6 6-6"/>
-            </svg>
-          </button>
-          <button className="carousel-btn carousel-next" onClick={next}>
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M9 18l6-6-6-6"/>
-            </svg>
-          </button>
+          {totalFotos > 1 && (
+            <>
+              <button className="carousel-btn carousel-prev" onClick={prev}>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M15 18l-6-6 6-6"/>
+                </svg>
+              </button>
+              <button className="carousel-btn carousel-next" onClick={next}>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M9 18l6-6-6-6"/>
+                </svg>
+              </button>
+              <div className="carousel-dots">
+                {imovel.imagens.map((_, i) => (
+                  <button key={i} className={`carousel-dot ${i === fotoAtual ? 'active' : ''}`} onClick={() => setFotoAtual(i)} />
+                ))}
+              </div>
+            </>
+          )}
 
-          {/* Dots */}
-          <div className="carousel-dots">
-            {Array.from({ length: totalFotos }).map((_, i) => (
-              <button
-                key={i}
-                className={`carousel-dot ${i === fotoAtual ? 'active' : ''}`}
-                onClick={() => setFotoAtual(i)}
-              />
-            ))}
-          </div>
-
-          {/* Botão fechar */}
           <button className="modal-close" onClick={onClose}>
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round">
               <path d="M18 6L6 18M6 6l12 12"/>
@@ -183,95 +102,65 @@ function ImovelModal({ imovel, onClose }) {
 
         {/* ── Coluna direita ── */}
         <div className="modal-right">
+          <div className="modal-body">
 
-        {/* ── Conteúdo ── */}
-        <div className="modal-body">
+            <div className="modal-header-row">
+              <p className="modal-endereco">
+                {[imovel.bairro, imovel.cidade].filter(Boolean).join(' — ')}
+              </p>
+              <p className="modal-preco">{formatarValor(imovel.valor, imovel.modalidade)}</p>
+            </div>
 
-          {/* Endereço + preço */}
-          <div className="modal-header-row">
-            <p className="modal-endereco">
-              © {imovel.endereco} — {imovel.bairro}, {imovel.cidade}
-            </p>
-            <p className="modal-preco">{imovel.preco}</p>
-          </div>
+            <h2 className="modal-titulo">{imovel.titulo}</h2>
 
-          {/* Título */}
-          <h2 className="modal-titulo">{imovel.titulo}</h2>
+            {imovel.descricao && <p className="modal-descricao">{imovel.descricao}</p>}
 
-          {/* Descrição */}
-          <p className="modal-descricao">{imovel.descricao}</p>
-
-          {/* Specs */}
-          <div className="modal-specs">
-            <div className="modal-spec-item">
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/>
-              </svg>
-              <span className="spec-valor">{imovel.quartos}</span>
-              <span className="spec-label">QUARTOS</span>
-            </div>
-            <div className="modal-spec-item">
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M4 12h16M4 12V6a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v6M4 12v4a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-4"/>
-              </svg>
-              <span className="spec-valor">{imovel.banheiros}</span>
-              <span className="spec-label">BANHEIROS</span>
-            </div>
-            <div className="modal-spec-item">
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
-                <rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 3l-4 4-4-4"/>
-              </svg>
-              <span className="spec-valor">{imovel.vagas}</span>
-              <span className="spec-label">VAGAS</span>
-            </div>
-            <div className="modal-spec-item">
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
-                <rect x="3" y="3" width="18" height="18" rx="1"/><path d="M3 9h18M9 21V9"/>
-              </svg>
-              <span className="spec-valor">{imovel.area} m²</span>
-              <span className="spec-label">ÁREA</span>
-            </div>
-          </div>
-
-          {/* Infos adicionais */}
-          <div className="modal-info-list">
-            <div className="modal-info-row">
-              <span className="info-key">ANDAR / POSIÇÃO</span>
-              <span className="info-val">{imovel.andar}</span>
-            </div>
-            <div className="modal-info-row">
-              <span className="info-key">IPTU</span>
-              <span className="info-val">{imovel.iptu}</span>
-            </div>
-            <div className="modal-info-row">
-              <span className="info-key">CONDOMÍNIO</span>
-              <span className="info-val">{imovel.condominio}</span>
-            </div>
-          </div>
-
-          {/* Diferenciais */}
-          <div className="modal-diferenciais">
-            <p className="diferenciais-titulo">DIFERENCIAIS</p>
-            <div className="diferenciais-grid">
-              {imovel.diferenciais.map((d) => (
-                <div key={d} className="diferencial-item">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M20 6L9 17l-5-5"/>
+            <div className="modal-specs">
+              {imovel.quartos && (
+                <div className="modal-spec-item">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/>
                   </svg>
-                  {d}
+                  <span className="spec-valor">{imovel.quartos}</span>
+                  <span className="spec-label">QUARTOS</span>
                 </div>
-              ))}
+              )}
+              {imovel.banheiros && (
+                <div className="modal-spec-item">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M4 12h16M4 12V6a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v6M4 12v4a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-4"/>
+                  </svg>
+                  <span className="spec-valor">{imovel.banheiros}</span>
+                  <span className="spec-label">BANHEIROS</span>
+                </div>
+              )}
+              {imovel.vagas && (
+                <div className="modal-spec-item">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+                    <rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 3l-4 4-4-4"/>
+                  </svg>
+                  <span className="spec-valor">{imovel.vagas}</span>
+                  <span className="spec-label">VAGAS</span>
+                </div>
+              )}
+              {imovel.area && (
+                <div className="modal-spec-item">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+                    <rect x="3" y="3" width="18" height="18" rx="1"/><path d="M3 9h18M9 21V9"/>
+                  </svg>
+                  <span className="spec-valor">{imovel.area} m²</span>
+                  <span className="spec-label">ÁREA</span>
+                </div>
+              )}
             </div>
+
+          </div>
+
+          <div className="modal-footer">
+            <button className="modal-btn-contato">ENTRAR EM CONTATO</button>
+            <button className="modal-btn-voltar" onClick={onClose}>VOLTAR</button>
           </div>
         </div>
-
-        {/* ── Footer do modal ── */}
-        <div className="modal-footer">
-          <button className="modal-btn-contato">ENTRAR EM CONTATO</button>
-          <button className="modal-btn-voltar" onClick={onClose}>VOLTAR</button>
-        </div>
-
-        </div>{/* fim modal-right */}
       </div>
     </div>
   )
@@ -279,48 +168,62 @@ function ImovelModal({ imovel, onClose }) {
 
 /* ── Card ── */
 function ImovelCard({ imovel, onAbrir }) {
+  const temImagem = imovel.imagens && imovel.imagens.length > 0
+  const tipoLabel = imovel.modalidade === 'aluguel' ? 'ALUGUEL' : 'VENDA'
+  const badgeClass = imovel.modalidade === 'aluguel' ? 'badge-alugar' : 'badge-venda'
+
   return (
     <div className="imovel-card" onClick={() => onAbrir(imovel)}>
       <div className="card-img">
-        <div className="card-img-placeholder" />
-        <span className={`card-badge ${imovel.tipo === 'Venda' ? 'badge-venda' : 'badge-alugar'}`}>
-          {imovel.tipo.toUpperCase()}
-        </span>
-        <span className="card-categoria">{imovel.categoria.toUpperCase()}</span>
+        {temImagem ? (
+          <img src={imovel.imagens[0].url} alt={imovel.titulo} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+        ) : (
+          <div className="card-img-placeholder" />
+        )}
+        <span className={`card-badge ${badgeClass}`}>{tipoLabel}</span>
+        <span className="card-categoria">{imovel.tipo ? imovel.tipo.toUpperCase() : ''}</span>
       </div>
 
       <div className="card-body">
         <p className="card-localizacao">
-          {imovel.bairro} · {imovel.cidade} – {imovel.estado}
+          {[imovel.bairro, imovel.cidade].filter(Boolean).join(' · ')}
         </p>
         <h3 className="card-titulo">{imovel.titulo}</h3>
-        <p className="card-preco">{imovel.preco}</p>
+        <p className="card-preco">{formatarValor(imovel.valor, imovel.modalidade)}</p>
 
         <div className="card-specs">
-          <span>
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/>
-            </svg>
-            {imovel.quartos} quartos
-          </span>
-          <span>
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M4 12h16M4 12V6a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v6M4 12v4a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-4"/>
-            </svg>
-            {imovel.banheiros} banheiros
-          </span>
-          <span>
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-              <rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 3l-4 4-4-4"/>
-            </svg>
-            {imovel.vagas} vagas
-          </span>
-          <span>
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-              <rect x="3" y="3" width="18" height="18" rx="1"/><path d="M3 9h18M9 21V9"/>
-            </svg>
-            {imovel.area} m²
-          </span>
+          {imovel.quartos && (
+            <span>
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/>
+              </svg>
+              {imovel.quartos} quartos
+            </span>
+          )}
+          {imovel.banheiros && (
+            <span>
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M4 12h16M4 12V6a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v6M4 12v4a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-4"/>
+              </svg>
+              {imovel.banheiros} banheiros
+            </span>
+          )}
+          {imovel.vagas && (
+            <span>
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                <rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 3l-4 4-4-4"/>
+              </svg>
+              {imovel.vagas} vagas
+            </span>
+          )}
+          {imovel.area && (
+            <span>
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                <rect x="3" y="3" width="18" height="18" rx="1"/><path d="M3 9h18M9 21V9"/>
+              </svg>
+              {imovel.area} m²
+            </span>
+          )}
         </div>
 
         <button className="card-btn">VER DETALHES</button>
@@ -329,7 +232,7 @@ function ImovelCard({ imovel, onAbrir }) {
   )
 }
 
-/* ── Componente de filtro dropdown reutilizável ── */
+/* ── Filtro Dropdown reutilizável ── */
 function FiltroDropdown({ icone, rotulo, valor, aberto, onToggle, onLimpar, children }) {
   return (
     <div className="filtro-wrapper">
@@ -363,44 +266,63 @@ function FiltroDropdown({ icone, rotulo, valor, aberto, onToggle, onLimpar, chil
 
 /* ── Página principal ── */
 function Imoveis() {
-  const [cidadeOpen, setCidadeOpen] = useState(false)
-  const [bairroOpen, setBairroOpen] = useState(false)
+  const [imoveis, setImoveis]               = useState([])
+  const [carregando, setCarregando]         = useState(true)
+  const [cidadeOpen, setCidadeOpen]         = useState(false)
+  const [bairroOpen, setBairroOpen]         = useState(false)
+  const [quartosOpen, setQuartosOpen]       = useState(false)
+  const [valorOpen, setValorOpen]           = useState(false)
+  const [areaOpen, setAreaOpen]             = useState(false)
   const [cidadeSelecionada, setCidadeSelecionada] = useState('')
   const [bairroSelecionado, setBairroSelecionado] = useState('')
-  const [tipoSelecionado, setTipoSelecionado] = useState('Todos')
-  const [imovelAberto, setImovelAberto] = useState(null)
-  const [quartosMin, setQuartosMin] = useState('')
-  const [valorMax, setValorMax] = useState('')
-  const [areaMin, setAreaMin] = useState('')
-  const [quartosOpen, setQuartosOpen] = useState(false)
-  const [valorOpen, setValorOpen] = useState(false)
-  const [areaOpen, setAreaOpen] = useState(false)
+  const [tipoSelecionado, setTipoSelecionado]     = useState('Todos')
+  const [imovelAberto, setImovelAberto]           = useState(null)
+  const [quartosMin, setQuartosMin]               = useState('')
+  const [valorMax, setValorMax]                   = useState('')
+  const [areaMin, setAreMin]                      = useState('')
 
-  function selecionarCidade(cidade) {
-    setCidadeSelecionada(cidade)
-    setCidadeOpen(false)
-  }
+  // Busca do Supabase — apenas não-comerciais
+  useEffect(() => {
+    async function buscar() {
+      const { data, error } = await supabase
+        .from('imoveis')
+        .select('*')
+        .neq('tipo', 'comercial')
+        .order('id', { ascending: false })
 
-  function selecionarBairro(bairro) {
-    setBairroSelecionado(bairro)
-    setBairroOpen(false)
-  }
+      if (!error) setImoveis(data || [])
+      setCarregando(false)
+    }
+    buscar()
+  }, [])
 
-  function parsePreco(str) {
-    return parseInt(str.replace(/[^0-9]/g, '')) || 0
-  }
+  // Listas dinâmicas de cidades/bairros baseadas nos dados reais
+  const cidades = [...new Set(imoveis.map(i => i.cidade).filter(Boolean))]
+  const bairros = [...new Set(imoveis.map(i => i.bairro).filter(Boolean))]
 
   const imoveisFiltrados = imoveis.filter((im) => {
-    const filtraTipo = tipoSelecionado === 'Todos' || im.tipo === tipoSelecionado
+    const modalidadeLabel = im.modalidade === 'aluguel' ? 'Aluguel' : 'Venda'
+    const filtraTipo   = tipoSelecionado === 'Todos' || modalidadeLabel === tipoSelecionado
     const filtraCidade = !cidadeSelecionada || im.cidade === cidadeSelecionada
     const filtraBairro = !bairroSelecionado || im.bairro === bairroSelecionado
-    const filtroQuartos = !quartosMin || im.quartos >= parseInt(quartosMin)
-    const filtroValor = !valorMax || parsePreco(im.preco) <= parseInt(valorMax)
-    const filtroArea = !areaMin || im.area >= parseInt(areaMin)
+    const filtroQuartos = !quartosMin || Number(im.quartos) >= parseInt(quartosMin)
+    const filtroValor   = !valorMax || Number(im.valor) <= parseInt(valorMax)
+    const filtroArea    = !areaMin || Number(im.area) >= parseInt(areaMin)
     return filtraTipo && filtraCidade && filtraBairro && filtroQuartos && filtroValor && filtroArea
   })
 
   const totalAtivos = [cidadeSelecionada, bairroSelecionado, quartosMin, valorMax, areaMin].filter(Boolean).length
+
+  if (carregando) {
+    return (
+      <>
+        <Nav />
+        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '60vh', fontFamily: 'Jost', color: '#004169' }}>
+          <p>Carregando imóveis...</p>
+        </div>
+      </>
+    )
+  }
 
   return (
     <>
@@ -416,7 +338,7 @@ function Imoveis() {
 
         <div className="imoveis-filtros">
 
-          {/* ── Tipo: Todos / Venda / Alugar ── */}
+          {/* Tipo: Todos / Venda / Aluguel */}
           <div className="filtro-tipo">
             {tipos.map((t) => (
               <button
@@ -429,10 +351,8 @@ function Imoveis() {
             ))}
           </div>
 
-          {/* ── Separador ── */}
           <div className="filtros-separador" />
 
-          {/* ── Grade de filtros ── */}
           <div className="filtros-grade">
 
             {/* Cidade */}
@@ -546,10 +466,10 @@ function Imoveis() {
               valor={areaMin ? `${areaMin}+ m²` : ''}
               aberto={areaOpen}
               onToggle={() => { setAreaOpen(v => !v); setCidadeOpen(false); setBairroOpen(false); setQuartosOpen(false); setValorOpen(false) }}
-              onLimpar={() => { setAreaMin(''); setAreaOpen(false) }}
+              onLimpar={() => { setAreMin(''); setAreaOpen(false) }}
             >
               {[['50','50+ m²'],['80','80+ m²'],['120','120+ m²'],['200','200+ m²']].map(([val, label]) => (
-                <li key={val} onClick={() => { setAreaMin(val); setAreaOpen(false) }} className={areaMin === val ? 'active' : ''}>
+                <li key={val} onClick={() => { setAreMin(val); setAreaOpen(false) }} className={areaMin === val ? 'active' : ''}>
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
                     <rect x="3" y="3" width="18" height="18" rx="1"/><path d="M3 9h18M9 21V9"/>
                   </svg>
@@ -567,7 +487,7 @@ function Imoveis() {
               className="filtros-limpar"
               onClick={() => {
                 setCidadeSelecionada(''); setBairroSelecionado('')
-                setQuartosMin(''); setValorMax(''); setAreaMin('')
+                setQuartosMin(''); setValorMax(''); setAreMin('')
                 setCidadeOpen(false); setBairroOpen(false)
                 setQuartosOpen(false); setValorOpen(false); setAreaOpen(false)
               }}
@@ -590,7 +510,6 @@ function Imoveis() {
         </div>
 
       </main>
-
 
       {imovelAberto && (
         <ImovelModal imovel={imovelAberto} onClose={() => setImovelAberto(null)} />

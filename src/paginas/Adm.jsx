@@ -59,28 +59,28 @@ const FORM_VAZIO = {
   cidade: '',
 }
 
-const IcoPlus   = () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-const IcoEdit   = () => <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
-const IcoTrash  = () => <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4h6v2"/></svg>
-const IcoSearch = () => <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-const IcoUpload = () => <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="16 16 12 12 8 16"/><line x1="12" y1="12" x2="12" y2="21"/><path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3"/></svg>
-const IcoWarn   = () => <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4h6v2"/></svg>
-const IcoCheck  = () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-const IcoClose  = () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-const IcoImg    = () => <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+const IcoPlus = () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><line x1="12" y1="5" x2="12" y2="19" /><line x1="5" y1="12" x2="19" y2="12" /></svg>
+const IcoEdit = () => <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" /><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" /></svg>
+const IcoTrash = () => <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><polyline points="3 6 5 6 21 6" /><path d="M19 6l-1 14H6L5 6" /><path d="M10 11v6M14 11v6" /><path d="M9 6V4h6v2" /></svg>
+const IcoSearch = () => <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"><circle cx="11" cy="11" r="8" /><line x1="21" y1="21" x2="16.65" y2="16.65" /></svg>
+const IcoUpload = () => <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="16 16 12 12 8 16" /><line x1="12" y1="12" x2="12" y2="21" /><path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3" /></svg>
+const IcoWarn = () => <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><polyline points="3 6 5 6 21 6" /><path d="M19 6l-1 14H6L5 6" /><path d="M10 11v6M14 11v6" /><path d="M9 6V4h6v2" /></svg>
+const IcoCheck = () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12" /></svg>
+const IcoClose = () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" /></svg>
+const IcoImg = () => <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" /><circle cx="8.5" cy="8.5" r="1.5" /><polyline points="21 15 16 10 5 21" /></svg>
 
 
 function formatarValor(valor, modalidade) {
   if (valor === undefined || valor === null || valor === '') return '—';
 
   const num = Number(valor) || 0;
-  
-  const fmt = num.toLocaleString('pt-BR', { 
-    style: 'currency', 
-    currency: 'BRL', 
-    minimumFractionDigits: 0 
+
+  const fmt = num.toLocaleString('pt-BR', {
+    style: 'currency',
+    currency: 'BRL',
+    minimumFractionDigits: 0
   });
-  
+
   return modalidade === 'aluguel' ? `${fmt}/mês` : fmt;
 }
 
@@ -150,10 +150,10 @@ function ModalPreview({ imovel, onFechar, onEditar }) {
 
           {totalFotos > 1 && <>
             <button className="carousel-btn carousel-prev" onClick={prev}>
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M15 18l-6-6 6-6" /></svg>
             </button>
             <button className="carousel-btn carousel-next" onClick={next}>
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M9 18l6-6-6-6" /></svg>
             </button>
             <div className="carousel-dots">
               {imovel.imagens.map((_, i) => (
@@ -163,7 +163,7 @@ function ModalPreview({ imovel, onFechar, onEditar }) {
           </>}
 
           <button className="modal-close" onClick={onFechar}>
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round"><path d="M18 6L6 18M6 6l12 12" /></svg>
           </button>
         </div>
 
@@ -171,7 +171,7 @@ function ModalPreview({ imovel, onFechar, onEditar }) {
         <div className="modal-body">
           <div className="modal-header-row">
             <p className="modal-endereco">
-              {(imovel.bairro || imovel.cidade) && <><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" style={{marginRight:4,opacity:0.7}}><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>{[imovel.bairro, imovel.cidade].filter(Boolean).join(', ')} · </>}{imovel.categoria ? `${imovel.categoria} · ` : ''}{imovel.modalidade === 'aluguel' ? 'Aluguel' : 'Venda'}
+              {(imovel.bairro || imovel.cidade) && <><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" style={{ marginRight: 4, opacity: 0.7 }}><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" /></svg>{[imovel.bairro, imovel.cidade].filter(Boolean).join(', ')} · </>}{imovel.categoria ? `${imovel.categoria} · ` : ''}{imovel.modalidade === 'aluguel' ? 'Aluguel' : 'Venda'}
             </p>
             <p className="modal-preco">{formatarValor(imovel.valor, imovel.modalidade)}</p>
           </div>
@@ -183,28 +183,28 @@ function ModalPreview({ imovel, onFechar, onEditar }) {
           <div className="modal-specs">
             {imovel.quartos && (
               <div className="modal-spec-item">
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"><path d="M3 9v6m0-6a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v6M3 15v2a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-2M8 9v2M16 9v2"/></svg>
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"><path d="M3 9v6m0-6a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v6M3 15v2a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-2M8 9v2M16 9v2" /></svg>
                 <span className="spec-valor">{imovel.quartos}</span>
                 <span className="spec-label">QUARTOS</span>
               </div>
             )}
             {imovel.banheiros && (
               <div className="modal-spec-item">
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"><path d="M4 12h16v4a4 4 0 0 1-4 4H8a4 4 0 0 1-4-4v-4z"/><path d="M6 12V5a2 2 0 0 1 2-2h1v2"/></svg>
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"><path d="M4 12h16v4a4 4 0 0 1-4 4H8a4 4 0 0 1-4-4v-4z" /><path d="M6 12V5a2 2 0 0 1 2-2h1v2" /></svg>
                 <span className="spec-valor">{imovel.banheiros}</span>
                 <span className="spec-label">BANHEIROS</span>
               </div>
             )}
             {imovel.vagas && (
               <div className="modal-spec-item">
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 3l-4 4-4-4"/></svg>
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="7" width="20" height="14" rx="2" /><path d="M16 3l-4 4-4-4" /></svg>
                 <span className="spec-valor">{imovel.vagas}</span>
                 <span className="spec-label">VAGAS</span>
               </div>
             )}
             {imovel.area && (
               <div className="modal-spec-item">
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="3" width="18" height="18" rx="1"/><path d="M3 9h18M9 21V9"/></svg>
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="3" width="18" height="18" rx="1" /><path d="M3 9h18M9 21V9" /></svg>
                 <span className="spec-valor">{imovel.area} m²</span>
                 <span className="spec-label">ÁREA</span>
               </div>
@@ -249,7 +249,7 @@ function CardImovel({ imovel, onEditar, onRemover, onPreview }) {
 
       <div className="adm-card__body">
         <h3 className="adm-card__titulo">{titulo || 'Sem título'}</h3>
-        {(imovel.bairro || imovel.cidade) && <p className="adm-card__bairro"><svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor" style={{marginRight:3,opacity:0.6}}><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>{[imovel.bairro, imovel.cidade].filter(Boolean).join(' · ')}</p>}
+        {(imovel.bairro || imovel.cidade) && <p className="adm-card__bairro"><svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor" style={{ marginRight: 3, opacity: 0.6 }}><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" /></svg>{[imovel.bairro, imovel.cidade].filter(Boolean).join(' · ')}</p>}
         <p className="adm-card__valor">
           {formatarValor(valor, modalidade)}
           {area && <span>{area} m²</span>}
@@ -257,19 +257,19 @@ function CardImovel({ imovel, onEditar, onRemover, onPreview }) {
         <div className="adm-card__atributos">
           {quartos && (
             <span className="adm-card__atrib">
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"><path d="M3 9v6m0-6a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v6M3 15v2a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-2M8 9v2M16 9v2"/></svg>
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"><path d="M3 9v6m0-6a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v6M3 15v2a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-2M8 9v2M16 9v2" /></svg>
               {quartos} qto{quartos !== '1' ? 's' : ''}
             </span>
           )}
           {banheiros && (
             <span className="adm-card__atrib">
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"><path d="M4 12h16v4a4 4 0 0 1-4 4H8a4 4 0 0 1-4-4v-4z"/><path d="M6 12V5a2 2 0 0 1 2-2h1v2"/><line x1="4" y1="12" x2="20" y2="12"/></svg>
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"><path d="M4 12h16v4a4 4 0 0 1-4 4H8a4 4 0 0 1-4-4v-4z" /><path d="M6 12V5a2 2 0 0 1 2-2h1v2" /><line x1="4" y1="12" x2="20" y2="12" /></svg>
               {banheiros} banh
             </span>
           )}
           {vagas && (
             <span className="adm-card__atrib">
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"><rect x="2" y="10" width="20" height="8" rx="2"/><path d="M6 10V7a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v3"/><circle cx="7" cy="18" r="1"/><circle cx="17" cy="18" r="1"/></svg>
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"><rect x="2" y="10" width="20" height="8" rx="2" /><path d="M6 10V7a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v3" /><circle cx="7" cy="18" r="1" /><circle cx="17" cy="18" r="1" /></svg>
               {vagas} vaga{vagas !== '1' ? 's' : ''}
             </span>
           )}
@@ -288,11 +288,33 @@ function CardImovel({ imovel, onEditar, onRemover, onPreview }) {
   )
 }
 
+
 /* adicionar / editar*/
 function ModalFormulario({ imovelEditando, onFechar, onSalvar }) {
   const edicao = !!imovelEditando
   const [form, setForm] = useState(imovelEditando ? { ...imovelEditando } : { ...FORM_VAZIO })
   const fileRef = useRef(null)
+
+  useEffect(() => {
+    if (imovelEditando) {
+      setForm({
+        id: imovelEditando.id ?? '',
+        titulo: imovelEditando.titulo ?? '',
+        tipo: imovelEditando.tipo ?? 'apartamento',
+        modalidade: imovelEditando.modalidade ?? 'venda',
+        categoria: imovelEditando.categoria ?? '',
+        valor: imovelEditando.valor ?? '',
+        area: imovelEditando.area ?? '',
+        quartos: imovelEditando.quartos ?? '',      // null → ''
+        banheiros: imovelEditando.banheiros ?? '',  // null → ''
+        vagas: imovelEditando.vagas ?? '',          // null → ''
+        descricao: imovelEditando.descricao ?? '',
+        bairro: imovelEditando.bairro ?? '',
+        cidade: imovelEditando.cidade ?? '',
+        imagens: imovelEditando.imagens ?? []
+      })
+    }
+  }, [imovelEditando])
 
   function set(campo, valor) {
     setForm(f => ({ ...f, [campo]: valor }))
@@ -300,7 +322,11 @@ function ModalFormulario({ imovelEditando, onFechar, onSalvar }) {
 
   function handleImagemAdd(e) {
     const arquivos = Array.from(e.target.files)
-    const novas = arquivos.map(f => ({ url: URL.createObjectURL(f), nome: f.name }))
+    const novas = arquivos.map(f => ({
+      url: URL.createObjectURL(f), // só para preview no form
+      nome: f.name,
+      file: f // guarda o arquivo original para fazer upload depois
+    }))
     setForm(f => ({ ...f, imagens: [...(f.imagens || []), ...novas] }))
     e.target.value = ''
   }
@@ -309,9 +335,23 @@ function ModalFormulario({ imovelEditando, onFechar, onSalvar }) {
     setForm(f => ({ ...f, imagens: f.imagens.filter((_, i) => i !== idx) }))
   }
 
-  function handleSubmit() {
-    if (!form.titulo.trim()) { alert('Informe o título do imóvel.'); return }
-    if (!form.valor.trim())  { alert('Informe o valor.'); return }
+  function handleSubmit(e) {
+    // Evita que a página recarregue ao clicar no botão
+    if (e && e.preventDefault) e.preventDefault();
+
+    // 1. Validação segura convertendo tudo para Texto antes de testar com o trim
+    if (!String(form.titulo).trim() || !String(form.valor).trim() || !String(form.area).trim()) {
+      alert('Por favor, preencha os campos obrigatórios (Título, Valor e Área).');
+      return;
+    }
+
+    // 2. Validação secundária do valor também protegida contra números puros
+    if (!String(form.valor).trim()) {
+      alert('Informe o valor.');
+      return;
+    }
+
+    // Envia os dados limpos para a função salvar salvar no Supabase
     onSalvar(form)
   }
 
@@ -438,7 +478,7 @@ function ModalFormulario({ imovelEditando, onFechar, onSalvar }) {
                 <label className="adm-form__label">Quartos</label>
                 <select className="adm-form__select" value={form.quartos} onChange={e => set('quartos', e.target.value)}>
                   <option value="">—</option>
-                  {[1,2,3,4,5,6].map(n => <option key={n} value={String(n)}>{n}</option>)}
+                  {[1, 2, 3, 4, 5, 6].map(n => <option key={n} value={String(n)}>{n}</option>)}
                   <option value="7+">7+</option>
                 </select>
               </div>
@@ -446,7 +486,7 @@ function ModalFormulario({ imovelEditando, onFechar, onSalvar }) {
                 <label className="adm-form__label">Banheiros</label>
                 <select className="adm-form__select" value={form.banheiros} onChange={e => set('banheiros', e.target.value)}>
                   <option value="">—</option>
-                  {[1,2,3,4,5].map(n => <option key={n} value={String(n)}>{n}</option>)}
+                  {[1, 2, 3, 4, 5].map(n => <option key={n} value={String(n)}>{n}</option>)}
                   <option value="6+">6+</option>
                 </select>
               </div>
@@ -454,7 +494,7 @@ function ModalFormulario({ imovelEditando, onFechar, onSalvar }) {
                 <label className="adm-form__label">Vagas</label>
                 <select className="adm-form__select" value={form.vagas} onChange={e => set('vagas', e.target.value)}>
                   <option value="">—</option>
-                  {[1,2,3,4,5].map(n => <option key={n} value={String(n)}>{n}</option>)}
+                  {[1, 2, 3, 4, 5].map(n => <option key={n} value={String(n)}>{n}</option>)}
                   <option value="6+">6+</option>
                 </select>
               </div>
@@ -482,7 +522,11 @@ function ModalFormulario({ imovelEditando, onFechar, onSalvar }) {
               onDrop={e => {
                 e.preventDefault()
                 const arquivos = Array.from(e.dataTransfer.files).filter(f => f.type.startsWith('image/'))
-                const novas = arquivos.map(f => ({ url: URL.createObjectURL(f), nome: f.name }))
+                const novas = arquivos.map(f => ({
+                  url: URL.createObjectURL(f),
+                  nome: f.name,
+                  file: f  // ← adiciona isso
+                }))
                 setForm(f => ({ ...f, imagens: [...(f.imagens || []), ...novas] }))
               }}
             >
@@ -551,17 +595,17 @@ function ModalConfirmacao({ imovel, onConfirmar, onCancelar }) {
 
 /* pagina principal */
 function Adm() {
-  const [imoveis, setImoveis]           = useState([]) // Começa vazio
-  const [carregando, setCarregando]     = useState(true) // Novo estado de carregamento
-  const [modalAberto, setModalAberto]   = useState(false)
+  const [imoveis, setImoveis] = useState([]) // Começa vazio
+  const [carregando, setCarregando] = useState(true) // Novo estado de carregamento
+  const [modalAberto, setModalAberto] = useState(false)
   const [imovelEditando, setImovelEdit] = useState(null)
   const [imovelRemover, setImovelRemov] = useState(null)
   const [imovelPreview, setImovelPreview] = useState(null)
-  const [toast, setToast]               = useState(null)
-  const [busca, setBusca]               = useState('')
-  const [filtroTipo, setFiltroTipo]           = useState('')
+  const [toast, setToast] = useState(null)
+  const [busca, setBusca] = useState('')
+  const [filtroTipo, setFiltroTipo] = useState('')
   const [filtroCategoria, setFiltroCategoria] = useState('')
-  const [filtroMod, setFiltroMod]             = useState('')
+  const [filtroMod, setFiltroMod] = useState('')
 
   // FUNÇÃO NOVA: Busca os imóveis direto do Supabase
   const buscarImoveis = async () => {
@@ -596,50 +640,85 @@ function Adm() {
   function abrirEditar(imovel) { setImovelEdit(imovel); setModalAberto(true) }
   function fecharModal() { setModalAberto(false); setImovelEdit(null) }
 
- async function salvar(dadosForm) {
-    try {
-      const dadosImovel = {
-        titulo: dadosForm.titulo,
-        tipo: dadosForm.tipo,
-        modalidade: dadosForm.modalidade,
-        categoria: dadosForm.tipo === 'comercial' ? dadosForm.categoria : null,
-        valor: parseFloat(dadosForm.valor) || 0,
-        area: parseFloat(dadosForm.area) || 0,
-        quartos: dadosForm.tipo !== 'comercial' ? dadosForm.quartos : null,
-        banheiros: dadosForm.banheiros || null,
-        vagas: dadosForm.vagas || null,
-        descricao: dadosForm.descricao,
-        bairro: dadosForm.bairro || '',
-        cidade: dadosForm.cidade || '',
-        imagens: dadosForm.imagens && dadosForm.imagens.length > 0 ? dadosForm.imagens : null
-      }
+  // Substitui a função salvar inteira:
+async function salvar(dadosForm) {
+  try {
+    // 1. Faz upload das imagens novas (que têm .file) para o Supabase Storage
+    const imagensFinais = await Promise.all(
+      (dadosForm.imagens || []).map(async (img) => {
+        // Se já tem URL pública (não é blob:), é imagem já salva — mantém
+        if (!img.file) return { url: img.url, nome: img.nome }
 
-      if (imovelEditando) {
-        // ── MODO EDIÇÃO ──
-        const { error } = await supabase
-          .from('imoveis')
-          .update(dadosImovel)
-          .eq('id', imovelEditando.id)
+        // Gera nome único para o arquivo
+        const ext = img.nome.split('.').pop()
+        const nomeArquivo = `${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`
 
-        if (error) throw error
-        showToast('Imóvel atualizado com sucesso!')
-      } else {
-        // ── MODO CRIAÇÃO ──
-        const { error } = await supabase
-          .from('imoveis')
-          .insert([dadosImovel])
+        const { error: uploadError } = await supabase.storage
+          .from('imoveis-imagens')
+          .upload(nomeArquivo, img.file, { upsert: false })
 
-        if (error) throw error
-        showToast('Imóvel publicado com sucesso!')
-      }
+          console.log('Upload resultado:', { nomeArquivo, uploadError })
 
-      buscarImoveis() // Atualiza a tela puxando os dados novos do banco
-      fecharModal()
-    } catch (error) {
-      console.error('Erro ao salvar imóvel:', error.message)
-      showToast('Erro ao salvar no banco de dados.', 'error')
+        if (uploadError) throw uploadError
+
+        // Pega a URL pública permanente
+        const { data: urlData } = supabase.storage
+          .from('imoveis-imagens')
+          .getPublicUrl(nomeArquivo)
+
+        return { url: urlData.publicUrl, nome: img.nome }
+      })
+    )
+console.log('imagensFinais:', imagensFinais)
+    const dadosImovel = {
+      titulo: dadosForm.titulo,
+      tipo: dadosForm.tipo,
+      modalidade: dadosForm.modalidade,
+      categoria: dadosForm.tipo === 'comercial' ? dadosForm.categoria : null,
+      valor: parseFloat(dadosForm.valor) || 0,
+      area: parseFloat(dadosForm.area) || 0,
+      quartos: dadosForm.tipo !== 'comercial' ? dadosForm.quartos : null,
+      banheiros: dadosForm.banheiros || null,
+      vagas: dadosForm.vagas || null,
+      descricao: dadosForm.descricao,
+      bairro: dadosForm.bairro || '',
+      cidade: dadosForm.cidade || '',
+      imagens: imagensFinais.length > 0 ? imagensFinais : null,
     }
+
+    if (dadosForm.id) {
+      const { data, error } = await supabase
+        .from('imoveis')
+        .update(dadosImovel)
+        .eq('id', dadosForm.id)
+        .select()
+
+      if (error) throw error
+       console.log('Dados salvos (update):', data)
+      if (data?.length > 0) {
+        setImoveis(prev => prev.map(im => im.id === dadosForm.id ? data[0] : im))
+      }
+      showToast('Imóvel atualizado com sucesso!', 'success')
+    } else {
+      const { data, error } = await supabase
+        .from('imoveis')
+        .insert([dadosImovel])
+        .select()
+
+      if (error) throw error
+       console.log('Dados salvos (update):', data)
+      if (data?.length > 0) {
+        setImoveis(prev => [data[0], ...prev])
+      }
+      showToast('Imóvel publicado com sucesso!', 'success')
+    }
+
+    fecharModal()
+  } catch (error) {
+    console.error('Erro ao salvar:', error.message)
+    alert('Erro ao salvar: ' + error.message)
   }
+}
 
   function pedirRemocao(imovel) { setImovelRemov(imovel) }
 
@@ -657,7 +736,7 @@ function Adm() {
 
       // 2. Só tira da ecrã se o Supabase confirmou que apagou
       setImoveis(prev => prev.filter(im => im.id !== imovelRemover.id));
-      
+
       // 3. Fecha o modal de confirmação
       setImovelRemov(null);
 
@@ -668,27 +747,27 @@ function Adm() {
     }
   }
 
-  const totalVenda   = imoveis.filter(i => i.modalidade === 'venda').length
+  const totalVenda = imoveis.filter(i => i.modalidade === 'venda').length
   const totalAluguel = imoveis.filter(i => i.modalidade === 'aluguel').length
 
   const imoveisFiltrados = imoveis.filter(im => {
-    const matchBusca     = im.titulo.toLowerCase().includes(busca.toLowerCase())
-    const matchTipo      = !filtroTipo || im.tipo === filtroTipo
-    const matchMod       = !filtroMod  || im.modalidade === filtroMod
+    const matchBusca = im.titulo.toLowerCase().includes(busca.toLowerCase())
+    const matchTipo = !filtroTipo || im.tipo === filtroTipo
+    const matchMod = !filtroMod || im.modalidade === filtroMod
     const matchCategoria = !filtroCategoria || im.categoria === filtroCategoria
     return matchBusca && matchTipo && matchMod && matchCategoria
   })
 
   // Imoveis da modalidade selecionada para mini-lista na sidebar
-  const imoveisVenda   = imoveis.filter(i => i.modalidade === 'venda')
+  const imoveisVenda = imoveis.filter(i => i.modalidade === 'venda')
   const imoveisAluguel = imoveis.filter(i => i.modalidade === 'aluguel')
 
   const tituloTopbar =
-    filtroMod === 'venda'   ? 'Imóveis à Venda' :
-    filtroMod === 'aluguel' ? 'Imóveis para Aluguel' :
-    'Gestão de Imóveis'
+    filtroMod === 'venda' ? 'Imóveis à Venda' :
+      filtroMod === 'aluguel' ? 'Imóveis para Aluguel' :
+        'Gestão de Imóveis'
 
- if (carregando) {
+  if (carregando) {
     return (
       <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh', fontFamily: 'Jost', color: '#004169' }}>
         <h2>Conectando ao banco de dados...</h2>
@@ -715,8 +794,8 @@ function Adm() {
             onClick={() => { setFiltroMod(''); setFiltroTipo('') }}
           >
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-              <rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/>
-              <rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/>
+              <rect x="3" y="3" width="7" height="7" rx="1" /><rect x="14" y="3" width="7" height="7" rx="1" />
+              <rect x="3" y="14" width="7" height="7" rx="1" /><rect x="14" y="14" width="7" height="7" rx="1" />
             </svg>
             <span>Todos</span>
             <span className="adm-sidebar__nav-count">{imoveis.length}</span>
@@ -727,8 +806,8 @@ function Adm() {
             onClick={() => { setFiltroMod('venda'); setFiltroTipo('') }}
           >
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
-              <polyline points="9 22 9 12 15 12 15 22"/>
+              <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+              <polyline points="9 22 9 12 15 12 15 22" />
             </svg>
             <span>Venda</span>
             <span className="adm-sidebar__nav-count adm-sidebar__nav-count--venda">{totalVenda}</span>
@@ -739,8 +818,8 @@ function Adm() {
             onClick={() => { setFiltroMod('aluguel'); setFiltroTipo('') }}
           >
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-              <rect x="2" y="7" width="20" height="14" rx="2"/>
-              <path d="M16 3l-4 4-4-4"/>
+              <rect x="2" y="7" width="20" height="14" rx="2" />
+              <path d="M16 3l-4 4-4-4" />
             </svg>
             <span>Aluguel</span>
             <span className="adm-sidebar__nav-count adm-sidebar__nav-count--aluguel">{totalAluguel}</span>
@@ -759,7 +838,7 @@ function Adm() {
                   <div className="adm-sidebar__lista-thumb">
                     {im.imagens && im.imagens.length > 0
                       ? <img src={im.imagens[0].url} alt={im.titulo} />
-                      : <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+                      : <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" /><circle cx="8.5" cy="8.5" r="1.5" /><polyline points="21 15 16 10 5 21" /></svg>
                     }
                   </div>
                   <div className="adm-sidebar__lista-info">
