@@ -641,84 +641,84 @@ function Adm() {
   function fecharModal() { setModalAberto(false); setImovelEdit(null) }
 
   // Substitui a função salvar inteira:
-async function salvar(dadosForm) {
-  try {
-    // 1. Faz upload das imagens novas (que têm .file) para o Supabase Storage
-    const imagensFinais = await Promise.all(
-      (dadosForm.imagens || []).map(async (img) => {
-        // Se já tem URL pública (não é blob:), é imagem já salva — mantém
-        if (!img.file) return { url: img.url, nome: img.nome }
+  async function salvar(dadosForm) {
+    try {
+      // 1. Faz upload das imagens novas (que têm .file) para o Supabase Storage
+      const imagensFinais = await Promise.all(
+        (dadosForm.imagens || []).map(async (img) => {
+          // Se já tem URL pública (não é blob:), é imagem já salva — mantém
+          if (!img.file) return { url: img.url, nome: img.nome }
 
-        // Gera nome único para o arquivo
-        const ext = img.nome.split('.').pop()
-        const nomeArquivo = `${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`
+          // Gera nome único para o arquivo
+          const ext = img.nome.split('.').pop()
+          const nomeArquivo = `${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`
 
-        const { error: uploadError } = await supabase.storage
-          .from('imoveis-imagens')
-          .upload(nomeArquivo, img.file, { upsert: false })
+          const { error: uploadError } = await supabase.storage
+            .from('imoveis-imagens')
+            .upload(nomeArquivo, img.file, { upsert: false })
 
           console.log('Upload resultado:', { nomeArquivo, uploadError })
 
-        if (uploadError) throw uploadError
+          if (uploadError) throw uploadError
 
-        // Pega a URL pública permanente
-        const { data: urlData } = supabase.storage
-          .from('imoveis-imagens')
-          .getPublicUrl(nomeArquivo)
+          // Pega a URL pública permanente
+          const { data: urlData } = supabase.storage
+            .from('imoveis-imagens')
+            .getPublicUrl(nomeArquivo)
 
-        return { url: urlData.publicUrl, nome: img.nome }
-      })
-    )
-console.log('imagensFinais:', imagensFinais)
-    const dadosImovel = {
-      titulo: dadosForm.titulo,
-      tipo: dadosForm.tipo,
-      modalidade: dadosForm.modalidade,
-      categoria: dadosForm.tipo === 'comercial' ? dadosForm.categoria : null,
-      valor: parseFloat(dadosForm.valor) || 0,
-      area: parseFloat(dadosForm.area) || 0,
-      quartos: dadosForm.tipo !== 'comercial' ? dadosForm.quartos : null,
-      banheiros: dadosForm.banheiros || null,
-      vagas: dadosForm.vagas || null,
-      descricao: dadosForm.descricao,
-      bairro: dadosForm.bairro || '',
-      cidade: dadosForm.cidade || '',
-      imagens: imagensFinais.length > 0 ? imagensFinais : null,
-    }
-
-    if (dadosForm.id) {
-      const { data, error } = await supabase
-        .from('imoveis')
-        .update(dadosImovel)
-        .eq('id', dadosForm.id)
-        .select()
-
-      if (error) throw error
-       console.log('Dados salvos (update):', data)
-      if (data?.length > 0) {
-        setImoveis(prev => prev.map(im => im.id === dadosForm.id ? data[0] : im))
+          return { url: urlData.publicUrl, nome: img.nome }
+        })
+      )
+      console.log('imagensFinais:', imagensFinais)
+      const dadosImovel = {
+        titulo: dadosForm.titulo,
+        tipo: dadosForm.tipo,
+        modalidade: dadosForm.modalidade,
+        categoria: dadosForm.tipo === 'comercial' ? dadosForm.categoria : null,
+        valor: parseFloat(dadosForm.valor) || 0,
+        area: parseFloat(dadosForm.area) || 0,
+        quartos: dadosForm.tipo !== 'comercial' ? dadosForm.quartos : null,
+        banheiros: dadosForm.banheiros || null,
+        vagas: dadosForm.vagas || null,
+        descricao: dadosForm.descricao,
+        bairro: dadosForm.bairro || '',
+        cidade: dadosForm.cidade || '',
+        imagens: imagensFinais.length > 0 ? imagensFinais : null,
       }
-      showToast('Imóvel atualizado com sucesso!', 'success')
-    } else {
-      const { data, error } = await supabase
-        .from('imoveis')
-        .insert([dadosImovel])
-        .select()
 
-      if (error) throw error
-       console.log('Dados salvos (update):', data)
-      if (data?.length > 0) {
-        setImoveis(prev => [data[0], ...prev])
+      if (dadosForm.id) {
+        const { data, error } = await supabase
+          .from('imoveis')
+          .update(dadosImovel)
+          .eq('id', dadosForm.id)
+          .select()
+
+        if (error) throw error
+        console.log('Dados salvos (update):', data)
+        if (data?.length > 0) {
+          setImoveis(prev => prev.map(im => im.id === dadosForm.id ? data[0] : im))
+        }
+        showToast('Imóvel atualizado com sucesso!', 'success')
+      } else {
+        const { data, error } = await supabase
+          .from('imoveis')
+          .insert([dadosImovel])
+          .select()
+
+        if (error) throw error
+        console.log('Dados salvos (update):', data)
+        if (data?.length > 0) {
+          setImoveis(prev => [data[0], ...prev])
+        }
+        showToast('Imóvel publicado com sucesso!', 'success')
       }
-      showToast('Imóvel publicado com sucesso!', 'success')
-    }
 
-    fecharModal()
-  } catch (error) {
-    console.error('Erro ao salvar:', error.message)
-    alert('Erro ao salvar: ' + error.message)
+      fecharModal()
+    } catch (error) {
+      console.error('Erro ao salvar:', error.message)
+      alert('Erro ao salvar: ' + error.message)
+    }
   }
-}
 
   function pedirRemocao(imovel) { setImovelRemov(imovel) }
 
@@ -856,6 +856,17 @@ console.log('imagensFinais:', imagensFinais)
 
         <div className="adm-sidebar__footer">
           <span className="adm-sidebar__footer-text">JMarinho Imóveis © 2025</span>
+          <button
+            className="adm-sidebar__sair"
+            onClick={() => supabase.auth.signOut()}
+          >
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+              <polyline points="16 17 21 12 16 7" />
+              <line x1="21" y1="12" x2="9" y2="12" />
+            </svg>
+            Sair
+          </button>
         </div>
       </aside>
 

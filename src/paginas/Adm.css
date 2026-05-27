@@ -1725,3 +1725,24 @@
   border-color: var(--azul);
   color: #fff;
 }
+
+.adm-sidebar__sair {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  background: none;
+  border: 1px solid rgba(161, 217, 248, 0.1);
+  border-radius: 6px;
+  padding: 7px 14px;
+  font-family: 'Jost', sans-serif;
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  color: rgba(161, 217, 248, 0.4);
+  cursor: pointer;
+  margin-top: 8px;
+  transition: color 0.2s, border-color 0.2s;
+}
+.adm-sidebar__sair:hover {
+  color: #f08080;
+  border-color: rgba(220, 60, 60, 0.3);
+}
