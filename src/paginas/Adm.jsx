@@ -167,7 +167,7 @@ function ModalPreview({ imovel, onFechar, onEditar }) {
           </button>
         </div>
 
-        {/* Conteúdo */}
+        <div className="modal-content-col">
         <div className="modal-body">
           <div className="modal-header-row">
             <p className="modal-endereco">
@@ -212,12 +212,12 @@ function ModalPreview({ imovel, onFechar, onEditar }) {
           </div>
         </div>
 
-        {/* Footer — só Editar e Fechar */}
         <div className="modal-footer">
           <button className="modal-btn-voltar" onClick={onFechar}>FECHAR</button>
           <button className="modal-btn-contato" style={{ background: 'var(--azul-escuro)' }} onClick={() => { onFechar(); onEditar(imovel) }}>
             EDITAR IMÓVEL
           </button>
+        </div>
         </div>
 
       </div>

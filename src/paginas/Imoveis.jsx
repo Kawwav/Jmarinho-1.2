@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback, useRef } from 'react'
 import Nav from '../componentes/Nav'
 import Footer from '../componentes/Footer'
 import { supabase } from '../supabaseClient'
@@ -14,16 +14,120 @@ function formatarValor(valor, modalidade) {
 }
 
 /* ── Modal ── */
+/* ── Lightbox com zoom ── */
+function Lightbox({ imagens, indiceInicial, onClose }) {
+  const total = imagens.length
+  const [indice, setIndice] = useState(indiceInicial)
+  const [zoom, setZoom] = useState(1)
+  const [pos, setPos] = useState({ x: 0, y: 0 })
+  const [arrastando, setArrastando] = useState(false)
+  const [origem, setOrigem] = useState({ x: 0, y: 0 })
+  const thumbRef = useRef(null)
+
+  const irPara = useCallback((i) => { setIndice(i); setZoom(1); setPos({ x: 0, y: 0 }) }, [])
+  const prev = useCallback(() => irPara((indice - 1 + total) % total), [indice, total, irPara])
+  const next = useCallback(() => irPara((indice + 1) % total), [indice, total, irPara])
+
+  useEffect(() => {
+    const handleKey = (e) => {
+      if (e.key === 'Escape') onClose()
+      if (e.key === 'ArrowLeft') prev()
+      if (e.key === 'ArrowRight') next()
+      if (e.key === '+' || e.key === '=') setZoom(z => Math.min(z + 0.5, 4))
+      if (e.key === '-') setZoom(z => { const nz = Math.max(z - 0.5, 1); if (nz === 1) setPos({ x: 0, y: 0 }); return nz })
+    }
+    window.addEventListener('keydown', handleKey)
+    return () => window.removeEventListener('keydown', handleKey)
+  }, [onClose, prev, next])
+
+  useEffect(() => {
+    const el = thumbRef.current?.children[indice]
+    el?.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' })
+  }, [indice])
+
+  const handleDoubleClick = () => {
+    if (zoom > 1) { setZoom(1); setPos({ x: 0, y: 0 }) }
+    else setZoom(2.5)
+  }
+  const handleMouseDown = (e) => { if (zoom <= 1) return; setArrastando(true); setOrigem({ x: e.clientX - pos.x, y: e.clientY - pos.y }) }
+  const handleMouseMove = (e) => { if (!arrastando) return; setPos({ x: e.clientX - origem.x, y: e.clientY - origem.y }) }
+  const handleMouseUp = () => setArrastando(false)
+  const handleWheel = (e) => { e.preventDefault(); setZoom(z => { const nz = Math.min(Math.max(z - e.deltaY * 0.005, 1), 4); if (nz === 1) setPos({ x: 0, y: 0 }); return nz }) }
+
+  return (
+    <div className="lightbox-overlay" onClick={onClose}>
+      <div className="lightbox-inner" onClick={e => e.stopPropagation()}>
+        <div
+          className="lightbox-stage"
+          onMouseDown={handleMouseDown}
+          onMouseMove={handleMouseMove}
+          onMouseUp={handleMouseUp}
+          onMouseLeave={handleMouseUp}
+          onWheel={handleWheel}
+          onDoubleClick={handleDoubleClick}
+          style={{ cursor: zoom > 1 ? (arrastando ? 'grabbing' : 'grab') : 'zoom-in' }}
+        >
+          <img
+            src={imagens[indice]?.url}
+            alt=""
+            className="lightbox-img"
+            style={{ transform: `scale(${zoom}) translate(${pos.x / zoom}px, ${pos.y / zoom}px)`, transition: arrastando ? 'none' : 'transform 0.2s ease' }}
+            draggable={false}
+          />
+        </div>
+
+        <div className="lightbox-controls">
+          <button className="lightbox-ctrl" onClick={() => setZoom(z => Math.max(z - 0.5, 1))} title="Diminuir zoom">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
+          </button>
+          <span className="lightbox-zoom-label">{Math.round(zoom * 100)}%</span>
+          <button className="lightbox-ctrl" onClick={() => setZoom(z => Math.min(z + 0.5, 4))} title="Aumentar zoom">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
+          </button>
+          <span className="lightbox-sep"/>
+          <span className="lightbox-counter">{indice + 1} / {total}</span>
+          <button className="lightbox-ctrl lightbox-close-btn" onClick={onClose} title="Fechar">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+          </button>
+        </div>
+
+        {total > 1 && (
+          <>
+            <button className="lightbox-arrow lightbox-arrow-prev" onClick={prev}>
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+            </button>
+            <button className="lightbox-arrow lightbox-arrow-next" onClick={next}>
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </>
+        )}
+
+        {total > 1 && (
+          <div className="lightbox-thumbs" ref={thumbRef}>
+            {imagens.map((img, i) => (
+              <button key={i} className={`lightbox-thumb ${i === indice ? 'active' : ''}`} onClick={() => irPara(i)}>
+                <img src={img.url} alt="" draggable={false} />
+              </button>
+            ))}
+          </div>
+        )}
+      </div>
+    </div>
+  )
+}
+
 function ImovelModal({ imovel, onClose }) {
   const temImagens = imovel.imagens && imovel.imagens.length > 0
   const totalFotos = temImagens ? imovel.imagens.length : 1
   const [fotoAtual, setFotoAtual] = useState(0)
+  const [lightboxAberto, setLightboxAberto] = useState(false)
 
   const prev = useCallback(() => setFotoAtual(f => (f - 1 + totalFotos) % totalFotos), [totalFotos])
   const next = useCallback(() => setFotoAtual(f => (f + 1) % totalFotos), [totalFotos])
 
   useEffect(() => {
     const handleKey = (e) => {
+      if (lightboxAberto) return
       if (e.key === 'Escape') onClose()
       if (e.key === 'ArrowLeft') prev()
       if (e.key === 'ArrowRight') next()
@@ -34,16 +138,15 @@ function ImovelModal({ imovel, onClose }) {
       document.removeEventListener('keydown', handleKey)
       document.body.style.overflow = ''
     }
-  }, [onClose, prev, next])
+  }, [onClose, prev, next, lightboxAberto])
 
   const tipoLabel = imovel.modalidade === 'aluguel' ? 'ALUGUEL' : 'VENDA'
-  const categoriaLabel = imovel.tipo ? imovel.tipo.toUpperCase() : ''
 
   return (
+    <>
     <div className="modal-overlay" onClick={onClose}>
       <div className="modal-container" onClick={e => e.stopPropagation()}>
 
-        {/* ── Carrossel ── */}
         <div className="modal-carousel">
           <div className="carousel-top-fade" />
 
@@ -51,8 +154,10 @@ function ImovelModal({ imovel, onClose }) {
             <img
               src={imovel.imagens[fotoAtual]?.url}
               alt={imovel.titulo}
-              className="carousel-img"
+              className="carousel-img carousel-img--clickable"
               style={{ objectFit: 'cover', width: '100%', height: '100%' }}
+              onClick={() => setLightboxAberto(true)}
+              title="Clique para ampliar"
             />
           ) : (
             <div
@@ -66,12 +171,17 @@ function ImovelModal({ imovel, onClose }) {
             />
           )}
 
+          {temImagens && (
+            <button className="carousel-zoom-btn" onClick={() => setLightboxAberto(true)} title="Ampliar">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
+            </button>
+          )}
+
           <div className="carousel-counter">
             {fotoAtual + 1} / {totalFotos}
             <span className="carousel-tipo">{tipoLabel}</span>
           </div>
-
-          <span className="carousel-categoria">{categoriaLabel}</span>
+          <span className="carousel-categoria">{imovel.tipo ? imovel.tipo.toUpperCase() : ''}</span>
 
           {totalFotos > 1 && (
             <>
@@ -85,11 +195,6 @@ function ImovelModal({ imovel, onClose }) {
                   <path d="M9 18l6-6-6-6"/>
                 </svg>
               </button>
-              <div className="carousel-dots">
-                {imovel.imagens.map((_, i) => (
-                  <button key={i} className={`carousel-dot ${i === fotoAtual ? 'active' : ''}`} onClick={() => setFotoAtual(i)} />
-                ))}
-              </div>
             </>
           )}
 
@@ -98,60 +203,85 @@ function ImovelModal({ imovel, onClose }) {
               <path d="M18 6L6 18M6 6l12 12"/>
             </svg>
           </button>
+
+          {temImagens && totalFotos > 1 && (
+            <div className="carousel-thumbs-strip">
+              {imovel.imagens.map((img, i) => (
+                <button key={i} className={`carousel-thumb-item ${i === fotoAtual ? 'active' : ''}`} onClick={() => setFotoAtual(i)}>
+                  <img src={img.url} alt="" draggable={false} />
+                </button>
+              ))}
+            </div>
+          )}
         </div>
 
-        {/* ── Coluna direita ── */}
-        <div className="modal-right">
-          <div className="modal-body">
+        <div className="modal-content-col">
 
-            <div className="modal-header-row">
-              <p className="modal-endereco">
-                {[imovel.bairro, imovel.cidade].filter(Boolean).join(' — ')}
-              </p>
+          {/* Cabeçalho: título + preço */}
+          <div className="modal-header-bar">
+            <div className="modal-header-bar__left">
+              <p className="modal-endereco">{[imovel.bairro, imovel.cidade].filter(Boolean).join(' — ')}</p>
+              <h2 className="modal-titulo">{imovel.titulo}</h2>
+            </div>
+            <div className="modal-header-bar__right">
+              <span className="modal-preco-label">VALOR</span>
               <p className="modal-preco">{formatarValor(imovel.valor, imovel.modalidade)}</p>
             </div>
+          </div>
 
-            <h2 className="modal-titulo">{imovel.titulo}</h2>
+          {/* Duas colunas: descrição + specs */}
+          <div className="modal-two-col">
 
-            {imovel.descricao && <p className="modal-descricao">{imovel.descricao}</p>}
+            {/* Esquerda: descrição */}
+            <div className="modal-col-desc">
+              <p className="modal-col-label">DESCRIÇÃO</p>
+              {imovel.descricao
+                ? <p className="modal-descricao-full">{imovel.descricao}</p>
+                : <p className="modal-descricao-vazia">Sem descrição disponível.</p>
+              }
+            </div>
 
-            <div className="modal-specs">
-              {imovel.quartos && (
-                <div className="modal-spec-item">
-                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/>
-                  </svg>
-                  <span className="spec-valor">{imovel.quartos}</span>
-                  <span className="spec-label">QUARTOS</span>
-                </div>
-              )}
-              {imovel.banheiros && (
-                <div className="modal-spec-item">
-                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M4 12h16M4 12V6a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v6M4 12v4a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-4"/>
-                  </svg>
-                  <span className="spec-valor">{imovel.banheiros}</span>
-                  <span className="spec-label">BANHEIROS</span>
-                </div>
-              )}
-              {imovel.vagas && (
-                <div className="modal-spec-item">
-                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
-                    <rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 3l-4 4-4-4"/>
-                  </svg>
-                  <span className="spec-valor">{imovel.vagas}</span>
-                  <span className="spec-label">VAGAS</span>
-                </div>
-              )}
-              {imovel.area && (
-                <div className="modal-spec-item">
-                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
-                    <rect x="3" y="3" width="18" height="18" rx="1"/><path d="M3 9h18M9 21V9"/>
-                  </svg>
-                  <span className="spec-valor">{imovel.area} m²</span>
-                  <span className="spec-label">ÁREA</span>
-                </div>
-              )}
+            {/* Direita: specs */}
+            <div className="modal-col-specs">
+              <p className="modal-col-label">CARACTERÍSTICAS</p>
+              <div className="modal-specs-grid">
+                {imovel.quartos && (
+                  <div className="modal-spec-item">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/>
+                    </svg>
+                    <span className="spec-valor">{imovel.quartos}</span>
+                    <span className="spec-label">QUARTOS</span>
+                  </div>
+                )}
+                {imovel.banheiros && (
+                  <div className="modal-spec-item">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M4 12h16M4 12V6a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v6M4 12v4a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-4"/>
+                    </svg>
+                    <span className="spec-valor">{imovel.banheiros}</span>
+                    <span className="spec-label">BANHEIROS</span>
+                  </div>
+                )}
+                {imovel.vagas && (
+                  <div className="modal-spec-item">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+                      <rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 3l-4 4-4-4"/>
+                    </svg>
+                    <span className="spec-valor">{imovel.vagas}</span>
+                    <span className="spec-label">VAGAS</span>
+                  </div>
+                )}
+                {imovel.area && (
+                  <div className="modal-spec-item">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+                      <rect x="3" y="3" width="18" height="18" rx="1"/><path d="M3 9h18M9 21V9"/>
+                    </svg>
+                    <span className="spec-valor">{imovel.area} m²</span>
+                    <span className="spec-label">ÁREA</span>
+                  </div>
+                )}
+              </div>
             </div>
 
           </div>
@@ -163,6 +293,11 @@ function ImovelModal({ imovel, onClose }) {
         </div>
       </div>
     </div>
+
+    {lightboxAberto && temImagens && (
+      <Lightbox imagens={imovel.imagens} indiceInicial={fotoAtual} onClose={() => setLightboxAberto(false)} />
+    )}
+    </>
   )
 }
 

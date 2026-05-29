@@ -76,10 +76,10 @@ function ComercialModal({ imovel, onClose }) {
   const tipoLabel = imovel.modalidade === 'aluguel' ? 'ALUGUEL' : 'VENDA'
 
   return (
-    <div className="modal-overlay" onClick={onClose}>
-      <div className="modal-container" onClick={e => e.stopPropagation()}>
+    <div className="com-modal-overlay" onClick={onClose}>
+      <div className="com-modal-container" onClick={e => e.stopPropagation()}>
 
-        <div className="modal-carousel">
+        <div className="com-modal-carousel">
           <div className="carousel-top-fade" />
 
           {temImagens ? (
@@ -127,27 +127,28 @@ function ComercialModal({ imovel, onClose }) {
             </>
           )}
 
-          <button className="modal-close" onClick={onClose}>
+          <button className="com-modal-close" onClick={onClose}>
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round">
               <path d="M18 6L6 18M6 6l12 12"/>
             </svg>
           </button>
         </div>
 
-        {/* Conteúdo */}
-        <div className="modal-body">
-          <div className="modal-header-row">
-            <p className="modal-endereco">
+        {/* Coluna direita */}
+        <div className="com-modal-content-col">
+        <div className="com-modal-body">
+          <div className="com-modal-header-row">
+            <p className="com-modal-endereco">
               {[imovel.bairro, imovel.cidade].filter(Boolean).join(' — ')}
             </p>
-            <p className="modal-preco">{formatarValor(imovel.valor, imovel.modalidade)}</p>
+            <p className="com-modal-preco">{formatarValor(imovel.valor, imovel.modalidade)}</p>
           </div>
-          <h2 className="modal-titulo">{imovel.titulo}</h2>
-          {imovel.descricao && <p className="modal-descricao">{imovel.descricao}</p>}
+          <h2 className="com-modal-titulo">{imovel.titulo}</h2>
+          {imovel.descricao && <p className="com-modal-descricao">{imovel.descricao}</p>}
 
-          <div className="modal-specs">
+          <div className="com-modal-specs">
             {imovel.area && (
-              <div className="modal-spec-item">
+              <div className="com-modal-spec-item">
                 <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
                   <rect x="3" y="3" width="18" height="18" rx="1"/><path d="M3 9h18M9 21V9"/>
                 </svg>
@@ -156,7 +157,7 @@ function ComercialModal({ imovel, onClose }) {
               </div>
             )}
             {imovel.vagas && (
-              <div className="modal-spec-item">
+              <div className="com-modal-spec-item">
                 <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
                   <rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 3l-4 4-4-4"/>
                 </svg>
@@ -165,7 +166,7 @@ function ComercialModal({ imovel, onClose }) {
               </div>
             )}
             {imovel.banheiros && (
-              <div className="modal-spec-item">
+              <div className="com-modal-spec-item">
                 <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
                   <path d="M4 12h16M4 12V6a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v6M4 12v4a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-4"/>
                 </svg>
@@ -174,7 +175,7 @@ function ComercialModal({ imovel, onClose }) {
               </div>
             )}
             {imovel.categoria && (
-              <div className="modal-spec-item">
+              <div className="com-modal-spec-item">
                 <IconeCategoria categoria={imovel.categoria} />
                 <span className="spec-valor">{imovel.categoria}</span>
                 <span className="spec-label">TIPO</span>
@@ -183,9 +184,10 @@ function ComercialModal({ imovel, onClose }) {
           </div>
         </div>
 
-        <div className="modal-footer">
-          <button className="modal-btn-contato">ENTRAR EM CONTATO</button>
-          <button className="modal-btn-voltar" onClick={onClose}>VOLTAR</button>
+        <div className="com-modal-footer">
+          <button className="com-modal-btn-contato">ENTRAR EM CONTATO</button>
+          <button className="com-modal-btn-voltar" onClick={onClose}>VOLTAR</button>
+        </div>
         </div>
       </div>
     </div>

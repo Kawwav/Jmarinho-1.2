@@ -1,0 +1,233 @@
+/* ─────────────────────────────────────────
+   Card.css  –  componente compartilhado
+   Usado por: Imoveis, Comercial, Adm
+   ───────────────────────────────────────── */
+
+.card {
+  background: #ffffff;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid #ddeaf3;
+  box-shadow: 0 2px 16px rgba(0, 65, 105, 0.06);
+  transition: box-shadow 0.3s, transform 0.3s;
+  display: flex;
+  flex-direction: column;
+  cursor: pointer;
+}
+
+.card:hover {
+  box-shadow: 0 8px 32px rgba(0, 65, 105, 0.13);
+  transform: translateY(-3px);
+}
+
+/* ── Imagem (topo) ── */
+.card__img {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.card__img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.4s ease;
+}
+
+.card:hover .card__img img {
+  transform: scale(1.04);
+}
+
+.card__img-placeholder {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    135deg,
+    #A1D9F8 0%,
+    #008BD2 60%,
+    #004169 100%
+  );
+  opacity: 0.55;
+}
+
+/* Badges sobre a imagem */
+.card__badge {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  font-family: 'Jost', sans-serif;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  padding: 4px 12px;
+  border-radius: 4px;
+  text-transform: uppercase;
+}
+
+.card__badge--venda {
+  background: #008BD2;
+  color: #ffffff;
+}
+
+.card__badge--alugar {
+  background: #004169;
+  color: #ffffff;
+}
+
+.card__categoria {
+  position: absolute;
+  bottom: 10px;
+  left: 12px;
+  font-family: 'Jost', sans-serif;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  color: #ffffff;
+  background: rgba(0, 0, 0, 0.45);
+  padding: 3px 10px;
+  border-radius: 4px;
+  backdrop-filter: blur(4px);
+}
+
+/* ── Corpo (abaixo da imagem) ── */
+.card__body {
+  padding: 22px 24px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex: 1;
+}
+
+.card__localizacao {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-family: 'Jost', sans-serif;
+  font-size: 11px;
+  font-weight: 400;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #008BD2;
+  margin: 0;
+}
+
+.card__localizacao svg {
+  color: #008BD2;
+  flex-shrink: 0;
+}
+
+.card__titulo {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 500;
+  font-size: 26px;
+  color: #004169;
+  margin: 2px 0 0;
+  line-height: 1.2;
+}
+
+.card__preco {
+  font-family: 'Jost', sans-serif;
+  font-size: 22px;
+  font-weight: 500;
+  color: #004169;
+  margin: 4px 0 8px;
+  letter-spacing: 0.01em;
+}
+
+/* ── Specs ── */
+.card__specs {
+  display: flex;
+  gap: 18px;
+  flex-wrap: wrap;
+  padding: 12px 0;
+  border-top: 1px solid #e8f1f8;
+  border-bottom: 1px solid #e8f1f8;
+  margin-bottom: 16px;
+}
+
+.card__specs span {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-family: 'Jost', sans-serif;
+  font-size: 13px;
+  font-weight: 400;
+  color: #5a7a90;
+  letter-spacing: 0.02em;
+}
+
+.card__specs svg {
+  color: #008BD2;
+  flex-shrink: 0;
+}
+
+/* ── Botão principal (Imoveis / Comercial) ── */
+.card__btn-ver {
+  width: 100%;
+  height: 50px;
+  border-radius: 6px;
+  border: 1.5px solid #008BD2;
+  background: transparent;
+  font-family: 'Jost', sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #008BD2;
+  cursor: pointer;
+  transition: background 0.25s, color 0.25s;
+  margin-top: auto;
+}
+
+.card__btn-ver:hover {
+  background: #008BD2;
+  color: #ffffff;
+}
+
+/* ── Rodapé Adm (Editar / Remover) ── */
+.card__footer-adm {
+  display: flex;
+  gap: 8px;
+  margin-top: auto;
+  padding-top: 4px;
+}
+
+.card__btn {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  height: 38px;
+  border-radius: 6px;
+  border: none;
+  font-family: 'Jost', sans-serif;
+  font-size: 12px;
+  font-weight: 400;
+  letter-spacing: 0.06em;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+
+.card__btn--editar {
+  background: #eaf3fa;
+  color: #004169;
+}
+
+.card__btn--editar:hover {
+  background: #c5dff5;
+  color: #002a45;
+}
+
+.card__btn--remover {
+  background: #fdf0f0;
+  color: #b05050;
+}
+
+.card__btn--remover:hover {
+  background: #f8d8d8;
+  color: #8a2020;
+}
