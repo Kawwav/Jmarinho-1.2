@@ -520,7 +520,7 @@
 
 .adm-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
   gap: 20px;
 }
 
@@ -683,28 +683,31 @@
 .adm-card__atrib svg { color: var(--azul); flex-shrink: 0; }
 
 .adm-card__footer {
-  padding: 12px 16px 14px;
+  padding: 10px 14px 12px;
   border-top: 1px solid var(--borda);
   display: flex;
-  gap: 8px;
+  gap: 6px;
   background: #fafcfe;
+  flex-wrap: wrap;
 }
 
 .adm-card__btn {
   flex: 1;
+  min-width: 0;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 6px;
-  padding: 9px 12px;
+  gap: 5px;
+  padding: 8px 8px;
   border-radius: 8px;
   font-family: 'Jost', sans-serif;
   font-weight: 400;
-  font-size: 11px;
-  letter-spacing: 0.12em;
+  font-size: 10.5px;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
   cursor: pointer;
   transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease, transform 0.15s ease;
+  white-space: nowrap;
 }
 
 .adm-card__btn:active { transform: scale(0.96); }
@@ -1765,4 +1768,206 @@
 .adm-sidebar__sair:hover {
   color: #f08080;
   border-color: rgba(220, 60, 60, 0.3);
+}
+/* ── Desativar / Ativar ── */
+.adm-card__btn--desativar {
+  color: #d97706;
+  border-color: rgba(217, 119, 6, 0.25);
+}
+.adm-card__btn--desativar:hover {
+  background: rgba(217, 119, 6, 0.08);
+  border-color: rgba(217, 119, 6, 0.5);
+  color: #b45309;
+}
+.adm-card__btn--ativar {
+  color: #16a34a;
+  border-color: rgba(22, 163, 74, 0.25);
+}
+.adm-card__btn--ativar:hover {
+  background: rgba(22, 163, 74, 0.08);
+  border-color: rgba(22, 163, 74, 0.5);
+  color: #15803d;
+}
+
+/* Botão "Inativos (N)" na topbar */
+.adm-btn-inativos {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0 14px;
+  height: 36px;
+  border-radius: 8px;
+  border: 1px solid rgba(217, 119, 6, 0.35);
+  background: rgba(217, 119, 6, 0.07);
+  color: #d97706;
+  font-family: 'Jost', sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.18s, border-color 0.18s;
+}
+.adm-btn-inativos:hover {
+  background: rgba(217, 119, 6, 0.14);
+  border-color: rgba(217, 119, 6, 0.6);
+}
+.adm-btn-inativos--ativo {
+  background: rgba(217, 119, 6, 0.15);
+  border-color: #d97706;
+  color: #b45309;
+}
+/* ── Status de negociação ── */
+.adm-form__grupo-status {
+  margin-top: 4px;
+  padding: 14px 16px;
+  background: linear-gradient(135deg, rgba(0,65,105,0.04) 0%, rgba(0,139,210,0.04) 100%);
+  border: 1px solid var(--borda);
+  border-radius: 10px;
+}
+
+.adm-form__status-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.adm-form__status-btn {
+  padding: 7px 18px;
+  border-radius: 20px;
+  border: 1.5px solid var(--borda);
+  background: #fff;
+  font-family: 'Jost', sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  color: var(--texto-leve);
+}
+
+.adm-form__status-btn--nenhum { color: var(--texto-leve); }
+.adm-form__status-btn--nenhum.adm-form__status-btn--ativo {
+  background: #f1f5f9; border-color: #94a3b8; color: #475569;
+}
+
+.adm-form__status-btn--reservado:hover,
+.adm-form__status-btn--reservado.adm-form__status-btn--ativo {
+  background: #fef3c7; border-color: #d97706; color: #92400e;
+}
+
+.adm-form__status-btn--com.adm-form__status-btn--proposta,
+.adm-form__status-btn--com\ proposta:hover,
+.adm-form__status-btn--com\ proposta.adm-form__status-btn--ativo {
+  background: #dbeafe; border-color: #3b82f6; color: #1e40af;
+}
+
+.adm-form__status-btn--locado:hover,
+.adm-form__status-btn--locado.adm-form__status-btn--ativo {
+  background: #dcfce7; border-color: #16a34a; color: #15803d;
+}
+
+/* ── Desativar / Ativar (from previous) ── */
+.adm-card__btn--desativar {
+  color: #d97706;
+  border-color: rgba(217, 119, 6, 0.25);
+}
+.adm-card__btn--desativar:hover {
+  background: rgba(217, 119, 6, 0.08);
+  border-color: rgba(217, 119, 6, 0.5);
+  color: #b45309;
+}
+.adm-card__btn--ativar {
+  color: #16a34a;
+  border-color: rgba(22, 163, 74, 0.25);
+}
+.adm-card__btn--ativar:hover {
+  background: rgba(22, 163, 74, 0.08);
+  border-color: rgba(22, 163, 74, 0.5);
+  color: #15803d;
+}
+.adm-btn-inativos {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0 14px;
+  height: 36px;
+  border-radius: 8px;
+  border: 1px solid rgba(217, 119, 6, 0.35);
+  background: rgba(217, 119, 6, 0.07);
+  color: #d97706;
+  font-family: 'Jost', sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.18s, border-color 0.18s;
+}
+.adm-btn-inativos:hover {
+  background: rgba(217, 119, 6, 0.14);
+  border-color: rgba(217, 119, 6, 0.6);
+}
+.adm-btn-inativos--ativo {
+  background: rgba(217, 119, 6, 0.15);
+  border-color: #d97706;
+  color: #b45309;
+}
+/* ── Botão link/compartilhar no card admin ── */
+.adm-card__btn--share {
+  color: #0284c7;
+  border: 1px solid rgba(2, 132, 199, 0.25);
+  background: transparent;
+}
+.adm-card__btn--share:hover {
+  background: rgba(2, 132, 199, 0.08);
+  border-color: rgba(2, 132, 199, 0.5);
+  color: #0369a1;
+}
+.adm-card__btn--share-copied {
+  background: #dcfce7 !important;
+  border-color: #16a34a !important;
+  color: #15803d !important;
+}
+
+/* ── Desativar / Ativar ── */
+.adm-card__btn--desativar {
+  color: #d97706;
+  border-color: rgba(217, 119, 6, 0.25);
+}
+.adm-card__btn--desativar:hover {
+  background: rgba(217, 119, 6, 0.08);
+  border-color: rgba(217, 119, 6, 0.5);
+  color: #b45309;
+}
+.adm-card__btn--ativar {
+  color: #16a34a;
+  border-color: rgba(22, 163, 74, 0.25);
+}
+.adm-card__btn--ativar:hover {
+  background: rgba(22, 163, 74, 0.08);
+  border-color: rgba(22, 163, 74, 0.5);
+  color: #15803d;
+}
+.adm-btn-inativos {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0 14px;
+  height: 36px;
+  border-radius: 8px;
+  border: 1px solid rgba(217, 119, 6, 0.35);
+  background: rgba(217, 119, 6, 0.07);
+  color: #d97706;
+  font-family: 'Jost', sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.18s, border-color 0.18s;
+}
+.adm-btn-inativos:hover {
+  background: rgba(217, 119, 6, 0.14);
+  border-color: rgba(217, 119, 6, 0.6);
+}
+.adm-btn-inativos--ativo {
+  background: rgba(217, 119, 6, 0.15);
+  border-color: #d97706;
+  color: #b45309;
 }

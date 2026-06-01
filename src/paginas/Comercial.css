@@ -801,3 +801,28 @@
     flex-shrink: 0;
   }
 }
+/* ── Botão compartilhar no modal ── */
+.modal-btn-compartilhar {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 48px;
+  padding: 0 18px;
+  border-radius: 6px;
+  border: 1.5px solid #c5daea;
+  background: transparent;
+  color: #5a7a90;
+  font-family: 'Jost', sans-serif;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+.modal-btn-compartilhar:hover {
+  border-color: #004169;
+  color: #004169;
+  background: rgba(0,65,105,0.04);
+}

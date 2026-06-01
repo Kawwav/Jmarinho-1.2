@@ -144,6 +144,11 @@ function ComercialModal({ imovel, onClose }) {
             <p className="com-modal-preco">{formatarValor(imovel.valor, imovel.modalidade)}</p>
           </div>
           <h2 className="com-modal-titulo">{imovel.titulo}</h2>
+          {imovel.codigo && (
+            <span style={{ display: 'inline-block', fontSize: '11px', color: '#8a9bb0', background: '#eef3f8', borderRadius: 4, padding: '3px 9px', fontWeight: 600, letterSpacing: 0.6, marginBottom: 8 }}>
+              Cód: {imovel.codigo}
+            </span>
+          )}
           {imovel.descricao && <p className="com-modal-descricao">{imovel.descricao}</p>}
 
           <div className="com-modal-specs">
@@ -186,6 +191,28 @@ function ComercialModal({ imovel, onClose }) {
 
         <div className="com-modal-footer">
           <button className="com-modal-btn-contato">ENTRAR EM CONTATO</button>
+          <button
+            className="modal-btn-compartilhar"
+            title="Copiar link do imóvel"
+            onClick={() => {
+              const url = `${window.location.origin}${window.location.pathname}?id=${imovel.id}`
+              navigator.clipboard.writeText(url).then(() => {
+                const btn = document.activeElement
+                const orig = btn.innerHTML
+                btn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><polyline points="20 6 9 17 4 12"/></svg> COPIADO!'
+                btn.style.background = '#dcfce7'
+                btn.style.color = '#15803d'
+                btn.style.borderColor = '#16a34a'
+                setTimeout(() => { btn.innerHTML = orig; btn.style = '' }, 2000)
+              })
+            }}
+          >
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/>
+              <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/>
+            </svg>
+            COMPARTILHAR
+          </button>
           <button className="com-modal-btn-voltar" onClick={onClose}>VOLTAR</button>
         </div>
         </div>
@@ -208,6 +235,14 @@ function ComercialCard({ imovel, onAbrir }) {
         ) : (
           <div className="card-img-placeholder comercial" />
         )}
+        {imovel.status && (
+          <div style={{
+            position: 'absolute', bottom: 0, left: 0, right: 0, zIndex: 3,
+            background: imovel.status === 'reservado' ? 'rgba(180,83,9,0.92)' : imovel.status === 'locado' ? 'rgba(21,128,61,0.92)' : 'rgba(30,64,175,0.92)',
+            color: '#fff', textAlign: 'center', fontFamily: "'Jost', sans-serif",
+            fontWeight: 700, fontSize: 10, letterSpacing: 2.5, padding: '5px 0', textTransform: 'uppercase'
+          }}>{imovel.status}</div>
+        )}
         <span className={`card-badge ${badgeClass}`}>{tipoLabel}</span>
         <span className="card-categoria">{imovel.categoria ? imovel.categoria.toUpperCase() : ''}</span>
       </div>
@@ -216,7 +251,14 @@ function ComercialCard({ imovel, onAbrir }) {
         <p className="card-localizacao">
           {[imovel.bairro, imovel.cidade].filter(Boolean).join(' · ')}
         </p>
-        <h3 className="card-titulo">{imovel.titulo}</h3>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 7, flexWrap: 'wrap' }}>
+          <h3 className="card-titulo">{imovel.titulo}</h3>
+          {imovel.codigo && (
+            <span style={{ fontSize: '10px', color: '#8a9bb0', background: '#eef3f8', borderRadius: 4, padding: '2px 7px', fontWeight: 600, letterSpacing: 0.5, whiteSpace: 'nowrap', flexShrink: 0 }}>
+              {imovel.codigo}
+            </span>
+          )}
+        </div>
         <p className="card-preco">{formatarValor(imovel.valor, imovel.modalidade)}</p>
 
         <div className="card-specs">
@@ -307,6 +349,16 @@ function Comercial() {
   const [tipoSelecionado, setTipoSelecionado]           = useState('Todos')
   const [imovelAberto, setImovelAberto]                 = useState(null)
 
+  // Abre modal automaticamente se URL tiver ?id=
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search)
+    const idParam = params.get('id')
+    if (idParam && imoveis.length > 0) {
+      const found = imoveis.find(im => im.id === idParam)
+      if (found) setImovelAberto(found)
+    }
+  }, [imoveis])
+
   // Busca do Supabase — apenas comerciais
   useEffect(() => {
     async function buscar() {
@@ -314,6 +366,7 @@ function Comercial() {
         .from('imoveis')
         .select('*')
         .eq('tipo', 'comercial')
+        .neq('ativo', false)
         .order('id', { ascending: false })
 
       if (!error) setImoveis(data || [])

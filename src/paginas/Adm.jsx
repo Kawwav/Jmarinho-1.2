@@ -45,6 +45,7 @@ const IMOVEIS_INICIAIS = [
 
 const FORM_VAZIO = {
   titulo: '',
+  codigo: '',
   tipo: 'apartamento',
   modalidade: 'venda',
   valor: '',
@@ -57,6 +58,8 @@ const FORM_VAZIO = {
   categoria: '',
   bairro: '',
   cidade: '',
+  ativo: true,
+  status: '',
 }
 
 const IcoPlus = () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><line x1="12" y1="5" x2="12" y2="19" /><line x1="5" y1="12" x2="19" y2="12" /></svg>
@@ -67,6 +70,9 @@ const IcoUpload = () => <svg width="28" height="28" viewBox="0 0 24 24" fill="no
 const IcoWarn = () => <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><polyline points="3 6 5 6 21 6" /><path d="M19 6l-1 14H6L5 6" /><path d="M10 11v6M14 11v6" /><path d="M9 6V4h6v2" /></svg>
 const IcoCheck = () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12" /></svg>
 const IcoClose = () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" /></svg>
+const IcoShare = () => <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+const IcoPause = () => <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><rect x="6" y="4" width="4" height="16" rx="1"/><rect x="14" y="4" width="4" height="16" rx="1"/></svg>
+const IcoPlay = () => <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>
 const IcoImg = () => <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" /><circle cx="8.5" cy="8.5" r="1.5" /><polyline points="21 15 16 10 5 21" /></svg>
 
 
@@ -177,6 +183,11 @@ function ModalPreview({ imovel, onFechar, onEditar }) {
           </div>
 
           <h2 className="modal-titulo">{imovel.titulo}</h2>
+          {imovel.codigo && (
+            <span style={{ display: 'inline-block', fontSize: '11px', color: 'var(--cinza-medio, #8a9bb0)', background: 'var(--fundo-alt, #f0f4fa)', borderRadius: 4, padding: '3px 8px', fontWeight: 600, letterSpacing: 0.5, marginTop: 4 }}>
+              Cód: {imovel.codigo}
+            </span>
+          )}
 
           {imovel.descricao && <p className="modal-descricao">{imovel.descricao}</p>}
 
@@ -226,7 +237,8 @@ function ModalPreview({ imovel, onFechar, onEditar }) {
 }
 
 /* Card de imóvel */
-function CardImovel({ imovel, onEditar, onRemover, onPreview }) {
+function CardImovel({ imovel, onEditar, onRemover, onPreview, onToggleAtivo }) {
+  const [copied, setCopied] = useState(false)
   const { titulo, tipo, modalidade, valor, area, quartos, banheiros, vagas, imagens } = imovel
   const temImagem = imagens && imagens.length > 0
 
@@ -237,6 +249,25 @@ function CardImovel({ imovel, onEditar, onRemover, onPreview }) {
           ? <img src={imagens[0].url} alt={titulo} />
           : <div className="adm-card__imagem-placeholder"><IcoImg /></div>
         }
+        {!imovel.ativo && (
+          <div style={{
+            position: 'absolute', inset: 0, background: 'rgba(0,0,0,0.45)',
+            display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 2
+          }}>
+            <span style={{
+              background: '#e53e3e', color: '#fff', fontWeight: 700,
+              fontSize: 11, letterSpacing: 1.5, padding: '4px 12px', borderRadius: 6, textTransform: 'uppercase'
+            }}>Inativo</span>
+          </div>
+        )}
+        {imovel.status && (
+          <div style={{
+            position: 'absolute', bottom: 0, left: 0, right: 0, zIndex: 3,
+            background: imovel.status === 'reservado' ? 'rgba(180,83,9,0.92)' : imovel.status === 'locado' ? 'rgba(21,128,61,0.92)' : 'rgba(30,64,175,0.92)',
+            color: '#fff', textAlign: 'center', fontFamily: "'Jost', sans-serif",
+            fontWeight: 700, fontSize: 10, letterSpacing: 2.5, padding: '5px 0', textTransform: 'uppercase'
+          }}>{imovel.status}</div>
+        )}
         <div className="adm-card__badges">
           <span className={`adm-badge adm-badge--${modalidade}`}>
             {modalidade === 'venda' ? 'Venda' : 'Aluguel'}
@@ -248,7 +279,10 @@ function CardImovel({ imovel, onEditar, onRemover, onPreview }) {
       </div>
 
       <div className="adm-card__body">
-        <h3 className="adm-card__titulo">{titulo || 'Sem título'}</h3>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+          <h3 className="adm-card__titulo">{titulo || 'Sem título'}</h3>
+          {imovel.codigo && <span style={{ fontSize: '10px', color: 'var(--cinza-medio, #8a9bb0)', background: 'var(--fundo-alt, #f0f4fa)', borderRadius: 4, padding: '2px 6px', fontWeight: 600, letterSpacing: 0.5, whiteSpace: 'nowrap' }}>{imovel.codigo}</span>}
+        </div>
         {(imovel.bairro || imovel.cidade) && <p className="adm-card__bairro"><svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor" style={{ marginRight: 3, opacity: 0.6 }}><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" /></svg>{[imovel.bairro, imovel.cidade].filter(Boolean).join(' · ')}</p>}
         <p className="adm-card__valor">
           {formatarValor(valor, modalidade)}
@@ -280,6 +314,28 @@ function CardImovel({ imovel, onEditar, onRemover, onPreview }) {
         <button className="adm-card__btn adm-card__btn--editar" onClick={e => { e.stopPropagation(); onEditar(imovel) }}>
           <IcoEdit /> Editar
         </button>
+        <button
+          className={`adm-card__btn adm-card__btn--share ${copied ? 'adm-card__btn--share-copied' : ''}`}
+          title="Copiar link do imóvel"
+          onClick={e => {
+            e.stopPropagation()
+            const tipo = imovel.tipo === 'comercial' ? 'comercial' : 'imoveis'
+            const url = `${window.location.origin}/${tipo}?id=${imovel.id}`
+            navigator.clipboard.writeText(url).then(() => {
+              setCopied(true)
+              setTimeout(() => setCopied(false), 2000)
+            })
+          }}
+        >
+          <IcoShare /> {copied ? 'Copiado!' : 'Link'}
+        </button>
+        <button
+          className={`adm-card__btn ${imovel.ativo !== false ? 'adm-card__btn--desativar' : 'adm-card__btn--ativar'}`}
+          onClick={e => { e.stopPropagation(); onToggleAtivo(imovel) }}
+          title={imovel.ativo !== false ? 'Desativar imóvel (mantém dados e fotos)' : 'Reativar imóvel'}
+        >
+          {imovel.ativo !== false ? <><IcoPause /> Desativar</> : <><IcoPlay /> Ativar</>}
+        </button>
         <button className="adm-card__btn adm-card__btn--remover" onClick={e => { e.stopPropagation(); onRemover(imovel) }}>
           <IcoTrash /> Remover
         </button>
@@ -300,6 +356,7 @@ function ModalFormulario({ imovelEditando, onFechar, onSalvar }) {
       setForm({
         id: imovelEditando.id ?? '',
         titulo: imovelEditando.titulo ?? '',
+        codigo: imovelEditando.codigo ?? '',
         tipo: imovelEditando.tipo ?? 'apartamento',
         modalidade: imovelEditando.modalidade ?? 'venda',
         categoria: imovelEditando.categoria ?? '',
@@ -311,7 +368,9 @@ function ModalFormulario({ imovelEditando, onFechar, onSalvar }) {
         descricao: imovelEditando.descricao ?? '',
         bairro: imovelEditando.bairro ?? '',
         cidade: imovelEditando.cidade ?? '',
-        imagens: imovelEditando.imagens ?? []
+        imagens: imovelEditando.imagens ?? [],
+        ativo: imovelEditando.ativo !== false,
+        status: imovelEditando.status ?? ''
       })
     }
   }, [imovelEditando])
@@ -376,14 +435,40 @@ function ModalFormulario({ imovelEditando, onFechar, onSalvar }) {
         <div className="adm-modal__body">
           <div className="adm-form__secao">
             <p className="adm-form__secao-titulo">Identificação</p>
-            <div className="adm-form__group">
-              <label className="adm-form__label">Título do imóvel</label>
-              <input
-                className="adm-form__input"
-                placeholder="Ex: Apartamento no Bigorrilho"
-                value={form.titulo}
-                onChange={e => set('titulo', e.target.value)}
-              />
+            <div className="adm-form__row">
+              <div className="adm-form__group" style={{ flex: 2 }}>
+                <label className="adm-form__label">Título do imóvel</label>
+                <input
+                  className="adm-form__input"
+                  placeholder="Ex: Apartamento no Bigorrilho"
+                  value={form.titulo}
+                  onChange={e => set('titulo', e.target.value)}
+                />
+              </div>
+              <div className="adm-form__group" style={{ flex: 1 }}>
+                <label className="adm-form__label">Código do imóvel</label>
+                <input
+                  className="adm-form__input"
+                  placeholder="Ex: IM-0042"
+                  value={form.codigo}
+                  onChange={e => set('codigo', e.target.value)}
+                />
+              </div>
+            </div>
+            <div className="adm-form__group adm-form__grupo-status">
+              <label className="adm-form__label">Status de negociação</label>
+              <div className="adm-form__status-grid">
+                {['', 'reservado', 'com proposta', 'locado'].map(s => (
+                  <button
+                    key={s}
+                    type="button"
+                    className={`adm-form__status-btn adm-form__status-btn--${s || 'nenhum'}${form.status === s ? ' adm-form__status-btn--ativo' : ''}`}
+                    onClick={() => set('status', form.status === s ? '' : s)}
+                  >
+                    {s === '' ? 'Nenhum' : s.charAt(0).toUpperCase() + s.slice(1)}
+                  </button>
+                ))}
+              </div>
             </div>
             <div className="adm-form__row">
               <div className="adm-form__group">
@@ -606,6 +691,7 @@ function Adm() {
   const [filtroTipo, setFiltroTipo] = useState('')
   const [filtroCategoria, setFiltroCategoria] = useState('')
   const [filtroMod, setFiltroMod] = useState('')
+  const [mostrarInativos, setMostrarInativos] = useState(false)
 
   // FUNÇÃO NOVA: Busca os imóveis direto do Supabase
   const buscarImoveis = async () => {
@@ -684,6 +770,9 @@ function Adm() {
         bairro: dadosForm.bairro || '',
         cidade: dadosForm.cidade || '',
         imagens: imagensFinais.length > 0 ? imagensFinais : null,
+        ativo: dadosForm.ativo !== false,
+        codigo: dadosForm.codigo || null,
+        status: dadosForm.status || null,
       }
 
       if (dadosForm.id) {
@@ -722,6 +811,21 @@ function Adm() {
 
   function pedirRemocao(imovel) { setImovelRemov(imovel) }
 
+  async function toggleAtivo(imovel) {
+    const novoStatus = imovel.ativo === false ? true : false
+    try {
+      const { error } = await supabase
+        .from('imoveis')
+        .update({ ativo: novoStatus })
+        .eq('id', imovel.id)
+      if (error) throw error
+      setImoveis(prev => prev.map(im => im.id === imovel.id ? { ...im, ativo: novoStatus } : im))
+      showToast(novoStatus ? 'Imóvel reativado!' : 'Imóvel desativado (dados preservados).', 'success')
+    } catch (error) {
+      alert('Erro ao atualizar status: ' + error.message)
+    }
+  }
+
   async function confirmarRemocao() {
     if (!imovelRemover) return;
 
@@ -749,13 +853,15 @@ function Adm() {
 
   const totalVenda = imoveis.filter(i => i.modalidade === 'venda').length
   const totalAluguel = imoveis.filter(i => i.modalidade === 'aluguel').length
+  const totalInativos = imoveis.filter(i => i.ativo === false).length
 
   const imoveisFiltrados = imoveis.filter(im => {
     const matchBusca = im.titulo.toLowerCase().includes(busca.toLowerCase())
     const matchTipo = !filtroTipo || im.tipo === filtroTipo
     const matchMod = !filtroMod || im.modalidade === filtroMod
     const matchCategoria = !filtroCategoria || im.categoria === filtroCategoria
-    return matchBusca && matchTipo && matchMod && matchCategoria
+    const matchAtivo = mostrarInativos ? true : im.ativo !== false
+    return matchBusca && matchTipo && matchMod && matchCategoria && matchAtivo
   })
 
   // Imoveis da modalidade selecionada para mini-lista na sidebar
@@ -883,6 +989,16 @@ function Adm() {
               )}
             </div>
             <div className="adm-topbar__right">
+              {totalInativos > 0 && (
+                <button
+                  className={`adm-btn-inativos ${mostrarInativos ? 'adm-btn-inativos--ativo' : ''}`}
+                  onClick={() => setMostrarInativos(v => !v)}
+                  title="Exibir/ocultar imóveis desativados"
+                >
+                  {mostrarInativos ? <IcoPlay /> : <IcoPause />}
+                  <span>{mostrarInativos ? 'Ocultar inativos' : `Inativos (${totalInativos})`}</span>
+                </button>
+              )}
               <button className="adm-btn-primary" onClick={abrirNovo}>
                 <IcoPlus />
                 <span>Adicionar imóvel</span>
@@ -956,6 +1072,7 @@ function Adm() {
                   onEditar={abrirEditar}
                   onRemover={pedirRemocao}
                   onPreview={setImovelPreview}
+                  onToggleAtivo={toggleAtivo}
                 />
               ))
             )}
