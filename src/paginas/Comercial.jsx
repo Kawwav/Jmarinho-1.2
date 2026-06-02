@@ -136,85 +136,107 @@ function ComercialModal({ imovel, onClose }) {
 
         {/* Coluna direita */}
         <div className="com-modal-content-col">
-        <div className="com-modal-body">
-          <div className="com-modal-header-row">
-            <p className="com-modal-endereco">
-              {[imovel.bairro, imovel.cidade].filter(Boolean).join(' — ')}
-            </p>
-            <p className="com-modal-preco">{formatarValor(imovel.valor, imovel.modalidade)}</p>
-          </div>
-          <h2 className="com-modal-titulo">{imovel.titulo}</h2>
-          {imovel.codigo && (
-            <span style={{ display: 'inline-block', fontSize: '11px', color: '#8a9bb0', background: '#eef3f8', borderRadius: 4, padding: '3px 9px', fontWeight: 600, letterSpacing: 0.6, marginBottom: 8 }}>
-              Cód: {imovel.codigo}
-            </span>
-          )}
-          {imovel.descricao && <p className="com-modal-descricao">{imovel.descricao}</p>}
 
-          <div className="com-modal-specs">
-            {imovel.area && (
-              <div className="com-modal-spec-item">
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
-                  <rect x="3" y="3" width="18" height="18" rx="1"/><path d="M3 9h18M9 21V9"/>
-                </svg>
-                <span className="spec-valor">{imovel.area} m²</span>
-                <span className="spec-label">ÁREA</span>
-              </div>
-            )}
-            {imovel.vagas && (
-              <div className="com-modal-spec-item">
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
-                  <rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 3l-4 4-4-4"/>
-                </svg>
-                <span className="spec-valor">{imovel.vagas}</span>
-                <span className="spec-label">VAGAS</span>
-              </div>
-            )}
-            {imovel.banheiros && (
-              <div className="com-modal-spec-item">
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M4 12h16M4 12V6a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v6M4 12v4a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-4"/>
-                </svg>
-                <span className="spec-valor">{imovel.banheiros}</span>
-                <span className="spec-label">BANHEIROS</span>
-              </div>
-            )}
-            {imovel.categoria && (
-              <div className="com-modal-spec-item">
-                <IconeCategoria categoria={imovel.categoria} />
-                <span className="spec-valor">{imovel.categoria}</span>
-                <span className="spec-label">TIPO</span>
-              </div>
-            )}
+          {/* Cabeçalho: título + preço */}
+          <div className="com-modal-header-bar">
+            <div className="com-modal-header-bar__left">
+              <p className="com-modal-endereco">
+                {[imovel.bairro, imovel.cidade].filter(Boolean).join(' — ')}
+              </p>
+              <h2 className="com-modal-titulo">{imovel.titulo}</h2>
+              {imovel.codigo && (
+                <span style={{ display: 'inline-block', fontSize: '11px', color: '#8a9bb0', background: '#eef3f8', borderRadius: 4, padding: '3px 9px', fontWeight: 600, letterSpacing: 0.6, marginTop: 4 }}>
+                  Cód: {imovel.codigo}
+                </span>
+              )}
+            </div>
+            <div className="com-modal-header-bar__right">
+              <span className="com-modal-preco-label">VALOR</span>
+              <p className="com-modal-preco">{formatarValor(imovel.valor, imovel.modalidade)}</p>
+            </div>
           </div>
-        </div>
 
-        <div className="com-modal-footer">
-          <button className="com-modal-btn-contato">ENTRAR EM CONTATO</button>
-          <button
-            className="modal-btn-compartilhar"
-            title="Copiar link do imóvel"
-            onClick={() => {
-              const url = `${window.location.origin}${window.location.pathname}?id=${imovel.id}`
-              navigator.clipboard.writeText(url).then(() => {
-                const btn = document.activeElement
-                const orig = btn.innerHTML
-                btn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><polyline points="20 6 9 17 4 12"/></svg> COPIADO!'
-                btn.style.background = '#dcfce7'
-                btn.style.color = '#15803d'
-                btn.style.borderColor = '#16a34a'
-                setTimeout(() => { btn.innerHTML = orig; btn.style = '' }, 2000)
-              })
-            }}
-          >
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/>
-              <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/>
-            </svg>
-            COMPARTILHAR
-          </button>
-          <button className="com-modal-btn-voltar" onClick={onClose}>VOLTAR</button>
-        </div>
+          {/* Duas colunas: descrição + specs */}
+          <div className="com-modal-two-col">
+
+            {/* Esquerda: descrição */}
+            <div className="com-modal-col-desc">
+              <p className="com-modal-col-label">DESCRIÇÃO</p>
+              {imovel.descricao
+                ? <p className="com-modal-descricao-full">{imovel.descricao}</p>
+                : <p className="com-modal-descricao-vazia">Sem descrição disponível.</p>
+              }
+            </div>
+
+            {/* Direita: specs */}
+            <div className="com-modal-col-specs">
+              <p className="com-modal-col-label">CARACTERÍSTICAS</p>
+              <div className="com-modal-specs-grid">
+                {imovel.area && (
+                  <div className="com-modal-spec-item">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+                      <rect x="3" y="3" width="18" height="18" rx="1"/><path d="M3 9h18M9 21V9"/>
+                    </svg>
+                    <span className="spec-valor">{imovel.area} m²</span>
+                    <span className="spec-label">ÁREA</span>
+                  </div>
+                )}
+                {imovel.vagas && (
+                  <div className="com-modal-spec-item">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+                      <rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 3l-4 4-4-4"/>
+                    </svg>
+                    <span className="spec-valor">{imovel.vagas}</span>
+                    <span className="spec-label">VAGAS</span>
+                  </div>
+                )}
+                {imovel.banheiros && (
+                  <div className="com-modal-spec-item">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M4 12h16M4 12V6a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v6M4 12v4a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-4"/>
+                    </svg>
+                    <span className="spec-valor">{imovel.banheiros}</span>
+                    <span className="spec-label">BANHEIROS</span>
+                  </div>
+                )}
+                {imovel.categoria && (
+                  <div className="com-modal-spec-item">
+                    <IconeCategoria categoria={imovel.categoria} />
+                    <span className="spec-valor">{imovel.categoria}</span>
+                    <span className="spec-label">TIPO</span>
+                  </div>
+                )}
+              </div>
+            </div>
+
+          </div>
+
+          <div className="com-modal-footer">
+            <button className="com-modal-btn-contato">ENTRAR EM CONTATO</button>
+            <button
+              className="modal-btn-compartilhar"
+              title="Copiar link do imóvel"
+              onClick={() => {
+                const url = `${window.location.origin}${window.location.pathname}?id=${imovel.id}`
+                navigator.clipboard.writeText(url).then(() => {
+                  const btn = document.activeElement
+                  const orig = btn.innerHTML
+                  btn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><polyline points="20 6 9 17 4 12"/></svg> COPIADO!'
+                  btn.style.background = '#dcfce7'
+                  btn.style.color = '#15803d'
+                  btn.style.borderColor = '#16a34a'
+                  setTimeout(() => { btn.innerHTML = orig; btn.style = '' }, 2000)
+                })
+              }}
+            >
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/>
+                <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/>
+              </svg>
+              COMPARTILHAR
+            </button>
+            <button className="com-modal-btn-voltar" onClick={onClose}>VOLTAR</button>
+          </div>
         </div>
       </div>
     </div>

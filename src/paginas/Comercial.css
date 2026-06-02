@@ -709,6 +709,112 @@
   min-width: 0;
 }
 
+/* ── Cabeçalho do modal (título + preço) ── */
+.com-modal-header-bar {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 24px 32px 20px;
+  border-bottom: 1px solid #e8f1f8;
+}
+
+.com-modal-header-bar__left {
+  flex: 1;
+  min-width: 0;
+}
+
+.com-modal-header-bar__right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 4px;
+  flex-shrink: 0;
+}
+
+.com-modal-preco-label {
+  font-family: 'Jost', sans-serif;
+  font-size: 9px;
+  font-weight: 400;
+  letter-spacing: 0.14em;
+  color: #90afc0;
+  text-transform: uppercase;
+  margin: 0;
+}
+
+/* ── Duas colunas: descrição | specs ── */
+.com-modal-two-col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0;
+}
+
+.com-modal-col-desc,
+.com-modal-col-specs {
+  padding: 24px 28px;
+}
+
+.com-modal-col-desc {
+  border-right: 1px solid #e8f1f8;
+}
+
+.com-modal-col-label {
+  font-family: 'Jost', sans-serif;
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  color: #90afc0;
+  text-transform: uppercase;
+  margin: 0 0 14px;
+}
+
+.com-modal-descricao-full {
+  font-family: 'Jost', sans-serif;
+  font-size: 13.5px;
+  font-weight: 300;
+  line-height: 1.8;
+  color: #3a5a72;
+  margin: 0;
+}
+
+.com-modal-descricao-vazia {
+  font-family: 'Jost', sans-serif;
+  font-size: 13px;
+  color: #b0c8d8;
+  font-style: italic;
+  margin: 0;
+}
+
+/* ── Specs na coluna direita ── */
+.com-modal-specs-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.com-modal-spec-item {
+  background: #f5f9fc;
+  border: 1px solid #e4eff8;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 16px 10px;
+  gap: 5px;
+  transition: border-color 0.2s, background 0.2s;
+}
+
+.com-modal-spec-item:hover {
+  background: #eaf4fb;
+  border-color: var(--azul-claro);
+}
+
+.com-modal-spec-item svg {
+  color: var(--azul);
+  margin-bottom: 2px;
+}
+
 .com-modal-footer {
   display: flex;
   gap: 10px;
@@ -793,6 +899,25 @@
     flex-direction: column;
     border-bottom-left-radius: 0;
     border-bottom-right-radius: 0;
+  }
+
+  .com-modal-two-col {
+    grid-template-columns: 1fr;
+  }
+
+  .com-modal-col-desc {
+    border-right: none;
+    border-bottom: 1px solid #e8f1f8;
+  }
+
+  .com-modal-header-bar {
+    flex-direction: column;
+    gap: 12px;
+    padding: 18px 20px 16px;
+  }
+
+  .com-modal-header-bar__right {
+    align-items: flex-start;
   }
 
   .com-modal-carousel {
