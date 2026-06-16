@@ -175,7 +175,7 @@ function SecaoLocalizacao() {
             <div className="sobre-localizacao__horario-item">
               <span className="sobre-localizacao__horario-dia">Segunda a Sexta</span>
               <span className="sobre-localizacao__horario-sep" />
-              <span className="sobre-localizacao__horario-horas">09:00 – 12:00 &nbsp;|&nbsp; 13:30 – 16:30</span>
+              <span className="sobre-localizacao__horario-horas">09:00 – 12:00 &nbsp;|&nbsp; 13:30 – 17:00</span>
             </div>
             <div className="sobre-localizacao__horario-item sobre-localizacao__horario-item--plantao">
               <span className="sobre-localizacao__horario-dia">Sábado</span>
