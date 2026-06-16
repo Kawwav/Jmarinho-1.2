@@ -307,59 +307,102 @@
 .parceiros-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 20px;
+  gap: 24px;
+  align-items: stretch;
 }
 
+/* ── Card base ── */
 .parceiro-card {
-  background: rgba(255, 255, 255, 0.04);
+  position: relative;
+  background: rgba(255, 255, 255, 0.03);
   border: 1px solid rgba(161, 217, 248, 0.1);
-  border-radius: 16px;
+  border-radius: 20px;
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  transition: border-color 0.3s ease, transform 0.3s ease;
+  text-decoration: none;
+  transition: border-color 0.35s ease, transform 0.35s ease, box-shadow 0.35s ease;
+  cursor: pointer;
+}
+
+.parceiro-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 20px;
+  background: radial-gradient(ellipse at 50% 0%, rgba(0, 139, 210, 0.10) 0%, transparent 70%);
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  pointer-events: none;
 }
 
 .parceiro-card:hover {
-  border-color: rgba(161, 217, 248, 0.28);
-  transform: translateY(-3px);
+  border-color: rgba(161, 217, 248, 0.32);
+  transform: translateY(-5px);
+  box-shadow: 0 24px 56px rgba(0, 0, 0, 0.45), 0 0 0 1px rgba(161, 217, 248, 0.1);
 }
 
-.parceiro-card__top {
-  padding: 32px 32px 0;
+.parceiro-card:hover::before {
+  opacity: 1;
+}
+
+/* ── Logo area ── */
+.parceiro-card__logo-wrap {
+  padding: 36px 36px 0;
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   justify-content: space-between;
   gap: 16px;
 }
 
-.parceiro-card__num {
+.parceiro-card__logo {
+  height: 52px;
+  width: auto;
+  object-fit: contain;
+  object-position: left center;
+  filter: brightness(0) invert(1);
+  opacity: 0.9;
+  transition: opacity 0.3s ease;
+  max-width: 160px;
+}
+
+.parceiro-card:hover .parceiro-card__logo {
+  opacity: 1;
+}
+
+.parceiro-card__logo-placeholder {
+  height: 52px;
+  display: flex;
+  align-items: center;
+}
+
+.parceiro-card__logo-text {
   font-family: 'Cormorant Garamond', serif;
-  font-size: 3.5rem;
-  font-weight: 500;
-  color: rgba(161, 217, 248, 0.1);
+  font-weight: 600;
+  font-size: 1.6rem;
+  color: #f5f8fb;
+  letter-spacing: -0.01em;
   line-height: 1;
-  flex-shrink: 0;
 }
 
 .parceiro-card__tag {
   font-family: 'Jost', sans-serif;
-  font-size: 10px;
+  font-size: 9px;
   font-weight: 400;
-  letter-spacing: 0.2em;
+  letter-spacing: 0.22em;
   text-transform: uppercase;
   color: #A1D9F8;
-  background: rgba(0, 139, 210, 0.15);
-  border: 1px solid rgba(0, 139, 210, 0.25);
+  background: rgba(0, 139, 210, 0.12);
+  border: 1px solid rgba(0, 139, 210, 0.22);
   border-radius: 20px;
-  padding: 4px 12px;
+  padding: 5px 13px;
   white-space: nowrap;
-  align-self: flex-start;
-  margin-top: 8px;
+  flex-shrink: 0;
 }
 
+/* ── Body ── */
 .parceiro-card__body {
-  padding: 20px 32px 24px;
+  padding: 24px 36px 28px;
   flex: 1;
   display: flex;
   flex-direction: column;
@@ -367,62 +410,86 @@
 }
 
 .parceiro-card__titulo {
-  font-family: 'Jost', sans-serif;
-  font-size: 15px;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.5rem;
   font-weight: 500;
   color: #f5f8fb;
   margin: 0;
-  letter-spacing: 0.05em;
+  line-height: 1.15;
+  letter-spacing: -0.01em;
 }
 
 .parceiro-card__descricao {
   font-family: 'Jost', sans-serif;
   font-size: 13px;
   font-weight: 300;
-  color: rgba(245, 248, 251, 0.55);
-  line-height: 1.75;
+  color: rgba(245, 248, 251, 0.52);
+  line-height: 1.8;
   margin: 0;
 }
 
+/* ── Divider ── */
 .parceiro-card__divider {
   height: 1px;
-  background: rgba(161, 217, 248, 0.08);
-  margin: 0 32px;
+  background: rgba(161, 217, 248, 0.07);
+  margin: 0 36px;
 }
 
+/* ── Footer / CTA ── */
 .parceiro-card__footer {
-  padding: 20px 32px 28px;
+  padding: 20px 36px 28px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
 .parceiro-card__botao {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
+  gap: 9px;
   font-family: 'Jost', sans-serif;
   font-size: 10px;
   font-weight: 400;
-  letter-spacing: 0.18em;
+  letter-spacing: 0.2em;
   text-transform: uppercase;
   color: #A1D9F8;
-  text-decoration: none;
-  border: 1px solid rgba(161, 217, 248, 0.25);
+  border: 1px solid rgba(161, 217, 248, 0.22);
   border-radius: 20px;
-  padding: 8px 18px;
-  transition: background 0.25s ease, color 0.25s ease, border-color 0.25s ease;
+  padding: 9px 20px;
+  background: transparent;
+  transition: background 0.3s ease, color 0.3s ease, border-color 0.3s ease;
 }
 
-.parceiro-card__botao:hover {
-  background: rgba(0, 139, 210, 0.2);
+.parceiro-card:hover .parceiro-card__botao {
+  background: rgba(0, 139, 210, 0.18);
   color: #ffffff;
   border-color: rgba(0, 139, 210, 0.5);
 }
 
 .parceiro-card__botao svg {
-  transition: transform 0.25s ease;
+  transition: transform 0.3s ease;
 }
 
-.parceiro-card__botao:hover svg {
-  transform: translateX(3px);
+.parceiro-card:hover .parceiro-card__botao svg {
+  transform: translateX(4px);
+}
+
+.parceiro-card__arrow-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 1px solid rgba(161, 217, 248, 0.14);
+  color: rgba(161, 217, 248, 0.4);
+  transition: border-color 0.3s ease, color 0.3s ease, transform 0.3s ease;
+}
+
+.parceiro-card:hover .parceiro-card__arrow-icon {
+  border-color: rgba(161, 217, 248, 0.4);
+  color: #A1D9F8;
+  transform: rotate(-45deg);
 }
 
 .sobre-localizacao {
@@ -646,7 +713,6 @@
   }
 }
 
-
 @media (max-width: 768px) {
   /* Hero */
   .sobre-hero {
@@ -683,7 +749,7 @@
     margin: 24px 16px;
   }
 
-  .parceiro-card__top {
+  .parceiro-card__logo-wrap {
     padding: 24px 24px 0;
   }
 

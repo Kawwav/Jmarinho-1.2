@@ -87,30 +87,42 @@ function ImagemParceiro({ src, alt }) {
   )
 }
 
-/* ────────────────────────────────────────
-   Card de parceiro
-──────────────────────────────────────── */
-function ParceiroCaard({ numero, tag, titulo, descricao, href = '#' }) {
+
+function ParceiroCard({ tag, titulo, descricao, href, logoSrc, logoAlt }) {
   return (
-    <div className="parceiro-card">
-      <div className="parceiro-card__top">
-        <span className="parceiro-card__num">{numero}</span>
+    <a className="parceiro-card" href={href} target="_blank" rel="noopener noreferrer">
+      <div className="parceiro-card__logo-wrap">
+        {logoSrc ? (
+          <img className="parceiro-card__logo" src={logoSrc} alt={logoAlt || titulo} />
+        ) : (
+          <div className="parceiro-card__logo-placeholder">
+            <span className="parceiro-card__logo-text">{titulo}</span>
+          </div>
+        )}
         {tag && <span className="parceiro-card__tag">{tag}</span>}
       </div>
+
       <div className="parceiro-card__body">
         <h3 className="parceiro-card__titulo">{titulo}</h3>
         <p className="parceiro-card__descricao">{descricao}</p>
       </div>
+
       <div className="parceiro-card__divider" />
+
       <div className="parceiro-card__footer">
-        <a className="parceiro-card__botao" href={href}>
-          Saiba mais
+        <span className="parceiro-card__botao">
+          Visitar site
           <svg width="12" height="9" viewBox="0 0 14 10" fill="none" aria-hidden="true">
             <path d="M1 5H13M9 1L13 5L9 9" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/>
           </svg>
-        </a>
+        </span>
+        <span className="parceiro-card__arrow-icon" aria-hidden="true">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
+            <path d="M7 17L17 7M17 7H7M17 7V17" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+          </svg>
+        </span>
       </div>
-    </div>
+    </a>
   )
 }
 
@@ -172,7 +184,7 @@ function SecaoLocalizacao() {
                 Plantão&nbsp;
                 <a
                   className="sobre-localizacao__whatsapp"
-                  href="https://wa.me/5541988968486"
+                  href="https://wa.me/554198400-0887"
                   target="_blank"
                   rel="noopener noreferrer"
                 >
@@ -180,7 +192,7 @@ function SecaoLocalizacao() {
                     <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/>
                     <path d="M12 0C5.373 0 0 5.373 0 12c0 2.125.558 4.122 1.533 5.858L.057 23.486a.5.5 0 0 0 .611.61l5.78-1.516A11.95 11.95 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.89 0-3.663-.497-5.195-1.367l-.373-.217-3.43.9.914-3.337-.237-.386A9.955 9.955 0 0 1 2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/>
                   </svg>
-                  98896.8486
+                   98400-0887
                 </a>
               </span>
             </div>
@@ -279,19 +291,21 @@ JMarinho Imóveis. Mais de 30 anos transformando oportunidades em conquistas.
             <p className="sobre-parceiros__sub">Empresas que escolhemos para garantir a melhor experiência</p>
 
             <div className="parceiros-grid">
-              <ParceiroCaard
-                numero="01"
-                tag="Incorporadora"
-                titulo="Parceiro 1"
-                descricao="Especialistas em empreendimentos residenciais de alto padrão em Curitiba e região metropolitana."
-                href="#"
+              <ParceiroCard
+                tag="Advocacia"
+                titulo="Haeffner Marinho Advogados"
+                descricao="Escritório especializado em direito imobiliário, contratos e assessoria jurídica para negócios com segurança e excelência. Parceiro de confiança da JMarinho há anos."
+                href="https://haeffnermarinho.adv.br/"
+                logoSrc="logocentro.png"
+                logoAlt="Haeffner Marinho Advogados"
               />
-              <ParceiroCaard
-                numero="02"
-                tag="Financiamento"
-                titulo="Parceiro 2"
-                descricao="Soluções de financiamento com as melhores taxas do mercado para aquisição de imóveis."
-                href="#"
+              <ParceiroCard
+                tag="Tecnologia"
+                titulo="Kawwa"
+                descricao="Agência focada em criação de sites modernos, rápidos e com identidade visual marcante. Responsável pela presença digital da JMarinho."
+                href="https://kawwav.github.io/Kawwa/"
+                logoSrc="kawwa1.png"
+                logoAlt="Kawwa"
               />
             </div>
           </div>
