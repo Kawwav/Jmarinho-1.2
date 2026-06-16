@@ -238,10 +238,16 @@ function Sobre() {
             <div className="sobre-intro__texto">
               <h2 className="sobre-section-title">Nossa história</h2>
               <p>
-                A JMarinho Imóveis atua no mercado imobiliário com o compromisso de oferecer um atendimento transparente, seguro e focado nas necessidades de cada cliente. Especializada em compra, venda, locação e administração de imóveis residenciais e comerciais em Curitiba e região metropolitana, a empresa busca sempre os melhores resultados em cada negociação.
+                 A JMarinho Imóveis nasceu da paixão pelo mercado imobiliário e do compromisso em oferecer soluções seguras, transparentes e eficientes para seus clientes.
+
+Ao longo de mais de três décadas de atuação, a empresa construiu uma sólida reputação baseada na confiança, credibilidade e excelência no atendimento, participando da intermediação, administração e desenvolvimento de centenas de negócios imobiliários.
               </p>
               <p>
-               Com experiência no setor e visão voltada ao futuro, a JMarinho também oferece oportunidades para quem deseja investir em imóveis novos e na planta, proporcionando opções de crescimento e valorização a médio e longo prazo.
+               Com forte atuação no Paraná e em Santa Catarina, a JMarinho Imóveis oferece soluções em compra, venda, locação e administração de imóveis residenciais e comerciais, sempre com acompanhamento próximo e atendimento personalizado.
+
+Hoje, mantém os mesmos valores que marcaram sua trajetória: ética, dedicação, transparência e respeito às pessoas.
+
+JMarinho Imóveis. Mais de 30 anos transformando oportunidades em conquistas.
               </p>
             </div>
 

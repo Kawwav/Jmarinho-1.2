@@ -48,7 +48,7 @@ function Contato() {
                 </div>
                 <div className="contato-info__item-texto">
                   <span className="contato-info__item-tipo">Telefone</span>
-                  <span className="contato-info__item-label">0000.0000</span>
+                  <span className="contato-info__item-label">41 3018-0887</span>
                 </div>
               </a>
 
@@ -61,7 +61,7 @@ function Contato() {
                 </div>
                 <div className="contato-info__item-texto">
                   <span className="contato-info__item-tipo">Celular</span>
-                  <span className="contato-info__item-label">0000.0000</span>
+                  <span className="contato-info__item-label">41 98400-0887</span>
                 </div>
               </a>
               <a
@@ -78,7 +78,7 @@ function Contato() {
                 </div>
                 <div className="contato-info__item-texto">
                   <span className="contato-info__item-tipo">WhatsApp</span>
-                  <span className="contato-info__item-label">0000.0000</span>
+                  <span className="contato-info__item-label">98400-0887</span>
                 </div>
               </a>
               <div className="contato-info__item">
