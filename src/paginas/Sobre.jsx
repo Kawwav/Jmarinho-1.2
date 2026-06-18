@@ -184,7 +184,7 @@ function SecaoLocalizacao() {
                 Plantão&nbsp;
                 <a
                   className="sobre-localizacao__whatsapp"
-                  href="https://wa.me/554198400-0887"
+                  href="https://wa.me/5541984000887"
                   target="_blank"
                   rel="noopener noreferrer"
                 >

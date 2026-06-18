@@ -52,7 +52,7 @@ function Footer() {
           </a>
           <a
             className="footer__social-btn"
-            href="https://facebook.com"
+            href="https://www.facebook.com/jmarinhoimoveis"
             target="_blank"
             rel="noopener noreferrer"
             aria-label="Facebook"
