@@ -1,0 +1,429 @@
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Jost:wght@300;400;500&display=swap');
+
+:root {
+  --azul: #008BD2;
+  --azul-escuro: #004169;
+  --azul-claro: #A1D9F8;
+}
+
+.contato-page {
+  min-height: 100vh;
+  background: #f5f8fb;
+}
+
+.contato-hero {
+  position: relative;
+  width: 100%;
+  height: 520px;
+  overflow: hidden;
+}
+
+.contato-hero__bg {
+  position: absolute;
+  inset: 0;
+  background-image: url('/cidade.webp');
+  background-size: cover;
+  background-position: center 40%;
+  background-repeat: no-repeat;
+  filter: brightness(0.5);
+  transform: scale(1.03);
+}
+
+.contato-hero__gradient {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to top,
+    #004169 0%,
+    rgba(0, 65, 105, 0.78) 30%,
+    rgba(0, 65, 105, 0.25) 65%,
+    transparent 100%
+  );
+  pointer-events: none;
+}
+
+.contato-hero__content {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  text-align: center;
+  padding: 0 24px 64px;
+  gap: 10px;
+}
+
+.contato-hero__eyebrow {
+  font-family: 'Jost', sans-serif;
+  font-weight: 400;
+  font-size: clamp(12px, 1.6vw, 15px);
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--azul-claro);
+  margin: 0;
+  animation: fadeUp 0.9s 0.1s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.contato-hero__title {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 500;
+  font-size: clamp(52px, 10vw, 96px);
+  line-height: 1.0;
+  letter-spacing: -0.01em;
+  color: #ffffff;
+  margin: 0;
+  text-shadow: 0 2px 20px rgba(0, 0, 0, 0.2);
+  animation: fadeUp 0.9s 0.15s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.contato-hero__sub {
+  font-family: 'Jost', sans-serif;
+  font-weight: 300;
+  font-size: clamp(13px, 1.8vw, 16px);
+  letter-spacing: 0.05em;
+  color: rgba(255, 255, 255, 0.72);
+  margin: 0;
+  max-width: 460px;
+  animation: fadeUp 0.9s 0.25s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.contato-main {
+  background: #f5f8fb;
+}
+
+.contato-grid {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 72px 40px 80px;
+  display: grid;
+  grid-template-columns: 1fr 1.1fr;
+  gap: 80px;
+  align-items: start;
+}
+
+.contato-info {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+
+.contato-info__header {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.contato-info__eyebrow {
+  font-family: 'Jost', sans-serif;
+  font-weight: 400;
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--azul);
+  margin: 0;
+}
+
+.contato-info__title {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 500;
+  font-size: clamp(1.8rem, 3vw, 2.6rem);
+  color: var(--azul-escuro);
+  margin: 0;
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+}
+
+.contato-info__desc {
+  font-family: 'Jost', sans-serif;
+  font-weight: 300;
+  font-size: 14px;
+  line-height: 1.8;
+  color: #4a6a80;
+  margin: 0;
+}
+
+.contato-info__lista {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  border-top: 1px solid #ddeaf3;
+}
+
+.contato-info__item {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 20px 0;
+  border-bottom: 1px solid #ddeaf3;
+  text-decoration: none;
+}
+
+.contato-info__item--link {
+  transition: gap 0.25s ease;
+  cursor: pointer;
+}
+
+.contato-info__item--link:hover {
+  gap: 20px;
+}
+
+.contato-info__item--link:hover .contato-info__item-label {
+  color: var(--azul);
+}
+
+.contato-info__item-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: rgba(0, 139, 210, 0.08);
+  border: 1px solid rgba(0, 139, 210, 0.18);
+  color: var(--azul);
+  flex-shrink: 0;
+  transition: background 0.25s ease, border-color 0.25s ease;
+}
+
+.contato-info__item--link:hover .contato-info__item-icon {
+  background: rgba(0, 139, 210, 0.15);
+  border-color: rgba(0, 139, 210, 0.35);
+}
+
+.contato-info__item-texto {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.contato-info__item-tipo {
+  font-family: 'Jost', sans-serif;
+  font-weight: 400;
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #8aacbf;
+}
+
+.contato-info__item-label {
+  font-family: 'Jost', sans-serif;
+  font-weight: 400;
+  font-size: 14.5px;
+  color: var(--azul-escuro);
+  letter-spacing: 0.02em;
+  transition: color 0.25s ease;
+}
+
+.contato-info__slogan {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 20px 24px;
+  background: var(--azul-escuro);
+  border-radius: 12px;
+}
+
+.contato-info__slogan-linha {
+  width: 3px;
+  height: 40px;
+  background: var(--azul-claro);
+  border-radius: 2px;
+  flex-shrink: 0;
+}
+
+.contato-info__slogan-texto {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-weight: 400;
+  font-size: clamp(1rem, 1.6vw, 1.2rem);
+  color: #f5f8fb;
+  line-height: 1.35;
+  margin: 0;
+}
+
+.contato-form-wrap {
+  background: #ffffff;
+  border: 1px solid #ddeaf3;
+  border-radius: 16px;
+  padding: 44px 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  box-shadow: 0 4px 32px rgba(0, 65, 105, 0.06);
+}
+
+.contato-form__header {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.contato-form__eyebrow {
+  font-family: 'Jost', sans-serif;
+  font-weight: 400;
+  font-size: 10px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--azul);
+  margin: 0;
+}
+
+.contato-form__title {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 500;
+  font-size: clamp(1.4rem, 2.2vw, 1.9rem);
+  color: var(--azul-escuro);
+  margin: 0;
+  line-height: 1.1;
+}
+
+.contato-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.contato-form__group {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.contato-form__label {
+  font-family: 'Jost', sans-serif;
+  font-weight: 400;
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #5a7a90;
+}
+
+.contato-form__input,
+.contato-form__textarea {
+  font-family: 'Jost', sans-serif;
+  font-weight: 300;
+  font-size: 14px;
+  color: var(--azul-escuro);
+  background: #f5f8fb;
+  border: 1px solid #ccdde8;
+  border-radius: 8px;
+  padding: 13px 16px;
+  outline: none;
+  transition: border-color 0.25s ease, background 0.25s ease, box-shadow 0.25s ease;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.contato-form__input::placeholder,
+.contato-form__textarea::placeholder {
+  color: #a0b8c8;
+  font-weight: 300;
+}
+
+.contato-form__input:focus,
+.contato-form__textarea:focus {
+  border-color: var(--azul);
+  background: #ffffff;
+  box-shadow: 0 0 0 3px rgba(0, 139, 210, 0.1);
+}
+
+.contato-form__textarea {
+  resize: vertical;
+  min-height: 130px;
+  line-height: 1.6;
+}
+
+.contato-form__btn {
+  margin-top: 4px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 15px 32px;
+  background: var(--azul-escuro);
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  font-family: 'Jost', sans-serif;
+  font-weight: 400;
+  font-size: 12px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: background 0.3s ease, transform 0.2s ease;
+}
+
+.contato-form__btn::before {
+  content: '';
+  position: absolute;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: var(--azul);
+  transform: translate(-50%, -50%);
+  left: var(--bx, 50%);
+  top: var(--by, 50%);
+  transition: width 0.55s cubic-bezier(0.22, 1, 0.36, 1),
+              height 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+  z-index: 0;
+}
+
+.contato-form__btn:hover::before {
+  width: 400px;
+  height: 400px;
+}
+
+.contato-form__btn span,
+.contato-form__btn svg {
+  position: relative;
+  z-index: 1;
+}
+
+.contato-form__btn:active {
+  transform: scale(0.98);
+}
+
+@media (max-width: 900px) {
+  .contato-grid {
+    grid-template-columns: 1fr;
+    gap: 48px;
+    padding: 56px 32px 64px;
+  }
+}
+
+@media (max-width: 768px) {
+  .contato-hero {
+    height: 440px;
+  }
+
+  .contato-hero__content {
+    padding: 0 20px 48px;
+  }
+
+  .contato-grid {
+    padding: 48px 20px 56px;
+    gap: 40px;
+  }
+
+  .contato-form-wrap {
+    padding: 32px 24px;
+  }
+}
+
+@media (max-width: 480px) {
+  .contato-hero {
+    height: 380px;
+  }
+
+  .contato-form-wrap {
+    padding: 28px 18px;
+  }
+}
