@@ -1,0 +1,120 @@
+.privacy-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 20, 40, 0.82);
+  backdrop-filter: blur(8px);
+  z-index: 2000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  animation: privacyFadeIn 0.25s ease;
+}
+
+@keyframes privacyFadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+.privacy-container {
+  background: #f5f8fb;
+  border-radius: 16px;
+  width: 100%;
+  max-width: 600px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 24px 64px rgba(0, 40, 80, 0.3);
+  animation: privacyModalIn 0.32s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@keyframes privacyModalIn {
+  from { opacity: 0; transform: translateY(30px) scale(0.98); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.privacy-close {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  z-index: 10;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 1px solid #ddeaf3;
+  background: #ffffff;
+  color: var(--azul-escuro);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.privacy-close:hover {
+  background: #f5f8fb;
+  color: var(--azul);
+  transform: rotate(90deg);
+}
+
+/* Bloco único de conteúdo */
+.privacy-content {
+  padding: 48px 40px;
+  display: flex;
+  flex-direction: column;
+}
+
+.privacy-eyebrow {
+  font-family: 'Jost', sans-serif;
+  font-weight: 400;
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--azul);
+  margin-bottom: 6px;
+}
+
+.privacy-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 500;
+  font-size: 2.2rem;
+  color: var(--azul-escuro);
+  margin: 0 0 24px;
+  line-height: 1.1;
+}
+
+.privacy-text-box {
+  max-height: 380px; 
+  overflow-y: auto;
+  padding-right: 12px;
+  scrollbar-width: thin;
+}
+
+.privacy-text-box p {
+  font-family: 'Jost', sans-serif;
+  font-weight: 300;
+  font-size: 14.5px;
+  line-height: 1.75;
+  color: #4a6a80;
+  margin: 0 0 16px;
+}
+
+.privacy-text-box h3 {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 600;
+  font-size: 1.3rem;
+  color: var(--azul-escuro);
+  margin: 24px 0 10px;
+}
+
+@media (max-width: 576px) {
+  .privacy-content {
+    padding: 40px 24px;
+  }
+  .privacy-title {
+    font-size: 1.8rem;
+  }
+  .privacy-close {
+    top: 16px;
+    right: 16px;
+  }
+}
