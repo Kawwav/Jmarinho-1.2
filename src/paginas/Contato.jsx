@@ -66,7 +66,7 @@ function Contato() {
               </a>
               <a
                 className="contato-info__item contato-info__item--link"
-                href="https://wa.me/5541988968486"
+                href="https://wa.me/5541984000887"
                 target="_blank"
                 rel="noopener noreferrer"
               >
@@ -78,7 +78,7 @@ function Contato() {
                 </div>
                 <div className="contato-info__item-texto">
                   <span className="contato-info__item-tipo">WhatsApp</span>
-                  <span className="contato-info__item-label">98400-0887</span>
+                  <span className="contato-info__item-label">41 98400-0887</span>
                 </div>
               </a>
               <div className="contato-info__item">
