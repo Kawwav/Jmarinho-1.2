@@ -32,7 +32,7 @@ function Nav() {
   }, [menuOpen])
 
   return (
-    <header className={`nav ${isHero ? 'nav--hero' : 'nav--solid'} ${menuOpen ? 'nav--open' : ''}`}>
+    <header className={`nav ${isHero ? 'nav--hero' : 'nav--solid'} ${menuOpen ? 'nav--open' : ''}`} translate="no">
       <div className="nav__inner">
         <NavLink to="/" className="nav__logo" aria-label="JMarinho - Início">
           <img src="./logo.png" alt="JMarinho" />

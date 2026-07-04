@@ -15,7 +15,7 @@ function ModalPrivacidade({ isOpen, onClose }) {
   if (!isOpen) return null
 
   return (
-    <div className="privacy-overlay" onClick={onClose}>
+    <div className="privacy-overlay" onClick={onClose} translate="no">
       <div className="privacy-container" onClick={(e) => e.stopPropagation()}>
 
         <button className="privacy-close" onClick={onClose} aria-label="Fechar modal">
