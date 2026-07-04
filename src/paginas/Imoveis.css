@@ -1125,6 +1125,80 @@
   border-color: #c06060;
 }
 
+/* ── Tablet grande (1024px) ── */
+@media (max-width: 1024px) {
+  .imoveis-grid {
+    gap: 24px;
+    padding: 0 32px 80px;
+  }
+
+  .modal-container {
+    max-width: 94vw;
+  }
+
+  .modal-header-bar {
+    padding: 20px 24px 16px;
+  }
+
+  .modal-col-desc,
+  .modal-col-specs {
+    padding: 20px 22px;
+  }
+
+  .modal-footer {
+    padding: 14px 24px 20px;
+  }
+}
+
+/* ── Tablet (900px): empilha o carrossel do modal em cima do conteúdo ── */
+@media (max-width: 900px) {
+  .modal-overlay {
+    padding: 16px;
+  }
+
+  .modal-container {
+    flex-direction: column;
+    width: 100%;
+    max-width: 640px;
+    height: 90vh;
+    max-height: 90vh;
+  }
+
+  .modal-carousel {
+    width: 100%;
+    height: 300px;
+    flex-shrink: 0;
+  }
+
+  .modal-content-col {
+    overflow-y: auto;
+    flex: 1;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .modal-content-col::-webkit-scrollbar { display: none; }
+
+  .modal-two-col {
+    grid-template-columns: 1fr;
+  }
+
+  .modal-col-desc {
+    border-right: none;
+    border-bottom: 1px solid #e8f1f8;
+  }
+
+  .modal-header-bar {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .modal-header-bar__right {
+    flex-direction: row;
+    align-items: baseline;
+    gap: 8px;
+  }
+}
+
 @media (max-width: 860px) {
   .filtros-grade {
     grid-template-columns: repeat(3, 1fr);
@@ -1144,12 +1218,40 @@
     width: 100%;
     justify-content: center;
   }
+
+  .imoveis-header {
+    padding: 48px 20px 32px;
+  }
+
+  .imoveis-subtitle {
+    margin-top: 24px;
+  }
+
+  .tipo-btn {
+    flex: 1;
+    padding: 0 12px;
+  }
+}
+
+@media (max-width: 400px) {
+  .filtros-grade {
+    grid-template-columns: 1fr;
+  }
 }
 
 @media (max-width: 700px) {
   .imoveis-grid {
     grid-template-columns: 1fr;
-    padding: 0 24px 80px;
+    padding: 0 20px 64px;
+    gap: 24px;
+  }
+
+  .card-body {
+    padding: 22px 22px 24px;
+  }
+
+  .card-titulo {
+    font-size: 24px;
   }
 
   .modal-overlay {
@@ -1159,20 +1261,29 @@
 
   .modal-container {
     max-width: 100%;
+    width: 100%;
     height: 96vh;
     max-height: 96vh;
     flex-direction: column;
-    border-bottom-left-radius: 0;
-    border-bottom-right-radius: 0;
+    border-radius: 14px 14px 0 0;
   }
 
   .modal-two-col {
     grid-template-columns: 1fr;
   }
 
+  .modal-col-desc,
+  .modal-col-specs {
+    padding: 18px 20px;
+  }
+
   .modal-col-desc {
     border-right: none;
     border-bottom: 1px solid #e8f1f8;
+  }
+
+  .modal-specs-grid {
+    grid-template-columns: repeat(2, 1fr);
   }
 
   .modal-header-bar {
@@ -1183,12 +1294,79 @@
 
   .modal-header-bar__right {
     align-items: flex-start;
+    flex-direction: row;
+    gap: 8px;
   }
 
   .modal-carousel {
     width: 100%;
     height: 52vw;
+    min-height: 220px;
     flex-shrink: 0;
+  }
+
+  .modal-content-col {
+    overflow-y: auto;
+    flex: 1;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .modal-content-col::-webkit-scrollbar { display: none; }
+
+  .modal-footer {
+    flex-wrap: wrap;
+    padding: 14px 20px 18px;
+  }
+
+  .modal-btn-contato {
+    flex: 1 1 100%;
+    order: 1;
+  }
+
+  .modal-btn-compartilhar {
+    flex: 1;
+    order: 2;
+    justify-content: center;
+  }
+
+  .modal-btn-voltar {
+    flex: 1;
+    order: 3;
+  }
+}
+
+@media (max-width: 480px) {
+  .card-titulo {
+    font-size: 21px;
+  }
+
+  .card-preco {
+    font-size: 20px;
+  }
+
+  .card-specs {
+    gap: 14px;
+    font-size: 13px;
+  }
+
+  .card-btn {
+    height: 46px;
+    font-size: 12px;
+  }
+
+  .modal-titulo {
+    font-size: 22px;
+  }
+
+  .modal-preco {
+    font-size: 19px;
+  }
+
+  .modal-btn-contato,
+  .modal-btn-voltar,
+  .modal-btn-compartilhar {
+    font-size: 11px;
+    height: 44px;
   }
 }
 /* ── Thumbnail strip no carrossel do modal ── */
@@ -1500,5 +1678,76 @@
     min-width: 34px;
     height: 34px;
     font-size: 12px;
+  }
+
+  .paginacao {
+    margin-top: 64px;
+    gap: 6px;
+  }
+}
+
+/* ── Lightbox responsivo ── */
+@media (max-width: 700px) {
+  .lightbox-stage {
+    padding: 50px 44px 0;
+  }
+
+  .lightbox-arrow {
+    width: 40px;
+    height: 40px;
+  }
+
+  .lightbox-arrow-prev { left: 8px; }
+  .lightbox-arrow-next { right: 8px; }
+
+  .lightbox-controls {
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 8px 14px;
+    gap: 4px;
+    max-width: calc(100% - 24px);
+  }
+
+  .lightbox-thumbs {
+    padding: 10px 14px 16px;
+  }
+
+  .lightbox-thumb {
+    width: 58px;
+    height: 42px;
+  }
+}
+
+@media (max-width: 480px) {
+  .lightbox-stage {
+    padding: 46px 12px 0;
+  }
+
+  .lightbox-arrow {
+    width: 36px;
+    height: 36px;
+  }
+
+  .lightbox-zoom-label {
+    display: none;
+  }
+
+  .lightbox-sep {
+    display: none;
+  }
+
+  .lightbox-counter {
+    padding: 0 4px;
+  }
+
+  .carousel-thumb-item {
+    width: 46px;
+    height: 32px;
+  }
+
+  .carousel-zoom-btn {
+    bottom: 52px;
+    width: 30px;
+    height: 30px;
   }
 }
