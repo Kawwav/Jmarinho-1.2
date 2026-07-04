@@ -8,7 +8,6 @@ const navItems = [
   { label: 'Comercial', to: '/comercial' },
   { label: 'Sobre a JMarinho', to: '/sobre' },
   { label: 'Contato', to: '/contato' },
-  { label: 'Adm', to: '/adm' },
 ]
 
 function Nav() {

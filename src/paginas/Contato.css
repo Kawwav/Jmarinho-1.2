@@ -339,6 +339,53 @@
   line-height: 1.6;
 }
 
+.contato-form__aviso {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border-radius: 8px;
+  padding: 12px 14px;
+  font-family: 'Jost', sans-serif;
+  font-size: 13px;
+  line-height: 1.4;
+}
+
+.contato-form__aviso--sucesso {
+  background: rgba(16, 185, 129, 0.08);
+  border: 1px solid rgba(16, 185, 129, 0.25);
+  color: #0d9268;
+}
+
+.contato-form__aviso--erro {
+  background: rgba(220, 60, 60, 0.08);
+  border: 1px solid rgba(220, 60, 60, 0.25);
+  color: #c23a3a;
+}
+
+.contato-form__spinner {
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-top-color: #ffffff;
+  border-radius: 50%;
+  animation: contatoSpin 0.7s linear infinite;
+}
+
+@keyframes contatoSpin {
+  to { transform: rotate(360deg); }
+}
+
+.contato-form__input:disabled,
+.contato-form__textarea:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.contato-form__btn:disabled {
+  opacity: 0.75;
+  cursor: not-allowed;
+}
+
 .contato-form__btn {
   margin-top: 4px;
   display: inline-flex;

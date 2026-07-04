@@ -1,16 +1,46 @@
+import { useState } from 'react'
 import './Contato.css'
 
+const EMAIL_ENDPOINT = '/api/send-email.php'
+
 function Contato() {
+  const [status, setStatus] = useState('idle') // idle | enviando | sucesso | erro
+  const [mensagemErro, setMensagemErro] = useState('')
+
   function handleMouseMove(e) {
     const r = e.currentTarget.getBoundingClientRect()
     e.currentTarget.style.setProperty('--bx', `${e.clientX - r.left}px`)
     e.currentTarget.style.setProperty('--by', `${e.clientY - r.top}px`)
   }
 
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault()
-    // integrar com backend serviço de email so q dps ne skskkssk 
+    const form = e.target
+    setStatus('enviando')
+    setMensagemErro('')
+
+    try {
+      const formData = new FormData(form)
+
+      const res = await fetch(EMAIL_ENDPOINT, {
+        method: 'POST',
+        body: formData,
+      })
+
+      const dados = await res.json().catch(() => ({}))
+
+      if (!res.ok || !dados.success) {
+        throw new Error(dados.message || 'Não foi possível enviar sua mensagem.')
+      }
+
+      setStatus('sucesso')
+      form.reset()
+    } catch (erro) {
+      setStatus('erro')
+      setMensagemErro(erro.message || 'Não foi possível enviar sua mensagem. Tente novamente.')
+    }
   }
+
   return (
     <div className="contato-page">
 
@@ -115,9 +145,11 @@ function Contato() {
                 <input
                   className="contato-form__input"
                   id="nome"
+                  name="nome"
                   type="text"
                   placeholder="Seu nome completo"
                   required
+                  disabled={status === 'enviando'}
                 />
               </div>
 
@@ -126,9 +158,11 @@ function Contato() {
                 <input
                   className="contato-form__input"
                   id="email"
+                  name="email"
                   type="email"
                   placeholder="seu@email.com"
                   required
+                  disabled={status === 'enviando'}
                 />
               </div>
 
@@ -137,8 +171,10 @@ function Contato() {
                 <input
                   className="contato-form__input"
                   id="telefone"
+                  name="telefone"
                   type="tel"
                   placeholder="(41) 9 0000-0000"
+                  disabled={status === 'enviando'}
                 />
               </div>
 
@@ -147,20 +183,50 @@ function Contato() {
                 <textarea
                   className="contato-form__textarea"
                   id="mensagem"
+                  name="mensagem"
                   placeholder="Escreva sua mensagem…"
                   required
+                  disabled={status === 'enviando'}
                 />
               </div>
+
+              {status === 'sucesso' && (
+                <div className="contato-form__aviso contato-form__aviso--sucesso">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <circle cx="12" cy="12" r="10"/>
+                    <polyline points="8 12 11 15 16 9"/>
+                  </svg>
+                  Mensagem enviada com sucesso! Em breve entraremos em contato.
+                </div>
+              )}
+
+              {status === 'erro' && (
+                <div className="contato-form__aviso contato-form__aviso--erro">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <circle cx="12" cy="12" r="10"/>
+                    <line x1="12" y1="8" x2="12" y2="12"/>
+                    <line x1="12" y1="16" x2="12.01" y2="16"/>
+                  </svg>
+                  {mensagemErro}
+                </div>
+              )}
 
               <button
                 className="contato-form__btn"
                 type="submit"
                 onMouseMove={handleMouseMove}
+                disabled={status === 'enviando'}
               >
-                <span>Enviar mensagem</span>
-                <svg width="14" height="10" viewBox="0 0 14 10" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                  <path d="M1 5H13M9 1L13 5L9 9" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/>
-                </svg>
+                {status === 'enviando' ? (
+                  <span className="contato-form__spinner" />
+                ) : (
+                  <>
+                    <span>Enviar mensagem</span>
+                    <svg width="14" height="10" viewBox="0 0 14 10" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                      <path d="M1 5H13M9 1L13 5L9 9" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/>
+                    </svg>
+                  </>
+                )}
               </button>
 
             </form>

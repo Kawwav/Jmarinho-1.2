@@ -1,6 +1,6 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { useState, useEffect } from 'react'
-import { supabase } from './supabaseClient'
+import { api } from './apiClient'
 import Nav from './componentes/Nav'
 import Footer from './componentes/Footer'
 import Inicio from './paginas/Inicio'
@@ -20,28 +20,22 @@ import './App.css'
 /*npm run deploy*/
 
 
+/*npm run build*/
+
 function App() {
   const [sessao, setSessao] = useState(undefined) // undefined = ainda verificando
 
   useEffect(() => {
-    // Verifica se já tem sessão ativa
-    supabase.auth.getSession().then(({ data }) => {
-      setSessao(data.session)
-    })
-
-    // Fica escutando mudanças de login/logout
-    const { data: listener } = supabase.auth.onAuthStateChange((_event, session) => {
-      setSessao(session)
-    })
-
-    return () => listener.subscription.unsubscribe()
+    api.checkSessao()
+      .then(res => setSessao(res.autenticado ? res.usuario : null))
+      .catch(() => setSessao(null))
   }, [])
 
   // Ainda verificando sessão — não renderiza nada para evitar flash
   if (sessao === undefined) return null
 
   return (
-    <BrowserRouter basename="/Jmarinho-1.2">
+    <BrowserRouter>
       <Routes>
 
         {/* Rota de login */}

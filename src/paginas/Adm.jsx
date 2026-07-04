@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect, useCallback } from 'react'
-import { supabase } from "../supabaseClient";
+import { api } from "../apiClient";
 import './Adm.css'
 const IMOVEIS_INICIAIS = [
   {
@@ -693,16 +693,11 @@ function Adm() {
   const [filtroMod, setFiltroMod] = useState('')
   const [mostrarInativos, setMostrarInativos] = useState(false)
 
-  // FUNÇÃO NOVA: Busca os imóveis direto do Supabase
+  // Busca os imóveis direto da nossa API PHP
   const buscarImoveis = async () => {
     try {
       setCarregando(true)
-      const { data, error } = await supabase
-        .from('imoveis')
-        .select('*')
-        .order('id', { ascending: false })
-
-      if (error) throw error
+      const data = await api.listarImoveis()
       setImoveis(data || [])
     } catch (error) {
       console.error('Erro ao buscar imóveis:', error.message)
@@ -729,30 +724,14 @@ function Adm() {
   // Substitui a função salvar inteira:
   async function salvar(dadosForm) {
     try {
-      // 1. Faz upload das imagens novas (que têm .file) para o Supabase Storage
+      // 1. Faz upload das imagens novas (que têm .file) pra nossa API PHP
       const imagensFinais = await Promise.all(
         (dadosForm.imagens || []).map(async (img) => {
-          // Se já tem URL pública (não é blob:), é imagem já salva — mantém
+          // Se já tem URL pública (não é blob: local), é imagem já salva — mantém
           if (!img.file) return { url: img.url, nome: img.nome }
 
-          // Gera nome único para o arquivo
-          const ext = img.nome.split('.').pop()
-          const nomeArquivo = `${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`
-
-          const { error: uploadError } = await supabase.storage
-            .from('imoveis-imagens')
-            .upload(nomeArquivo, img.file, { upsert: false })
-
-          console.log('Upload resultado:', { nomeArquivo, uploadError })
-
-          if (uploadError) throw uploadError
-
-          // Pega a URL pública permanente
-          const { data: urlData } = supabase.storage
-            .from('imoveis-imagens')
-            .getPublicUrl(nomeArquivo)
-
-          return { url: urlData.publicUrl, nome: img.nome }
+          const resultado = await api.uploadImagem(img.file)
+          return { url: resultado.url, nome: img.nome }
         })
       )
       console.log('imagensFinais:', imagensFinais)
@@ -776,29 +755,12 @@ function Adm() {
       }
 
       if (dadosForm.id) {
-        const { data, error } = await supabase
-          .from('imoveis')
-          .update(dadosImovel)
-          .eq('id', dadosForm.id)
-          .select()
-
-        if (error) throw error
-        console.log('Dados salvos (update):', data)
-        if (data?.length > 0) {
-          setImoveis(prev => prev.map(im => im.id === dadosForm.id ? data[0] : im))
-        }
+        const atualizado = await api.atualizarImovel(dadosForm.id, dadosImovel)
+        setImoveis(prev => prev.map(im => im.id === dadosForm.id ? atualizado : im))
         showToast('Imóvel atualizado com sucesso!', 'success')
       } else {
-        const { data, error } = await supabase
-          .from('imoveis')
-          .insert([dadosImovel])
-          .select()
-
-        if (error) throw error
-        console.log('Dados salvos (update):', data)
-        if (data?.length > 0) {
-          setImoveis(prev => [data[0], ...prev])
-        }
+        const novo = await api.criarImovel(dadosImovel)
+        setImoveis(prev => [novo, ...prev])
         showToast('Imóvel publicado com sucesso!', 'success')
       }
 
@@ -814,11 +776,7 @@ function Adm() {
   async function toggleAtivo(imovel) {
     const novoStatus = imovel.ativo === false ? true : false
     try {
-      const { error } = await supabase
-        .from('imoveis')
-        .update({ ativo: novoStatus })
-        .eq('id', imovel.id)
-      if (error) throw error
+      await api.atualizarImovel(imovel.id, { ativo: novoStatus })
       setImoveis(prev => prev.map(im => im.id === imovel.id ? { ...im, ativo: novoStatus } : im))
       showToast(novoStatus ? 'Imóvel reativado!' : 'Imóvel desativado (dados preservados).', 'success')
     } catch (error) {
@@ -830,15 +788,10 @@ function Adm() {
     if (!imovelRemover) return;
 
     try {
-      // 1. Apaga no Supabase usando o ID correto (imovelRemover.id)
-      const { error } = await supabase
-        .from('imoveis')
-        .delete()
-        .eq('id', imovelRemover.id);
+      // 1. Apaga na nossa API PHP usando o ID correto (imovelRemover.id)
+      await api.removerImovel(imovelRemover.id);
 
-      if (error) throw error;
-
-      // 2. Só tira da ecrã se o Supabase confirmou que apagou
+      // 2. Só tira da tela depois que a API confirmou que apagou
       setImoveis(prev => prev.filter(im => im.id !== imovelRemover.id));
 
       // 3. Fecha o modal de confirmação
@@ -847,7 +800,7 @@ function Adm() {
       showToast('Imóvel removido com sucesso!', 'success');
     } catch (error) {
       console.error('Erro real ao remover imóvel:', error.message);
-      alert('Erro ao apagar no Supabase: ' + error.message);
+      alert('Erro ao remover imóvel: ' + error.message);
     }
   }
 
@@ -964,7 +917,7 @@ function Adm() {
           <span className="adm-sidebar__footer-text">JMarinho Imóveis © 2025</span>
           <button
             className="adm-sidebar__sair"
-            onClick={() => supabase.auth.signOut()}
+            onClick={async () => { await api.logout(); window.location.href = '/login' }}
           >
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
               <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />

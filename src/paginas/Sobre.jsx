@@ -265,7 +265,7 @@ JMarinho Imóveis. Mais de 30 anos transformando oportunidades em conquistas.
 
             <div className="sobre-intro__numeros">
               <NumeroAnimado
-                valorFinal={200}
+                valorFinal={780}
                 prefixo="+"
                 label="Imóveis negociados"
               />

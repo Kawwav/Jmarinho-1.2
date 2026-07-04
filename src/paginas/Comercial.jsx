@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from 'react'
 import Nav from '../componentes/Nav'
 import Footer from '../componentes/Footer'
-import { supabase } from '../supabaseClient'
+import { api } from '../apiClient'
 import './Comercial.css'
 
 const tipos = ['Todos', 'Venda', 'Aluguel']
@@ -381,17 +381,15 @@ function Comercial() {
     }
   }, [imoveis])
 
-  // Busca do Supabase — apenas comerciais
+  // Busca da nossa API PHP — apenas comerciais e ativos
   useEffect(() => {
     async function buscar() {
-      const { data, error } = await supabase
-        .from('imoveis')
-        .select('*')
-        .eq('tipo', 'comercial')
-        .neq('ativo', false)
-        .order('id', { ascending: false })
-
-      if (!error) setImoveis(data || [])
+      try {
+        const data = await api.listarImoveis({ tipo: 'comercial', ativo: 'true' })
+        setImoveis(data || [])
+      } catch (error) {
+        console.error('Erro ao buscar imóveis:', error.message)
+      }
       setCarregando(false)
     }
     buscar()

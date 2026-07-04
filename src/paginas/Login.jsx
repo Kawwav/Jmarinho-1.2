@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { supabase } from '../supabaseClient'
+import { api } from '../apiClient'
 import './Login.css'
 
 function Login() {
@@ -14,16 +14,15 @@ function Login() {
     setErro('')
     setLoading(true)
 
-    const { error } = await supabase.auth.signInWithPassword({
-      email,
-      password: senha,
-    })
-
-    if (error) {
+    try {
+      await api.login(email, senha)
+      // recarrega a página em /adm pra o App.jsx checar a sessão de novo
+      window.location.href = '/adm'
+    } catch (error) {
       setErro('E-mail ou senha incorretos.')
+    } finally {
+      setLoading(false)
     }
-
-    setLoading(false)
   }
 
   return (
