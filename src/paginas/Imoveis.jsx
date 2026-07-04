@@ -513,7 +513,7 @@ function Imoveis() {
   return (
     <>
       <Nav />
-      <main className="imoveis-page">
+      <main className="imoveis-page" translate="no">
 
         <div className="imoveis-header">
           <h1 className="imoveis-title">Imóveis Disponíveis</h1>

@@ -42,7 +42,7 @@ function Contato() {
   }
 
   return (
-    <div className="contato-page">
+    <div className="contato-page" translate="no">
 
       <header className="contato-hero">
         <div className="contato-hero__bg" />

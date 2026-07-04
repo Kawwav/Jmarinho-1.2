@@ -835,7 +835,7 @@ function Adm() {
   }
 
   return (
-    <div className="adm-page">
+    <div className="adm-page" translate="no">
 
       {/* ── Sidebar ── */}
       <aside className="adm-sidebar">

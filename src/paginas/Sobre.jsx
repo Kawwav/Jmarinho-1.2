@@ -229,7 +229,7 @@ function SecaoLocalizacao() {
 ──────────────────────────────────────── */
 function Sobre() {
   return (
-    <div className="sobre-page">
+    <div className="sobre-page" translate="no">
 
       <header className="sobre-hero">
         <div className="sobre-hero__bg" />

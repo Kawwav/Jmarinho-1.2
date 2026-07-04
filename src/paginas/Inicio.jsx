@@ -5,7 +5,7 @@ function Inicio() {
   const navigate = useNavigate()
 
   return (
-    <section id="inicio" className="hero">
+    <section id="inicio" className="hero" translate="no">
       {/* Imagem de fundo */}
       <div className="hero__bg" />
 
