@@ -212,7 +212,19 @@ function ComercialModal({ imovel, onClose }) {
           </div>
 
           <div className="com-modal-footer">
-            <button className="com-modal-btn-contato">ENTRAR EM CONTATO</button>
+            <a
+              className="com-modal-btn-contato"
+              href={`https://wa.me/5541984000887?text=${encodeURIComponent(
+                `Olá! Tenho interesse no imóvel comercial "${imovel.titulo}"` +
+                (imovel.codigo ? ` (Cód: ${imovel.codigo})` : '') +
+                ` — ${formatarValor(imovel.valor, imovel.modalidade)}.\n` +
+                `${window.location.origin}${window.location.pathname}?id=${imovel.id}`
+              )}`}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              ENTRAR EM CONTATO
+            </a>
             <button
               className="modal-btn-compartilhar"
               title="Copiar link do imóvel"
@@ -354,6 +366,69 @@ function FiltroDropdown({ icone, rotulo, valor, aberto, onToggle, onLimpar, chil
   )
 }
 
+/* ── Paginação ── */
+function Paginacao({ paginaAtual, totalPaginas, onMudarPagina }) {
+  if (totalPaginas <= 1) return null
+
+  const paginas = []
+  const janela = 1
+
+  for (let i = 1; i <= totalPaginas; i++) {
+    if (
+      i === 1 ||
+      i === totalPaginas ||
+      (i >= paginaAtual - janela && i <= paginaAtual + janela)
+    ) {
+      paginas.push(i)
+    } else if (paginas[paginas.length - 1] !== '...') {
+      paginas.push('...')
+    }
+  }
+
+  return (
+    <nav className="paginacao" aria-label="Paginação de imóveis">
+      <button
+        className="paginacao-btn paginacao-seta"
+        onClick={() => onMudarPagina(paginaAtual - 1)}
+        disabled={paginaAtual === 1}
+        aria-label="Página anterior"
+      >
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M15 18l-6-6 6-6"/>
+        </svg>
+      </button>
+
+      {paginas.map((p, i) =>
+        p === '...' ? (
+          <span key={`dots-${i}`} className="paginacao-dots">…</span>
+        ) : (
+          <button
+            key={p}
+            className={`paginacao-btn ${p === paginaAtual ? 'paginacao-btn--ativo' : ''}`}
+            onClick={() => onMudarPagina(p)}
+            aria-current={p === paginaAtual ? 'page' : undefined}
+          >
+            {p}
+          </button>
+        )
+      )}
+
+      <button
+        className="paginacao-btn paginacao-seta"
+        onClick={() => onMudarPagina(paginaAtual + 1)}
+        disabled={paginaAtual === totalPaginas}
+        aria-label="Próxima página"
+      >
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M9 18l6-6-6-6"/>
+        </svg>
+      </button>
+    </nav>
+  )
+}
+
+const ITENS_POR_PAGINA = 6
+
 /* ── Página principal ── */
 function Comercial() {
   const [imoveis, setImoveis]               = useState([])
@@ -370,6 +445,7 @@ function Comercial() {
   const [areaMin, setAreaMin]                           = useState('')
   const [tipoSelecionado, setTipoSelecionado]           = useState('Todos')
   const [imovelAberto, setImovelAberto]                 = useState(null)
+  const [paginaAtual, setPaginaAtual]                   = useState(1)
 
   // Abre modal automaticamente se URL tiver ?id=
   useEffect(() => {
@@ -416,6 +492,23 @@ function Comercial() {
   })
 
   const totalAtivos = [cidadeSelecionada, bairroSelecionado, categoriaSelecionada, valorMax, areaMin].filter(Boolean).length
+
+  // Sempre que os filtros mudarem, volta pra primeira página
+  useEffect(() => {
+    setPaginaAtual(1)
+  }, [tipoSelecionado, cidadeSelecionada, bairroSelecionado, categoriaSelecionada, valorMax, areaMin])
+
+  const totalPaginas = Math.max(1, Math.ceil(imoveisFiltrados.length / ITENS_POR_PAGINA))
+  const imoveisPaginados = imoveisFiltrados.slice(
+    (paginaAtual - 1) * ITENS_POR_PAGINA,
+    paginaAtual * ITENS_POR_PAGINA
+  )
+
+  function irParaPagina(p) {
+    if (p < 1 || p > totalPaginas) return
+    setPaginaAtual(p)
+    document.querySelector('.imoveis-grid')?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+  }
 
   if (carregando) {
     return (
@@ -615,13 +708,19 @@ function Comercial() {
         </div>
 
         <div className="imoveis-grid">
-          {imoveisFiltrados.length > 0
-            ? imoveisFiltrados.map((im) => (
+          {imoveisPaginados.length > 0
+            ? imoveisPaginados.map((im) => (
                 <ComercialCard key={im.id} imovel={im} onAbrir={setImovelAberto} />
               ))
             : <p className="sem-resultados">Nenhum imóvel encontrado para os filtros selecionados.</p>
           }
         </div>
+
+        <Paginacao
+          paginaAtual={paginaAtual}
+          totalPaginas={totalPaginas}
+          onMudarPagina={irParaPagina}
+        />
 
       </main>
 

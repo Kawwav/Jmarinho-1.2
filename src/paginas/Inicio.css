@@ -8,6 +8,7 @@
   align-items: center;
   justify-content: center;
   overflow: hidden;
+  contain: paint; /* isola a área de repaint do resto da página */
 }
 
 /* Imagem de fundo escurecida */
@@ -18,14 +19,23 @@
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  filter: brightness(0.45);
-  transform: scale(1.03);
+  transform: scale(1.03) translateZ(0);
+  will-change: transform;
+  backface-visibility: hidden;
   animation: zoomSlow 18s ease-in-out infinite alternate;
 }
 
+.hero__bg::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: #000;
+  opacity: 0.55;
+}
+
 @keyframes zoomSlow {
-  from { transform: scale(1.03); }
-  to   { transform: scale(1.08); }
+  from { transform: scale(1.03) translateZ(0); }
+  to   { transform: scale(1.08) translateZ(0); }
 }
 
 /* Gradiente sutil por cima para profundidade */
@@ -40,6 +50,13 @@
     rgba(0, 0, 0, 0.35) 100%
   );
   pointer-events: none;
+}
+
+/* Respeita quem prefere menos movimento na tela e poupa CPU/GPU */
+@media (prefers-reduced-motion: reduce) {
+  .hero__bg {
+    animation: none;
+  }
 }
 
 /* Conteúdo */
