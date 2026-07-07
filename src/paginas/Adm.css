@@ -1274,7 +1274,7 @@
   background: #ffffff;
   border-radius: 14px;
   width: 100%;
-  max-width: 1100px;
+  max-width: 1600px;
   height: 88vh;
   max-height: 860px;
   display: flex;
@@ -1495,6 +1495,8 @@
   background: #f5f9fc;
   border-left: 3px solid var(--azul-claro);
   border-radius: 0 6px 6px 0;
+  white-space: pre-line;
+  word-break: break-word;
 }
 
 .adm-page .modal-specs {
