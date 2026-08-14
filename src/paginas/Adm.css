@@ -1013,6 +1013,22 @@
   border-radius: 8px;
   overflow: hidden;
   border: 1px solid var(--borda);
+  cursor: grab;
+  transition: transform 0.15s ease, opacity 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.adm-form__img-thumb:active {
+  cursor: grabbing;
+}
+
+.adm-form__img-thumb--arrastando {
+  opacity: 0.4;
+  transform: scale(0.96);
+}
+
+.adm-form__img-thumb--sobre {
+  border-color: var(--azul);
+  box-shadow: 0 0 0 2px var(--azul) inset;
 }
 
 .adm-form__img-thumb img {
@@ -1020,6 +1036,22 @@
   height: 100%;
   object-fit: cover;
   display: block;
+  pointer-events: none;
+}
+
+.adm-form__img-capa {
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  background: rgba(0,0,0,0.6);
+  color: #fff;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  padding: 2px 6px;
+  border-radius: 4px;
+  z-index: 1;
 }
 
 .adm-form__img-remover {

@@ -350,6 +350,8 @@ function ModalFormulario({ imovelEditando, onFechar, onSalvar }) {
   const edicao = !!imovelEditando
   const [form, setForm] = useState(imovelEditando ? { ...imovelEditando } : { ...FORM_VAZIO })
   const fileRef = useRef(null)
+  const [dragIdx, setDragIdx] = useState(null)
+  const [overIdx, setOverIdx] = useState(null)
 
   useEffect(() => {
     if (imovelEditando) {
@@ -392,6 +394,32 @@ function ModalFormulario({ imovelEditando, onFechar, onSalvar }) {
 
   function removerImagem(idx) {
     setForm(f => ({ ...f, imagens: f.imagens.filter((_, i) => i !== idx) }))
+  }
+
+  function reordenarImagens(origem, destino) {
+    if (origem === destino || origem === null || destino === null) return
+    setForm(f => {
+      const lista = [...f.imagens]
+      const [movida] = lista.splice(origem, 1)
+      lista.splice(destino, 0, movida)
+      return { ...f, imagens: lista }
+    })
+  }
+
+  function handleThumbDragStart(idx) {
+    setDragIdx(idx)
+  }
+
+  function handleThumbDragEnter(idx) {
+    if (idx !== overIdx) setOverIdx(idx)
+  }
+
+  function handleThumbDragEnd() {
+    if (dragIdx !== null && overIdx !== null) {
+      reordenarImagens(dragIdx, overIdx)
+    }
+    setDragIdx(null)
+    setOverIdx(null)
   }
 
   function handleSubmit(e) {
@@ -624,18 +652,33 @@ function ModalFormulario({ imovelEditando, onFechar, onSalvar }) {
             </div>
 
             {form.imagens && form.imagens.length > 0 && (
-              <div className="adm-form__imagens-preview">
-                {form.imagens.map((img, i) => (
-                  <div key={i} className="adm-form__img-thumb">
-                    <img src={img.url} alt={img.nome} />
-                    <button
-                      className="adm-form__img-remover"
-                      onClick={() => removerImagem(i)}
-                      aria-label="Remover imagem"
-                    >×</button>
-                  </div>
-                ))}
-              </div>
+              <>
+                <p className="adm-form__upload-hint" style={{ marginTop: -2, marginBottom: 2 }}>
+                  Arraste as fotos para reordenar — a primeira é a capa do anúncio
+                </p>
+                <div className="adm-form__imagens-preview">
+                  {form.imagens.map((img, i) => (
+                    <div
+                      key={img.url + i}
+                      className={`adm-form__img-thumb ${dragIdx === i ? 'adm-form__img-thumb--arrastando' : ''} ${overIdx === i && dragIdx !== i ? 'adm-form__img-thumb--sobre' : ''}`}
+                      draggable
+                      onDragStart={() => handleThumbDragStart(i)}
+                      onDragEnter={() => handleThumbDragEnter(i)}
+                      onDragOver={e => e.preventDefault()}
+                      onDrop={e => e.preventDefault()}
+                      onDragEnd={handleThumbDragEnd}
+                    >
+                      {i === 0 && <span className="adm-form__img-capa">Capa</span>}
+                      <img src={img.url} alt={img.nome} draggable={false} />
+                      <button
+                        className="adm-form__img-remover"
+                        onClick={() => removerImagem(i)}
+                        aria-label="Remover imagem"
+                      >×</button>
+                    </div>
+                  ))}
+                </div>
+              </>
             )}
           </div>
 
